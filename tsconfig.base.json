@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2019"
+  , "module": "CommonJS"
+  , "strict": true
+  , "esModuleInterop": true
+  , "skipLibCheck": true
+  , "baseUrl": "."
+  , "paths": {
+      "@src/*": ["src/*"]
+    , "@core": ["src/core/index"]
+    , "@core/*": ["src/core/*"]
+    , "@dao": ["src/dao/index"]
+    , "@dao/*": ["src/dao/*"]
+    , "@env": ["src/env/index"]
+    , "@env/*": ["src/env/*"]
+    , "@test/*": ["__tests__/*"]
+    , "@services/*": ["src/services/*"]
+    }
+  }
+}

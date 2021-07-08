@@ -1,0 +1,63 @@
+* Static
+A static file server inspired by [[https://github.com/vercel/serve][Serve]].
+
+The service considers static files to be immutable by default,
+you can set environement varaible =STATIC_FOUND_CACHE_CONTROL= to change it.
+
+** Install
+The environment variables =STATIC_HOST= and =STATIC_PORT= can be used to set the address and port that the server listens to.
+The default values are localhost and 8080.
+
+#+BEGIN_SRC sh
+git clone https://github.com/BlackGlory/static
+cd static
+yarn install
+yarn build
+yarn --silent start
+#+END_SRC
+
+*** Docker
+#+BEGIN_SRC sh
+docker run \
+  --detach \
+  --publish 8080:8080 \
+  blackglory/static
+#+END_SRC
+
+**** docker-compose.yml
+#+BEGIN_SRC yaml
+version: '3.8'
+
+services:
+  static:
+    image: 'blackglory/static'
+    restart: always
+    volumes:
+      - 'static-data:/data'
+    ports:
+      - '8080:8080'
+#+END_SRC
+
+** API
+*** Public
+**** get file
+=GET /files/:location=
+
+Return the file relative environment =STATIC_DATA= directory.
+
+** Configuration
+*** STATIC_NOT_FOUND_CACHE_CONTROL
+This environment variable determines the =Cache-Control= response header when the file is not found.
+default: ~private, no-cache, no-store, max-age=0, must-revalidate~
+
+*** STATIC_FOUND_CACHE_CONTROL
+This environment variable determines the =Cache-Control= response header when the file is found.
+default: ~public, max-age=31536000, immutable~
+
+** HTTP/2
+STATIC supports HTTP/2 for multiplexed reverse proxy connections,
+which can be enabled by setting the environment variable =STATIC_HTTP2=true=.
+
+This HTTP/2 support does not provide an automatic upgrade from HTTP/1.1,
+nor does it provide HTTPS.
+Therefore, the =--http2-prior-knowledge= option needs to be enabled when testing in local curl.
