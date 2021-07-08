@@ -50,8 +50,7 @@ describe('files', () => {
         ))
 
         expect(res.status).toBe(404)
-        // very strange, it should pass the test.
-        // expect(res.headers.get('Cache-Control')).toBe(NOT_FOUND_CACHE_CONTROL())
+        expect(res.headers.get('Cache-Control')).toBe(NOT_FOUND_CACHE_CONTROL())
       })
     })
 

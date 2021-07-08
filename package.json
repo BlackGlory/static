@@ -75,7 +75,7 @@
     "fastify": "^3.18.1",
     "fastify-cors": "^6.0.1",
     "fastify-metrics": "^7.2.3",
-    "fastify-static": "^4.2.2",
+    "fastify-static": "https://github.com/BlackGlory/fastify-static#master",
     "justypes": "^0.1.5",
     "prom-client": "^13.1.0",
     "value-getter": "^0.2.1"
