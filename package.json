@@ -22,7 +22,6 @@
     "start:http2": "cross-env STATIC_HTTP2=true node lib/index.js",
     "docker:build": "docker build --tag static .",
     "docker:test": "docker-compose --file docker-compose.test.yml run --rm test",
-    "benchmark": "./benchmark/benchmark.sh",
     "release": "standard-version"
   },
   "husky": {

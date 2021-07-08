@@ -2,7 +2,6 @@ import { startService, stopService, getAddress } from '@test/utils'
 import { fetch } from 'extra-fetch'
 import { get } from 'extra-request'
 import { url, pathname } from 'extra-request/lib/es2018/transformers'
-import { toText } from 'extra-response'
 
 beforeEach(startService)
 afterEach(stopService)
