@@ -1,9 +1,9 @@
 import { FastifyPluginAsync } from 'fastify'
-import { stripIndent } from 'common-tags'
+import { dedent } from 'extra-tags'
 
 export const routes: FastifyPluginAsync = async function routes(server) {
   server.get('/robots.txt', (req, reply) => {
-    const text = stripIndent`
+    const text = dedent`
       User-agent: *
       Disallow: /
     `
