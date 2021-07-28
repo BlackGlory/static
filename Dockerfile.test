@@ -11,8 +11,10 @@ RUN apk add --update --no-cache --virtual .build-deps \
 COPY . ./
 
 RUN yarn build \
- && mkdir /data \
- && ln -s /data data
+ && mkdir /database \
+ && ln -s /database database \
+ && mkdir /storage \
+ && ln -s /storage storage
 
 ENV STATIC_HOST=0.0.0.0
 ENV STATIC_PORT=8080

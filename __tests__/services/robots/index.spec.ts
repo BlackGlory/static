@@ -4,6 +4,8 @@ import { get } from 'extra-request'
 import { url, pathname } from 'extra-request/lib/es2018/transformers'
 import { toText } from 'extra-response'
 
+jest.mock('@dao/data-in-sqlite3/database')
+
 beforeEach(startService)
 afterEach(stopService)
 

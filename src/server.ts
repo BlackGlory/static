@@ -6,6 +6,7 @@ import { routes as files } from '@services/files'
 import { routes as robots } from '@services/robots'
 import { routes as health } from '@services/health'
 import { HTTP2, NODE_ENV, NodeEnv } from '@env'
+import { Core } from '@core'
 
 type LoggerLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal'
 
@@ -21,7 +22,7 @@ export function buildServer() {
   })
 
   server.register(cors, { origin: true })
-  server.register(files, { prefix: '/files' })
+  server.register(files, { prefix: '/files', Core })
   server.register(robots)
   server.register(health)
 
@@ -30,7 +31,7 @@ export function buildServer() {
 
 function getLoggerOptions(): { level: LoggerLevel } | boolean {
   switch (NODE_ENV()) {
-    case NodeEnv.Test: return { level: 'error' }
+    case NodeEnv.Test: return false
     case NodeEnv.Production: return { level: 'error' }
     case NodeEnv.Development: return { level: 'trace' }
     default: return false

@@ -49,9 +49,21 @@ export const HTTP2: Getter<boolean> =
     .memoize(getCache)
     .get()
 
-export const DATA: Getter<string> =
-  env('STATIC_DATA')
-    .default(path.join(appRoot, 'data'))
+export const DATABASE: Getter<string> =
+  env('STATIC_DATABASE')
+    .default(path.join(appRoot, 'database'))
+    .memoize(getCache)
+    .get()
+
+export const STORAGE: Getter<string> =
+  env('STATIC_STORAGE')
+    .default(path.join(appRoot, 'storage'))
+    .memoize(getCache)
+    .get()
+
+export const SECRET: Getter<string> =
+  env('STATIC_SECRET')
+    .required()
     .memoize(getCache)
     .get()
 

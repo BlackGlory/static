@@ -3,6 +3,8 @@ import { fetch } from 'extra-fetch'
 import { get } from 'extra-request'
 import { url, pathname } from 'extra-request/lib/es2018/transformers'
 
+jest.mock('@dao/data-in-sqlite3/database')
+
 beforeEach(startService)
 afterEach(stopService)
 
