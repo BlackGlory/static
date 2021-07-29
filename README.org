@@ -50,7 +50,7 @@ volumes:
 **** get file
 =GET /files/:location=
 
-Return the file relative environment =STATIC_DATA= directory.
+Return the file relative environment =STATIC_STORAGE/files= directory.
 
 ** Cache
 *** STATIC_NOT_FOUND_CACHE_CONTROL
