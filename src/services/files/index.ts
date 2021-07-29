@@ -5,6 +5,8 @@ import { STORAGE, FOUND_CACHE_CONTROL, NOT_FOUND_CACHE_CONTROL } from '@env'
 import contentDisposition from 'content-disposition'
 import * as path from 'path'
 import omit from 'lodash.omit'
+import { fromFile as getFileType } from 'file-type'
+import { getResultPromise } from 'return-style'
 
 export const routes: FastifyPluginAsync<{ Core: ICore }> =
 async function routes(server, { Core }) {
@@ -87,6 +89,10 @@ async function routes(server, { Core }) {
             ...req.query
           , filename
           })
+
+          const type = await getResultPromise(getFileType(path.join(STORAGE(), 'derived-images', uuid)))
+          if (type) reply.header('Content-Type', type.mime)
+
           reply.header('Cache-Control', FOUND_CACHE_CONTROL())
           reply.header('Content-Disposition', contentDisposition(filename, { type: 'inline' }))
           reply.sendFile(path.join('derived-images', uuid))
@@ -98,8 +104,10 @@ async function routes(server, { Core }) {
           if (e instanceof Core.UnsupportedImageFormat) return reply.status(403).send()
           throw e
         }
-
       } else {
+        const type = await getResultPromise(getFileType(path.join(STORAGE(), 'files', filename)))
+        if (type) reply.header('Content-Type', type.mime)
+
         reply.header('Cache-Control', FOUND_CACHE_CONTROL())
         reply.header('Content-Disposition', contentDisposition(filename, { type: 'inline' }))
         reply.sendFile(path.join('files', filename))

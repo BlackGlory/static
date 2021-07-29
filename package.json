@@ -87,6 +87,7 @@
     "fastify-cors": "^6.0.2",
     "fastify-metrics": "^7.2.3",
     "fastify-static": "https://github.com/BlackGlory/fastify-static#master",
+    "file-type": "^16.5.2",
     "justypes": "^0.1.5",
     "lodash.omit": "^4.5.0",
     "migrations-file": "^0.1.9",
