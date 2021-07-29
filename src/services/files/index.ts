@@ -96,14 +96,18 @@ async function routes(server, { Core }) {
           throw e
         }
 
-        const type = await getResultPromise(getFileType(path.join(STORAGE(), 'derived-images', uuid)))
+        const type = await getResultPromise(
+          getFileType(path.join(STORAGE(), 'derived-images', uuid))
+        )
         if (type) reply.header('Content-Type', type.mime)
 
         reply.header('Cache-Control', FOUND_CACHE_CONTROL())
         reply.header('Content-Disposition', contentDisposition(filename, { type: 'inline' }))
         reply.sendFile(path.join('derived-images', uuid))
       } else {
-        const type = await getResultPromise(getFileType(path.join(STORAGE(), 'files', filename)))
+        const type = await getResultPromise(
+          getFileType(path.join(STORAGE(), 'files', filename))
+        )
         if (type) reply.header('Content-Type', type.mime)
 
         reply.header('Cache-Control', FOUND_CACHE_CONTROL())
