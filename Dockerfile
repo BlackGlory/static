@@ -3,7 +3,11 @@ WORKDIR /usr/src/app
 COPY package.json yarn.lock ./
 
 RUN apk add --update --no-cache --virtual .build-deps \
+      # extra-fetch
       git \
+      # better-sqlite3
+      build-base \
+      python3 \
  && yarn install \
  && yarn cache clean \
  && apk del .build-deps
@@ -18,7 +22,11 @@ COPY --from=builder /usr/src/app/lib /usr/src/app/lib
 COPY package.json yarn.lock ./
 
 RUN apk add --update --no-cache --virtual .build-deps \
+      # extra-fetch
       git \
+      # better-sqlite3
+      build-base \
+      python3 \
  && yarn install --production \
  && yarn cache clean \
  && apk del .build-deps \
