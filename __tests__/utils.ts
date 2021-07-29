@@ -2,6 +2,7 @@ import * as DataInSqlite3 from '@dao/data-in-sqlite3/database'
 import { buildServer } from '@src/server'
 import { resetCache } from '@env/cache'
 import { emptyDir } from 'extra-filesystem'
+import { writeFile } from 'fs/promises'
 import * as path from 'path'
 
 let server: ReturnType<typeof buildServer>
@@ -37,6 +38,7 @@ export async function clearDatabases() {
 export async function clearDerivedImages() {
   const derivedImages = path.join(__dirname, 'fixtures/derived-images')
   await emptyDir(derivedImages)
+  await writeFile(path.join(derivedImages, '.gitkeep'), '')
 }
 
 export async function resetEnvironment() {
