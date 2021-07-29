@@ -84,18 +84,9 @@ async function routes(server, { Core }) {
           return reply.status(403).send()
         }
 
+        let uuid: string
         try {
-          const uuid = await Core.ensureDerivedImage({
-            ...req.query
-          , filename
-          })
-
-          const type = await getResultPromise(getFileType(path.join(STORAGE(), 'derived-images', uuid)))
-          if (type) reply.header('Content-Type', type.mime)
-
-          reply.header('Cache-Control', FOUND_CACHE_CONTROL())
-          reply.header('Content-Disposition', contentDisposition(filename, { type: 'inline' }))
-          reply.sendFile(path.join('derived-images', uuid))
+          uuid = await Core.ensureDerivedImage({ ...req.query, filename })
         } catch (e) {
           if (e instanceof Core.NotFound) {
             reply.header('Cache-Control', NOT_FOUND_CACHE_CONTROL())
@@ -104,6 +95,13 @@ async function routes(server, { Core }) {
           if (e instanceof Core.UnsupportedImageFormat) return reply.status(403).send()
           throw e
         }
+
+        const type = await getResultPromise(getFileType(path.join(STORAGE(), 'derived-images', uuid)))
+        if (type) reply.header('Content-Type', type.mime)
+
+        reply.header('Cache-Control', FOUND_CACHE_CONTROL())
+        reply.header('Content-Disposition', contentDisposition(filename, { type: 'inline' }))
+        reply.sendFile(path.join('derived-images', uuid))
       } else {
         const type = await getResultPromise(getFileType(path.join(STORAGE(), 'files', filename)))
         if (type) reply.header('Content-Type', type.mime)

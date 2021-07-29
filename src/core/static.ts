@@ -10,9 +10,8 @@ import stringify from 'fast-json-stable-stringify'
 import { promisify } from 'util'
 import * as stream from 'stream'
 import { HashMap } from '@blackglory/structures'
-import { assert, CustomError } from '@blackglory/errors'
-import { getErrorResultAsync } from 'return-style'
-import { isntUndefined } from '@blackglory/types'
+import { CustomError } from '@blackglory/errors'
+import { go } from '@blackglory/go'
 
 export class NotFound extends CustomError {}
 export class UnsupportedImageFormat extends CustomError {}
@@ -43,15 +42,18 @@ export async function ensureDerivedImage({
   multiple?: number
 }): Promise<string> {
   const absoluteFilename = getAbsoluteFilename(filename)
-  const [err, metadata] = await getErrorResultAsync(() => readImageMetadata(absoluteFilename))
-  if (err) {
-    if (err.message.includes('Input file is missing')) throw new NotFound()
-    if (err.message.includes('Input file contains unsupported image format')) {
-      throw new UnsupportedImageFormat()
+
+  const metadata = await go(async () => {
+    try {
+      return await readImageMetadata(absoluteFilename)
+    } catch (e) {
+      if (e.message.includes('Input file is missing')) throw new NotFound()
+      if (e.message.includes('Input file contains unsupported image format')) {
+        throw new UnsupportedImageFormat()
+      }
+      throw e
     }
-    throw err
-  }
-  assert(isntUndefined(metadata))
+  })
 
   const size = computeTargetSize(metadata.size, {
     maxHeight
