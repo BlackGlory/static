@@ -32,10 +32,17 @@ services:
   static:
     image: 'blackglory/static'
     restart: always
+    environment:
+      - 'STATIC_SECRET=secret'
     volumes:
-      - 'static-data:/data'
+      - 'static-database:/database'
+      - 'static-storage:/storage'
     ports:
       - '8080:8080'
+
+volumes:
+  static-database:
+  static-storage:
 #+END_SRC
 
 ** API
@@ -54,8 +61,33 @@ Default: ~private, no-cache, no-store, max-age=0, must-revalidate~
 This environment variable is the response header =Cache-Control= when the file is found.
 Default: ~public, max-age=31536000, immutable~
 
+** Image processing
+Static support image processing, so that users can create responsive images.
+
+Image processing is enabled by querystring, this is the data structure:
+#+BEGIN_SRC typescript
+{
+  signature: string
+  format: 'jpeg' | 'webp'
+  quality: integer // 1-100
+  maxWidth?: integer
+  maxHeight?: integer
+  multiple?: float
+}
+#+END_SRC
+
+*** Signature
+Only users with the secret can create a signature.
+
+Create a signature:
+#+BEGIN_SRC typescript
+const urlSearchParams = new URLSearchParams(params)
+urlSearchParams.sort()
+const signature = hmacSHA256(secret, urlSearchParams.toString())
+#+END_SRC
+
 ** HTTP/2
-STATIC supports HTTP/2 for multiplexed reverse proxy connections,
+Static supports HTTP/2 for multiplexed reverse proxy connections,
 which can be enabled by setting the environment variable =STATIC_HTTP2=true=.
 
 This HTTP/2 support does not provide an automatic upgrade from HTTP/1.1,
