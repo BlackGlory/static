@@ -15,6 +15,7 @@ describe('removeDerivedImage(uuid: string): void', () => {
       const derivedImage = setRawDerivedImage({
         uuid: createUUID()
       , filename: 'filename'
+      , mtime: 0
       , format: 'jpeg'
       , quality: 80
       , width: 800

@@ -8,12 +8,13 @@ PRAGMA journal_mode = WAL;
 CREATE TABLE derived_image (
   uuid     TEXT         NOT NULL
 , filename TEXT         NOT NULL
+, mtime    INTEGER      NOT NULL
 , format   VARCHAR(255) NOT NULL
 , quality  INTEGER      NOT NULL
 , width    INTEGER      NOT NULL
 , height   INTEGER      NOT NULL
 , PRIMARY KEY (uuid)
-, UNIQUE (filename, format, quality, width, height)
+, UNIQUE (filename, mtime, format, quality, width, height)
 , CHECK (format IN ('jpeg', 'webp'))
 , CHECK (quality BETWEEN 1 AND 100)
 , CHECK (width >= 1)

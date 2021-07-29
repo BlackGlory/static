@@ -1,7 +1,7 @@
 type CustomErrorConstructor = import('@blackglory/errors').CustomErrorConstructor
 
-interface IImageMetadata {
-  format: string
+interface IDerivedImageMetadata {
+  format: 'jpeg' | 'webp'
   quality: number
   width: number
   height: number

@@ -1,11 +1,13 @@
 import { setDerivedImage } from './set-derived-image'
-import { removeDerivedImage } from './remove-derived-image'
 import { findDerivedImage } from './find-derived-image'
+import { removeDerivedImage } from './remove-derived-image'
+import { removeOutdatedDerivedImages } from './remove-outdated-derived-images'
 
 export const StaticDAO: IStaticDAO = {
   setDerivedImage: asyncify(setDerivedImage)
-, removeDerivedImage: asyncify(removeDerivedImage)
 , findDerivedImage: asyncify(findDerivedImage)
+, removeDerivedImage: asyncify(removeDerivedImage)
+, removeOutdatedDerivedImages: asyncify(removeOutdatedDerivedImages)
 }
 
 function asyncify<T extends any[], U>(fn: (...args: T) => U): (...args: T) => Promise<U> {

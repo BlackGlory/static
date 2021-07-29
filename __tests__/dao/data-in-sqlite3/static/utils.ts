@@ -3,6 +3,7 @@ import { getDatabase } from '@dao/data-in-sqlite3/database'
 interface IRawDerivedImage {
   uuid: string
   filename: string
+  mtime: number
   format: string
   quality: number
   width: number
@@ -11,8 +12,8 @@ interface IRawDerivedImage {
 
 export function setRawDerivedImage(raw: IRawDerivedImage): IRawDerivedImage {
   getDatabase().prepare(`
-    INSERT INTO derived_image (uuid, filename, format, quality, width, height)
-    VALUES ($uuid, $filename, $format, $quality, $width, $height)
+    INSERT INTO derived_image (uuid, filename, mtime, format, quality, width, height)
+    VALUES ($uuid, $filename, $mtime, $format, $quality, $width, $height)
   `).run(raw)
 
   return raw
@@ -22,6 +23,7 @@ export function getRawDerivedImage(uuid: string): IRawDerivedImage {
   const row = getDatabase().prepare(`
     SELECT uuid
          , filename
+         , mtime
          , format
          , quality
          , width

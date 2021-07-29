@@ -10,13 +10,14 @@ beforeEach(initializeDatabases)
 afterEach(clearDatabases)
 
 describe(`
-  setDerivedImage(uuid: string, filename: string, metadata: IImageMetadata): void
+  setDerivedImage(uuid: string, filename: string, mtime: number, metadata: IImageMetadata): void
 `, () => {
   describe('exists', () => {
     it('update', () => {
       const oldRawDerivedImage = setRawDerivedImage({
         uuid: createUUID()
       , filename: 'filename'
+      , mtime: 0
       , format: 'jpeg'
       , quality: 80
       , width: 800
@@ -24,7 +25,7 @@ describe(`
       })
       const uuid = createUUID()
 
-      const result = DAO.setDerivedImage(uuid, 'filename', {
+      const result = DAO.setDerivedImage(uuid, 'filename', 0, {
         format: 'jpeg'
       , quality: 80
       , width: 800
@@ -38,6 +39,7 @@ describe(`
       expect(rawDerviedImage).toEqual({
         uuid
       , filename: 'filename'
+      , mtime: 0
       , format: 'jpeg'
       , quality: 80
       , width: 800
@@ -50,7 +52,7 @@ describe(`
     it('insert', () => {
       const uuid = createUUID()
 
-      const result = DAO.setDerivedImage(uuid, 'filename', {
+      const result = DAO.setDerivedImage(uuid, 'filename', 0, {
         format: 'jpeg'
       , quality: 80
       , width: 800
@@ -62,6 +64,7 @@ describe(`
       expect(rawDerivedImage).toEqual({
         uuid
       , filename: 'filename'
+      , mtime: 0
       , format: 'jpeg'
       , quality: 80
       , width: 800

@@ -7,12 +7,10 @@ interface ISize {
   height: number
 }
 
-interface IMetadata {
+export async function readImageMetadata(filename: string): Promise<{
   size: ISize
   format: string
-}
-
-export async function readImageMetadata(filename: string): Promise<IMetadata> {
+}> {
   const metadata = await sharp(filename).metadata()
   assert(isntUndefined(metadata.format))
   assert(isntUndefined(metadata.height))

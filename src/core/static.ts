@@ -1,11 +1,12 @@
 import { computeTargetSize, processImage, readImageMetadata } from './image'
 import { StaticDAO } from '@dao/data-in-sqlite3/static'
 import { STORAGE } from '@env'
-import { pathExists } from 'extra-filesystem'
+import { pathExists, remove } from 'extra-filesystem'
 import * as path from 'path'
-import { Mutex } from 'extra-promise'
+import { Mutex, each } from 'extra-promise'
 import { v4 as createUUID } from 'uuid'
 import { createWriteStream } from 'fs'
+import * as fs from 'fs/promises'
 import stringify from 'fast-json-stable-stringify'
 import { promisify } from 'util'
 import * as stream from 'stream'
@@ -18,7 +19,7 @@ export class UnsupportedImageFormat extends CustomError {}
 
 const pipeline = promisify(stream.pipeline)
 const targetToLock = new HashMap<
-  Record<string, unknown>
+  { filename: string; metadata: IDerivedImageMetadata }
 , { mutex: Mutex; users: number }
 >(stringify)
 
@@ -43,7 +44,15 @@ export async function ensureDerivedImage({
 }): Promise<string> {
   const absoluteFilename = getAbsoluteFilename(filename)
 
-  const metadata = await go(async () => {
+  const mtime = await go(async () => {
+    try {
+      return await getMtimestamp(absoluteFilename)
+    } catch (e) {
+      if (e.code === 'ENOENT') throw new NotFound()
+      throw e
+    }
+  })
+  const imageMetadata = await go(async () => {
     try {
       return await readImageMetadata(absoluteFilename)
     } catch (e) {
@@ -55,19 +64,21 @@ export async function ensureDerivedImage({
     }
   })
 
-  const size = computeTargetSize(metadata.size, {
+  const size = computeTargetSize(imageMetadata.size, {
     maxHeight
   , maxWidth
   , multiple
   })
-  const target = {
-    filename
-  , format
+  const derivedImageMetadata: IDerivedImageMetadata = {
+    format
   , quality
   , height: size.height
   , width: size.width
   }
 
+  // 使用互斥锁是为了防止短时间内出现多个目标相同的生成操作,
+  // 以免数据库记录的覆盖(setDerivedImage)导致dervied-images目录出现不记载于数据库中的孤儿文件.
+  const target = { filename, metadata: derivedImageMetadata }
   if (!targetToLock.has(target)) {
     targetToLock.set(target, {
       mutex: new Mutex()
@@ -78,7 +89,7 @@ export async function ensureDerivedImage({
   lock.users++
   try {
     return await lock.mutex.acquire(async () => {
-      const uuid = await StaticDAO.findDerivedImage(absoluteFilename, target)
+      const uuid = await StaticDAO.findDerivedImage(absoluteFilename, mtime, derivedImageMetadata)
 
       if (uuid) {
         if (await pathExists(getDerviedImageFilename(uuid))) {
@@ -88,8 +99,12 @@ export async function ensureDerivedImage({
 
       const newUUID = createUUID()
       const writeStream = createWriteStream(getDerviedImageFilename(newUUID))
-      await pipeline(processImage(absoluteFilename, target), writeStream)
-      await StaticDAO.setDerivedImage(newUUID, filename, target)
+      await pipeline(processImage(absoluteFilename, derivedImageMetadata), writeStream)
+      await StaticDAO.setDerivedImage(newUUID, filename, mtime, derivedImageMetadata)
+
+      const outdatedUUIDs = await StaticDAO.removeOutdatedDerivedImages(filename, mtime)
+      await each(outdatedUUIDs, uuid => remove(getDerviedImageFilename(uuid)))
+
       return newUUID
     })
   } finally {
@@ -103,4 +118,9 @@ function getAbsoluteFilename(filename: string): string {
 
 function getDerviedImageFilename(uuid: string): string {
   return path.join(STORAGE(), 'derived-images', uuid)
+}
+
+async function getMtimestamp(filename: string): Promise<number> {
+  const result = await fs.stat(filename)
+  return Math.floor(result.mtime.getTime() / 1000)
 }
