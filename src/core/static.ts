@@ -89,7 +89,7 @@ export async function ensureDerivedImage({
   lock.users++
   try {
     return await lock.mutex.acquire(async () => {
-      const uuid = await StaticDAO.findDerivedImage(absoluteFilename, mtime, derivedImageMetadata)
+      const uuid = await StaticDAO.findDerivedImage(filename, mtime, derivedImageMetadata)
 
       if (uuid) {
         if (await pathExists(getDerviedImageFilename(uuid))) {

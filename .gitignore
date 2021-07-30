@@ -61,4 +61,5 @@ typings/
 lib
 
 # Data
-data
+database
+storage
