@@ -64,7 +64,7 @@ Default: ~public, max-age=31536000, immutable~
 ** Image processing
 Static support image processing, so that users can create responsive images.
 
-Image processing is enabled by querystring, this is the data structure:
+The image processing feature works through querystring:
 #+BEGIN_SRC typescript
 {
   signature: string
@@ -76,8 +76,10 @@ Image processing is enabled by querystring, this is the data structure:
 }
 #+END_SRC
 
+The derived images will be cached in =STATIC_STORAGE/derived-images=.
+
 *** Signature
-Only users with the `STATIC_SECRET` can create a signature.
+Only users with the =STATIC_SECRET= can create a signature.
 
 Create a signature:
 #+BEGIN_SRC typescript
