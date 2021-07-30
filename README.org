@@ -77,7 +77,7 @@ Image processing is enabled by querystring, this is the data structure:
 #+END_SRC
 
 *** Signature
-Only users with the secret can create a signature.
+Only users with the `STATIC_SECRET` can create a signature.
 
 Create a signature:
 #+BEGIN_SRC typescript
