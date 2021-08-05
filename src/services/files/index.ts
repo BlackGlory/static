@@ -1,5 +1,4 @@
 import { FastifyPluginAsync } from 'fastify'
-// 使用的是修改后的fastify-static, 因为 https://github.com/fastify/fastify-static/issues/218
 import fastifyStatic from 'fastify-static'
 import { STORAGE, FOUND_CACHE_CONTROL, NOT_FOUND_CACHE_CONTROL } from '@env'
 import contentDisposition from 'content-disposition'
