@@ -36,8 +36,11 @@ export async function clearDatabases() {
 }
 
 export async function clearDerivedImages() {
+  const derivedFonts = path.join(__dirname, 'fixtures/derived-fonts')
   const derivedImages = path.join(__dirname, 'fixtures/derived-images')
+  await emptyDir(derivedFonts)
   await emptyDir(derivedImages)
+  await writeFile(path.join(derivedFonts, '.gitkeep'), '')
   await writeFile(path.join(derivedImages, '.gitkeep'), '')
 }
 

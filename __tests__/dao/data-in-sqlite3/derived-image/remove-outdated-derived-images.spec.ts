@@ -1,4 +1,4 @@
-import * as DAO from '@dao/data-in-sqlite3/static/remove-outdated-derived-images'
+import * as DAO from '@dao/data-in-sqlite3/derived-image/remove-outdated-derived-images'
 import { initializeDatabases, clearDatabases } from '@test/utils'
 import { hasRawDerviedImage, setRawDerivedImage } from './utils'
 import { v4 as createUUID } from 'uuid'

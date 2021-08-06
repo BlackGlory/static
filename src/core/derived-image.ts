@@ -1,21 +1,18 @@
 import { computeTargetSize, processImage, readImageMetadata } from './image'
-import { StaticDAO } from '@dao/data-in-sqlite3/static'
+import { DerivedImageDAO } from '@dao/data-in-sqlite3/derived-image'
 import { STORAGE } from '@env'
 import { pathExists, remove } from 'extra-filesystem'
 import * as path from 'path'
 import { Mutex, each } from 'extra-promise'
 import { v4 as createUUID } from 'uuid'
 import { createWriteStream } from 'fs'
-import * as fs from 'fs/promises'
 import stringify from 'fast-json-stable-stringify'
 import { promisify } from 'util'
 import * as stream from 'stream'
 import { HashMap } from '@blackglory/structures'
-import { CustomError } from '@blackglory/errors'
 import { go } from '@blackglory/go'
-
-export class NotFound extends CustomError {}
-export class UnsupportedImageFormat extends CustomError {}
+import { getAbsoluteFilename, getMtimestamp } from './utils'
+import { NotFound, UnsupportedImageFormat } from './errors'
 
 const pipeline = promisify(stream.pipeline)
 const targetToLock = new HashMap<
@@ -89,7 +86,11 @@ export async function ensureDerivedImage({
   lock.users++
   try {
     return await lock.mutex.acquire(async () => {
-      const uuid = await StaticDAO.findDerivedImage(filename, mtime, derivedImageMetadata)
+      const uuid = await DerivedImageDAO.findDerivedImage(
+        filename
+      , mtime
+      , derivedImageMetadata
+      )
 
       if (uuid) {
         if (await pathExists(getDerviedImageFilename(uuid))) {
@@ -100,9 +101,17 @@ export async function ensureDerivedImage({
       const newUUID = createUUID()
       const writeStream = createWriteStream(getDerviedImageFilename(newUUID))
       await pipeline(processImage(absoluteFilename, derivedImageMetadata), writeStream)
-      await StaticDAO.setDerivedImage(newUUID, filename, mtime, derivedImageMetadata)
+      await DerivedImageDAO.setDerivedImage(
+        newUUID
+      , filename
+      , mtime
+      , derivedImageMetadata
+      )
 
-      const outdatedUUIDs = await StaticDAO.removeOutdatedDerivedImages(filename, mtime)
+      const outdatedUUIDs = await DerivedImageDAO.removeOutdatedDerivedImages(
+        filename
+      , mtime
+      )
       await each(outdatedUUIDs, uuid => remove(getDerviedImageFilename(uuid)))
 
       return newUUID
@@ -112,15 +121,6 @@ export async function ensureDerivedImage({
   }
 }
 
-function getAbsoluteFilename(filename: string): string {
-  return path.join(STORAGE(), 'files', filename)
-}
-
 function getDerviedImageFilename(uuid: string): string {
   return path.join(STORAGE(), 'derived-images', uuid)
-}
-
-async function getMtimestamp(filename: string): Promise<number> {
-  const result = await fs.stat(filename)
-  return Math.floor(result.mtime.getTime() / 1000)
 }

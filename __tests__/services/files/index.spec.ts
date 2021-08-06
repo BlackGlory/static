@@ -7,6 +7,7 @@ import { path as appRoot } from 'app-root-path'
 import { NOT_FOUND_CACHE_CONTROL, FOUND_CACHE_CONTROL } from '@env'
 import { computeSignature } from '@core/signature'
 import sharp from 'sharp'
+import fontkit from 'fontkit'
 
 jest.mock('@dao/data-in-sqlite3/database')
 
@@ -20,7 +21,7 @@ afterEach(stopService)
 describe('files', () => {
   describe('GET /files/:location', () => {
     describe('file exists', () => {
-      describe('without image processing', () => {
+      describe('without processing', () => {
         describe('shallow', () => {
           it('200', async () => {
             const res = await fetch(get(
@@ -44,6 +45,46 @@ describe('files', () => {
             expect(res.status).toBe(200)
             expect(res.headers.has('ETag')).toBe(true)
             expect(res.headers.get('Cache-Control')).toBe(FOUND_CACHE_CONTROL())
+          })
+        })
+      })
+
+      describe('with font processing', () => {
+        describe('file isnt a font', () => {
+          it('403', async () => {
+            const res = await fetch(get(
+              url(getAddress())
+            , pathname('/files/shallow')
+            , searchParams(withSignature({
+                format: 'woff'
+              , subset: 'subset'
+              }))
+            ))
+
+            expect(res.status).toBe(403)
+          })
+        })
+
+        describe('file is a font', () => {
+          it('200, processed font', async () => {
+            const res = await fetch(get(
+              url(getAddress())
+            , pathname('/files/fonts/FiraCode-Regular.ttf')
+            , searchParams(withSignature({
+                format: 'woff'
+              , subset: "'a"
+              }))
+            ))
+            const arrayBuffer = await res.arrayBuffer()
+            const buffer = Buffer.from(arrayBuffer)
+
+            expect(res.status).toBe(200)
+            expect(res.headers.has('ETag')).toBe(true)
+            expect(res.headers.get('Cache-Control')).toBe(FOUND_CACHE_CONTROL())
+            expect(res.headers.get('Content-Type')).toBe('font/woff')
+            expect(fontkit.create(buffer).hasGlyphForCodePoint("'".codePointAt(0)!)).toBe(true)
+            expect(fontkit.create(buffer).hasGlyphForCodePoint('a'.codePointAt(0)!)).toBe(true)
+            expect(fontkit.create(buffer).hasGlyphForCodePoint('b'.codePointAt(0)!)).toBe(false)
           })
         })
       })
@@ -81,6 +122,7 @@ describe('files', () => {
             expect(res.status).toBe(200)
             expect(res.headers.has('ETag')).toBe(true)
             expect(res.headers.get('Cache-Control')).toBe(FOUND_CACHE_CONTROL())
+            expect(res.headers.get('Content-Type')).toBe('image/webp')
             expect(metadata.format).toBe('webp')
             expect(metadata.width).toBe(415)
             expect(metadata.height).toBe(208)
@@ -90,7 +132,7 @@ describe('files', () => {
     })
 
     describe('file does not exist', () => {
-      describe('without image processing', () => {
+      describe('without processing', () => {
         it('404', async () => {
           const res = await fetch(get(
             url(getAddress())
@@ -99,6 +141,40 @@ describe('files', () => {
 
           expect(res.status).toBe(404)
           expect(res.headers.get('Cache-Control')).toBe(NOT_FOUND_CACHE_CONTROL())
+        })
+      })
+
+      describe('with font processing', () => {
+        describe('signature is correct', () => {
+          it('404', async () => {
+            const res = await fetch(get(
+              url(getAddress())
+            , pathname('/files/not-found')
+            , searchParams(withSignature({
+                format: 'woff'
+              , subset: 'hello world'
+              }))
+            ))
+
+            expect(res.status).toBe(404)
+            expect(res.headers.get('Cache-Control')).toBe(NOT_FOUND_CACHE_CONTROL())
+          })
+        })
+
+        describe('signature is incorrect', () => {
+          it('403', async () => {
+            const res = await fetch(get(
+              url(getAddress())
+            , pathname('/files/not-found')
+            , searchParams({
+                signature: 'bad'
+              , format: 'woff'
+              , subset: 'hello world'
+              })
+            ))
+
+            expect(res.status).toBe(403)
+          })
         })
       })
 

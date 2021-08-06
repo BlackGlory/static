@@ -7,6 +7,11 @@ interface IDerivedImageMetadata {
   height: number
 }
 
+interface IDerivedFontMetadata {
+  format: 'woff' | 'woff2'
+  subset: string
+}
+
 interface ICore {
   validateSignature(signature: string, params: Record<string, unknown>): boolean
 
@@ -23,6 +28,17 @@ interface ICore {
     multiple?: number
   }): Promise<string>
 
+  /**
+   * @throws {NotFound}
+   * @throws {UnsupportedFontFormat}
+   */
+  ensureDerivedFont(params: {
+    filename: string
+    format: 'woff' | 'woff2'
+    subset: string
+  })
+
   NotFound: CustomErrorConstructor
   UnsupportedImageFormat: CustomErrorConstructor
+  UnsupportedFontFormat: CustomErrorConstructor
 }

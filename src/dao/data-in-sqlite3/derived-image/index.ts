@@ -3,7 +3,7 @@ import { findDerivedImage } from './find-derived-image'
 import { removeDerivedImage } from './remove-derived-image'
 import { removeOutdatedDerivedImages } from './remove-outdated-derived-images'
 
-export const StaticDAO: IStaticDAO = {
+export const DerivedImageDAO: IDerivedImageDAO = {
   setDerivedImage: asyncify(setDerivedImage)
 , findDerivedImage: asyncify(findDerivedImage)
 , removeDerivedImage: asyncify(removeDerivedImage)

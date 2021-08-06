@@ -1,4 +1,4 @@
-import * as DAO from '@dao/data-in-sqlite3/static/find-derived-image'
+import * as DAO from '@dao/data-in-sqlite3/derived-image/find-derived-image'
 import { initializeDatabases, clearDatabases } from '@test/utils'
 import { setRawDerivedImage } from './utils'
 import { v4 as createUUID } from 'uuid'
