@@ -78,6 +78,8 @@ The image processing feature works through querystring:
 
 The derived images will be cached in =STATIC_STORAGE/derived-images=.
 
+You can disable direct access to images with ~DISABLE_ACCESS_TO_ORIGINAL_IMAGES=true~.
+
 ** Font processing
 Static support font processing, so that users can create subsets of fonts.
 
@@ -91,6 +93,8 @@ The font processing feature works throught querystring:
 #+END_SRC
 
 The derived fonts will be cached in =STATIC_STORAGE/derived-fonts=.
+
+You can disable direct access to fonts with ~DISABLE_ACCESS_TO_ORIGINAL_FONTS=true~.
 
 ** Signature
 Only users with the =STATIC_SECRET= can create a signature.

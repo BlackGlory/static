@@ -47,6 +47,58 @@ describe('files', () => {
             expect(res.headers.get('Cache-Control')).toBe(FOUND_CACHE_CONTROL())
           })
         })
+
+        describe('image', () => {
+          it('200', async () => {
+            const res = await fetch(get(
+              url(getAddress())
+            , pathname('/files/images/830x415.png')
+            ))
+
+            expect(res.status).toBe(200)
+            expect(res.headers.has('ETag')).toBe(true)
+            expect(res.headers.get('Cache-Control')).toBe(FOUND_CACHE_CONTROL())
+          })
+
+          describe('DISABLE_ACCESS_TO_ORIGINAL_IMAGES=true', () => {
+            it('403', async () => {
+              process.env.DISABLE_ACCESS_TO_ORIGINAL_IMAGES='true'
+
+              const res = await fetch(get(
+                url(getAddress())
+              , pathname('/files/images/830x415.png')
+              ))
+
+              expect(res.status).toBe(403)
+            })
+          })
+        })
+
+        describe('font', () => {
+          it('200', async () => {
+            const res = await fetch(get(
+              url(getAddress())
+            , pathname('/files/fonts/FiraCode-Regular.ttf')
+            ))
+
+            expect(res.status).toBe(200)
+            expect(res.headers.has('ETag')).toBe(true)
+            expect(res.headers.get('Cache-Control')).toBe(FOUND_CACHE_CONTROL())
+          })
+
+          describe('DISABLE_ACCESS_TO_ORIGINAL_FONTS=true', () => {
+            it('403', async () => {
+              process.env.DISABLE_ACCESS_TO_ORIGINAL_FONTS='true'
+
+              const res = await fetch(get(
+                url(getAddress())
+              , pathname('/files/fonts/FiraCode-Regular.ttf')
+              ))
+
+              expect(res.status).toBe(403)
+            })
+          })
+        })
       })
 
       describe('with font processing', () => {

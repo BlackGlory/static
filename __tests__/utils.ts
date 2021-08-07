@@ -51,6 +51,8 @@ export async function resetEnvironment() {
   delete process.env.STATIC_SECRET
   delete process.env.STATIC_NOT_FOUND_CACHE_CONTROL
   delete process.env.STATIC_FOUND_CACHE_CONTROL
+  delete process.env.DISABLE_ACCESS_TO_ORIGINAL_IMAGES
+  delete process.env.DISABLE_ACCESS_TO_ORIGINAL_FONTS
 
   // reset memoize
   resetCache()

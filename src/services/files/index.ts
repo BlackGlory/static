@@ -1,6 +1,12 @@
 import { FastifyPluginAsync } from 'fastify'
 import fastifyStatic from 'fastify-static'
-import { STORAGE, FOUND_CACHE_CONTROL, NOT_FOUND_CACHE_CONTROL } from '@env'
+import {
+  STORAGE
+, DISABLE_ACCESS_TO_ORIGINAL_IMAGES
+, DISABLE_ACCESS_TO_ORIGINAL_FONTS
+, FOUND_CACHE_CONTROL
+, NOT_FOUND_CACHE_CONTROL
+} from '@env'
 import contentDisposition from 'content-disposition'
 import * as path from 'path'
 import omit from 'lodash.omit'
@@ -158,7 +164,17 @@ async function routes(server, { Core }) {
         const type = await getResultPromise(
           getFileType(path.join(STORAGE(), 'files', filename))
         )
-        if (type) reply.header('Content-Type', type.mime)
+        if (type) {
+          if (DISABLE_ACCESS_TO_ORIGINAL_IMAGES() && isImageExtension(type.ext)) {
+            return reply.status(403).send()
+          }
+
+          if (DISABLE_ACCESS_TO_ORIGINAL_FONTS() && isFontExtension(type.ext)) {
+            return reply.status(403).send()
+          }
+
+          reply.header('Content-Type', type.mime)
+        }
 
         reply.header('Cache-Control', FOUND_CACHE_CONTROL())
         reply.header('Content-Disposition', contentDisposition(filename, {
@@ -168,6 +184,14 @@ async function routes(server, { Core }) {
       }
     }
   )
+}
+
+function isImageExtension(extension: string): boolean {
+  return ['jpg', 'png',  'webp', 'apng', 'gif', 'avif', 'tif'].includes(extension)
+}
+
+function isFontExtension(extension: string): boolean {
+  return ['woff', 'woff2', 'eot', 'ttf', 'otf'].includes(extension)
 }
 
 function isIImageProcessQuery(query: IQuery): query is IImageProcessingQuery {

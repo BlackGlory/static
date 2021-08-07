@@ -67,6 +67,20 @@ export const SECRET: Getter<string> =
     .memoize(getCache)
     .get()
 
+export const DISABLE_ACCESS_TO_ORIGINAL_IMAGES: Getter<boolean> =
+  env('DISABLE_ACCESS_TO_ORIGINAL_IMAGES')
+    .convert(toBool)
+    .default(false)
+    .memoize(getCache)
+    .get()
+
+export const DISABLE_ACCESS_TO_ORIGINAL_FONTS: Getter<boolean> =
+  env('DISABLE_ACCESS_TO_ORIGINAL_FONTS')
+    .convert(toBool)
+    .default(false)
+    .memoize(getCache)
+    .get()
+
 export const NOT_FOUND_CACHE_CONTROL: Getter<string> =
   env('STATIC_NOT_FOUND_CACHE_CONTROL')
     .default('private, no-cache, no-store, max-age=0, must-revalidate')
