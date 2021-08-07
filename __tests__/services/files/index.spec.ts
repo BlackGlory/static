@@ -62,7 +62,7 @@ describe('files', () => {
 
           describe('DISABLE_ACCESS_TO_ORIGINAL_IMAGES=true', () => {
             it('403', async () => {
-              process.env.DISABLE_ACCESS_TO_ORIGINAL_IMAGES='true'
+              process.env.STATIC_DISABLE_ACCESS_TO_ORIGINAL_IMAGES='true'
 
               const res = await fetch(get(
                 url(getAddress())
@@ -88,7 +88,7 @@ describe('files', () => {
 
           describe('DISABLE_ACCESS_TO_ORIGINAL_FONTS=true', () => {
             it('403', async () => {
-              process.env.DISABLE_ACCESS_TO_ORIGINAL_FONTS='true'
+              process.env.STATIC_DISABLE_ACCESS_TO_ORIGINAL_FONTS='true'
 
               const res = await fetch(get(
                 url(getAddress())

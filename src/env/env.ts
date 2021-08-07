@@ -68,14 +68,14 @@ export const SECRET: Getter<string> =
     .get()
 
 export const DISABLE_ACCESS_TO_ORIGINAL_IMAGES: Getter<boolean> =
-  env('DISABLE_ACCESS_TO_ORIGINAL_IMAGES')
+  env('STATIC_DISABLE_ACCESS_TO_ORIGINAL_IMAGES')
     .convert(toBool)
     .default(false)
     .memoize(getCache)
     .get()
 
 export const DISABLE_ACCESS_TO_ORIGINAL_FONTS: Getter<boolean> =
-  env('DISABLE_ACCESS_TO_ORIGINAL_FONTS')
+  env('STATIC_DISABLE_ACCESS_TO_ORIGINAL_FONTS')
     .convert(toBool)
     .default(false)
     .memoize(getCache)
