@@ -21,7 +21,12 @@
     "start:pm2": "pm2 start lib/index.js --name 'chan' --wait-ready",
     "start:http2": "cross-env STATIC_HTTP2=true node lib/index.js",
     "docker:build": "docker build --tag static .",
-    "docker:test": "docker-compose --file docker-compose.test.yml run --rm test",
+    "docker:test": "run-s docker:test:clean docker:test:build docker:test:run",
+    "docker:coverage": "run-s docker:test:clean docker:test:build docker:test:coverage docker:test:clean",
+    "docker:test:build": "docker-compose --file docker-compose.test.yml build",
+    "docker:test:run": "docker-compose --file docker-compose.test.yml run --rm test",
+    "docker:test:coverage": "docker-compose --file docker-compose.test.yml run --rm coverage",
+    "docker:test:clean": "docker-compose --file docker-compose.test.yml down",
     "release": "standard-version"
   },
   "husky": {
