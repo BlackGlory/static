@@ -78,7 +78,21 @@ The image processing feature works through querystring:
 
 The derived images will be cached in =STATIC_STORAGE/derived-images=.
 
-*** Signature
+** Font processing
+Static support font processing, so that users can create subsets of fonts.
+
+The font processing feature works throught querystring:
+#+BEGIN_SRC typescript
+{
+  signature: string
+  format: 'woff' | 'woff2'
+  subset: string
+}
+#+END_SRC
+
+The derived fonts will be cached in =STATIC_STORAGE/derived-fonts=.
+
+** Signature
 Only users with the =STATIC_SECRET= can create a signature.
 
 Create a signature:
