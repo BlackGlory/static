@@ -38,6 +38,9 @@ interface ICore {
     subset: string
   })
 
+  getDerivedImageFilename(uuid: string): string
+  getDerivedFontFilename(uuid: string): string
+
   NotFound: CustomErrorConstructor
   UnsupportedImageFormat: CustomErrorConstructor
   UnsupportedFontFormat: CustomErrorConstructor

@@ -93,13 +93,13 @@ export async function ensureDerivedImage({
       )
 
       if (uuid) {
-        if (await pathExists(getDerviedImageFilename(uuid))) {
+        if (await pathExists(getDerivedImageFilename(uuid))) {
           return uuid
         }
       }
 
       const newUUID = createUUID()
-      const writeStream = createWriteStream(getDerviedImageFilename(newUUID))
+      const writeStream = createWriteStream(getDerivedImageFilename(newUUID))
       await pipeline(processImage(absoluteFilename, derivedImageMetadata), writeStream)
       await DerivedImageDAO.setDerivedImage(
         newUUID
@@ -112,7 +112,7 @@ export async function ensureDerivedImage({
         filename
       , mtime
       )
-      await each(outdatedUUIDs, uuid => remove(getDerviedImageFilename(uuid)))
+      await each(outdatedUUIDs, uuid => remove(getDerivedImageFilename(uuid)))
 
       return newUUID
     })
@@ -121,6 +121,6 @@ export async function ensureDerivedImage({
   }
 }
 
-function getDerviedImageFilename(uuid: string): string {
+export function getDerivedImageFilename(uuid: string): string {
   return path.join(STORAGE(), 'derived-images', uuid)
 }

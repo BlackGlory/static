@@ -65,7 +65,7 @@ export async function ensureDerivedFont({
       )
 
       if (uuid) {
-        if (await pathExists(getDerviedFontFilename(uuid))) {
+        if (await pathExists(getDerivedFontFilename(uuid))) {
           return uuid
         }
       }
@@ -74,7 +74,7 @@ export async function ensureDerivedFont({
       try {
         await processFont(
           absoluteFilename
-        , getDerviedFontFilename(newUUID)
+        , getDerivedFontFilename(newUUID)
         , derivedFontMetadata
         )
       } catch (e) {
@@ -94,7 +94,7 @@ export async function ensureDerivedFont({
         filename
       , mtime
       )
-      await each(outdatedUUIDs, uuid => remove(getDerviedFontFilename(uuid)))
+      await each(outdatedUUIDs, uuid => remove(getDerivedFontFilename(uuid)))
 
       return newUUID
     })
@@ -103,6 +103,6 @@ export async function ensureDerivedFont({
   }
 }
 
-function getDerviedFontFilename(uuid: string): string {
+export function getDerivedFontFilename(uuid: string): string {
   return path.join(STORAGE(), 'derived-fonts', uuid)
 }

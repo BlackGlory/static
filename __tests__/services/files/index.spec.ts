@@ -82,9 +82,9 @@ describe('files', () => {
             expect(res.headers.has('ETag')).toBe(true)
             expect(res.headers.get('Cache-Control')).toBe(FOUND_CACHE_CONTROL())
             expect(res.headers.get('Content-Type')).toBe('font/woff')
-            expect(fontkit.create(buffer).hasGlyphForCodePoint("'".codePointAt(0)!)).toBe(true)
-            expect(fontkit.create(buffer).hasGlyphForCodePoint('a'.codePointAt(0)!)).toBe(true)
-            expect(fontkit.create(buffer).hasGlyphForCodePoint('b'.codePointAt(0)!)).toBe(false)
+            expect(fontkit.create(buffer).hasGlyphForCodePoint(codePoint("'"))).toBe(true)
+            expect(fontkit.create(buffer).hasGlyphForCodePoint(codePoint('a'))).toBe(true)
+            expect(fontkit.create(buffer).hasGlyphForCodePoint(codePoint('b'))).toBe(false)
           })
         })
       })
@@ -257,4 +257,8 @@ function withSignature(params: Record<string, string>) {
     signature: computeSignature(params)
   , ...params
   }
+}
+
+function codePoint(char: string): number {
+  return char.codePointAt(0)!
 }

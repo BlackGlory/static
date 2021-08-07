@@ -121,9 +121,7 @@ async function routes(server, { Core }) {
             throw e
           }
 
-          const type = await getResultPromise(
-            getFileType(path.join(STORAGE(), 'derived-images', uuid))
-          )
+          const type = await getResultPromise(getFileType(Core.getDerivedImageFilename(uuid)))
           if (type) reply.header('Content-Type', type.mime)
 
           reply.header('Cache-Control', FOUND_CACHE_CONTROL())
@@ -147,9 +145,7 @@ async function routes(server, { Core }) {
             throw e
           }
 
-          const type = await getResultPromise(
-            getFileType(path.join(STORAGE(), 'derived-fonts', uuid))
-          )
+          const type = await getResultPromise(getFileType(Core.getDerivedFontFilename(uuid)))
           if (type) reply.header('Content-Type', type.mime)
 
           reply.header('Cache-Control', FOUND_CACHE_CONTROL())
