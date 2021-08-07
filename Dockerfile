@@ -41,8 +41,7 @@ RUN apk add --update --no-cache --virtual .build-deps \
  && yarn cache clean \
  && apk del .build-deps \
  && apk add --update --no-cache \
-      python3
-
+      python3 \
  && mkdir /database \
  && ln -s /database database \
  && mkdir /storage \
