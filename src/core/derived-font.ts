@@ -10,6 +10,8 @@ import stringify from 'fast-json-stable-stringify'
 import { processFont } from './font'
 import { getAbsoluteFilename, getMtimestamp } from './utils'
 import { NotFound, UnsupportedFontFormat } from './errors'
+import { assert } from '@blackglory/errors'
+import { isRecord, isString } from '@blackglory/types'
 
 const targetToLock = new HashMap<
   { filename: string; metadata: IDerivedFontMetadata }
@@ -35,6 +37,7 @@ export async function ensureDerivedFont({
     try {
       return await getMtimestamp(absoluteFilename)
     } catch (e) {
+      assert(isRecord(e))
       if (e.code === 'ENOENT') throw new NotFound()
       throw e
     }
@@ -78,6 +81,7 @@ export async function ensureDerivedFont({
         , derivedFontMetadata
         )
       } catch (e) {
+        assert(isRecord(e) && isString(e.message))
         if (e.message.includes('Not a TrueType or OpenType font (not enough data)')) {
           throw new UnsupportedFontFormat()
         }

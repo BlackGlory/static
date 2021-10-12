@@ -13,6 +13,8 @@ import { HashMap } from '@blackglory/structures'
 import { go } from '@blackglory/go'
 import { getAbsoluteFilename, getMtimestamp } from './utils'
 import { NotFound, UnsupportedImageFormat } from './errors'
+import { assert } from '@blackglory/errors'
+import { isRecord, isString } from '@blackglory/types'
 
 const pipeline = promisify(stream.pipeline)
 const targetToLock = new HashMap<
@@ -45,6 +47,7 @@ export async function ensureDerivedImage({
     try {
       return await getMtimestamp(absoluteFilename)
     } catch (e) {
+      assert(isRecord(e))
       if (e.code === 'ENOENT') throw new NotFound()
       throw e
     }
@@ -53,6 +56,7 @@ export async function ensureDerivedImage({
     try {
       return await readImageMetadata(absoluteFilename)
     } catch (e) {
+      assert(isRecord(e) && isString(e.message))
       if (e.message.includes('Input file is missing')) throw new NotFound()
       if (e.message.includes('Input file contains unsupported image format')) {
         throw new UnsupportedImageFormat()
