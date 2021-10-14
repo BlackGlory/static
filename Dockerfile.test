@@ -3,8 +3,6 @@ WORKDIR /usr/src/app
 COPY package.json yarn.lock requirements.txt ./
 
 RUN apk add --update --no-cache --virtual .build-deps \
-      # extra-fetch
-      git \
       # better-sqlite3
       build-base \
       python3 \
@@ -25,8 +23,4 @@ RUN yarn build \
  && mkdir /storage \
  && ln -s /storage storage
 
-ENV STATIC_HOST=0.0.0.0
-ENV STATIC_PORT=8080
-EXPOSE 8080
 ENTRYPOINT ["yarn"]
-CMD ["--silent", "start"]
