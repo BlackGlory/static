@@ -8,6 +8,6 @@ module.exports = {
     prefix: '<rootDir>/'
   })
   // hack https://github.com/facebook/jest/issues/2070
-, modulePathIgnorePatterns: ["<rootDir>/.*/__mocks__"]
+, modulePathIgnorePatterns: ['<rootDir>/.*/__mocks__']
 , setupFilesAfterEnv: ['jest-extended/all']
 }
