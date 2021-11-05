@@ -41,7 +41,7 @@ RUN apk add --update --no-cache --virtual .build-deps \
  && mkdir /database \
  && ln -s /database database \
  && mkdir /storage \
- && ln -s /storage storage
+ && ln -s /storage storage \
  && apk add --update --no-cache \
       # healthcheck
       curl
