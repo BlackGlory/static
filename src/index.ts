@@ -22,7 +22,7 @@ go(async () => {
 
   const server = await buildServer()
   await server.listen(PORT(), HOST())
-  if (CI()) await process.exit()
+  if (CI()) process.exit()
 
   process.send?.('ready')
 })
