@@ -3,7 +3,15 @@ import * as DataInSqlite3 from '@dao/data-in-sqlite3/database'
 import { buildServer } from './server'
 import { PORT, HOST, CI, STORAGE } from '@env'
 import { ensureDirSync } from 'extra-filesystem'
-import * as path from 'path'
+import {
+  getDerivedFontDirectory
+, clearAllTemporaryDerivedFonts
+} from '@core/derived-font'
+import {
+  getDerivedImageDirectory
+, clearAllTemporaryDerivedImages
+} from '@core/derived-image'
+import { getStaticDirectory } from '@core/utils'
 
 process.on('exit', () => {
   DataInSqlite3.closeDatabase()
@@ -14,9 +22,12 @@ process.on('SIGTERM', () => process.exit(128 + 15))
 
 go(async () => {
   ensureDirSync(STORAGE())
-  ensureDirSync(path.join(STORAGE(), 'files'))
-  ensureDirSync(path.join(STORAGE(), 'derived-images'))
-  ensureDirSync(path.join(STORAGE(), 'derived-fonts'))
+  ensureDirSync(getStaticDirectory())
+  ensureDirSync(getDerivedImageDirectory())
+  ensureDirSync(getDerivedFontDirectory())
+
+  await clearAllTemporaryDerivedFonts()
+  await clearAllTemporaryDerivedImages()
 
   DataInSqlite3.openDatabase()
   await DataInSqlite3.prepareDatabase()

@@ -5,10 +5,12 @@ import { NotFound, UnsupportedImageFormat, UnsupportedFontFormat } from './error
 
 export const Core: ICore = {
   validateSignature
-, ensureDerivedImage
+
 , ensureDerivedFont
-, getDerivedImageFilename
 , getDerivedFontFilename
+
+, ensureDerivedImage
+, getDerivedImageFilename
 
 , NotFound
 , UnsupportedImageFormat

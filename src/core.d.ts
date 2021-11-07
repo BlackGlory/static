@@ -27,6 +27,8 @@ interface ICore {
     maxHeight?: number
     multiple?: number
   }): Promise<string>
+  getDerivedImageFilename(uuid: string): string
+  UnsupportedImageFormat: CustomErrorConstructor
 
   /**
    * @throws {NotFound}
@@ -37,11 +39,8 @@ interface ICore {
     format: 'woff' | 'woff2'
     subset: string
   })
-
-  getDerivedImageFilename(uuid: string): string
   getDerivedFontFilename(uuid: string): string
+  UnsupportedFontFormat: CustomErrorConstructor
 
   NotFound: CustomErrorConstructor
-  UnsupportedImageFormat: CustomErrorConstructor
-  UnsupportedFontFormat: CustomErrorConstructor
 }

@@ -8,10 +8,11 @@ import { v4 as createUUID } from 'uuid'
 import stringify from 'fast-json-stable-stringify'
 import { HashMap } from '@blackglory/structures'
 import { go } from '@blackglory/go'
-import { getAbsoluteFilename, getMtimestamp } from './utils'
+import { getStaticFilename, getMtimestamp } from './utils'
 import { NotFound, UnsupportedImageFormat } from './errors'
 import { assert } from '@blackglory/errors'
 import { isRecord, isString } from '@blackglory/types'
+import { readdir } from 'fs/promises'
 
 const targetToLock = new HashMap<
   { filename: string; metadata: IDerivedImageMetadata }
@@ -37,7 +38,7 @@ export async function ensureDerivedImage({
   maxHeight?: number
   multiple?: number
 }): Promise<string> {
-  const absoluteFilename = getAbsoluteFilename(filename)
+  const absoluteFilename = getStaticFilename(filename)
 
   const mtime = await go(async () => {
     try {
@@ -124,5 +125,18 @@ export async function ensureDerivedImage({
 }
 
 export function getDerivedImageFilename(uuid: string): string {
-  return path.join(STORAGE(), 'derived-images', uuid)
+  return path.join(getDerivedImageDirectory(), uuid)
+}
+
+export async function clearAllTemporaryDerivedImages(): Promise<void> {
+  const filenames = await readdir(getDerivedImageDirectory())
+  const tempFilenames = filenames
+    .filter(x => x.endsWith('.tmp'))
+    .map(x => path.join(getDerivedImageDirectory(), x))
+
+  await each(tempFilenames, x => remove(x))
+}
+
+export function getDerivedImageDirectory(): string {
+  return path.join(STORAGE(), 'derived-images')
 }

@@ -22,7 +22,7 @@ export async function stopService() {
   server.metrics.clearRegister()
   await server.close()
   clearDatabases()
-  clearDerivedImages()
+  clearDerivedFiles()
   resetEnvironment()
 }
 
@@ -35,7 +35,7 @@ export async function clearDatabases() {
   DataInSqlite3.closeDatabase()
 }
 
-export async function clearDerivedImages() {
+export async function clearDerivedFiles() {
   const derivedFonts = path.join(__dirname, 'fixtures/derived-fonts')
   const derivedImages = path.join(__dirname, 'fixtures/derived-images')
   await emptyDir(derivedFonts)

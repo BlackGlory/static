@@ -8,10 +8,11 @@ import { HashMap } from '@blackglory/structures'
 import { Mutex, each } from 'extra-promise'
 import stringify from 'fast-json-stable-stringify'
 import { processFont } from './font'
-import { getAbsoluteFilename, getMtimestamp } from './utils'
+import { getStaticFilename, getMtimestamp } from './utils'
 import { NotFound, UnsupportedFontFormat } from './errors'
 import { assert } from '@blackglory/errors'
 import { isRecord, isString } from '@blackglory/types'
+import { readdir } from 'fs/promises'
 
 const targetToLock = new HashMap<
   { filename: string; metadata: IDerivedFontMetadata }
@@ -31,7 +32,7 @@ export async function ensureDerivedFont({
   format: 'woff' | 'woff2'
   subset: string
 }) {
-  const absoluteFilename = getAbsoluteFilename(filename)
+  const absoluteFilename = getStaticFilename(filename)
 
   const mtime = await go(async () => {
     try {
@@ -111,5 +112,18 @@ export async function ensureDerivedFont({
 }
 
 export function getDerivedFontFilename(uuid: string): string {
-  return path.join(STORAGE(), 'derived-fonts', uuid)
+  return path.join(getDerivedFontDirectory(), uuid)
+}
+
+export async function clearAllTemporaryDerivedFonts(): Promise<void> {
+  const filenames = await readdir(getDerivedFontDirectory())
+  const tempFilenames = filenames
+    .filter(x => x.endsWith('.tmp'))
+    .map(x => path.join(getDerivedFontDirectory(), x))
+
+  await each(tempFilenames, x => remove(x))
+}
+
+export function getDerivedFontDirectory(): string {
+  return path.join(STORAGE(), 'derived-fonts')
 }
