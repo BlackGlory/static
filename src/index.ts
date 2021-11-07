@@ -16,6 +16,7 @@ go(async () => {
   ensureDirSync(STORAGE())
   ensureDirSync(path.join(STORAGE(), 'files'))
   ensureDirSync(path.join(STORAGE(), 'derived-images'))
+  ensureDirSync(path.join(STORAGE(), 'derived-fonts'))
 
   DataInSqlite3.openDatabase()
   await DataInSqlite3.prepareDatabase()
