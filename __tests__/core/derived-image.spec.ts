@@ -10,12 +10,24 @@ jest.mock('@dao/data-in-sqlite3/database')
 beforeEach(initializeDatabases)
 afterEach(clearDatabases)
 
-test('clearAllTemporaryDerivedImages(): Promise<void>', async () => {
-  const filename = getDerivedImageFilename('test')
-  const tempFilename = `${filename}.tmp`
-  await ensureFile(tempFilename)
+describe('clearAllTemporaryDerivedImages(): Promise<void>', () => {
+  it('deletes temp files', async () => {
+    const filename = getDerivedImageFilename('test')
+    const tempFilename = `${filename}.tmp`
+    await ensureFile(tempFilename)
 
-  await clearAllTemporaryDerivedImages()
+    await clearAllTemporaryDerivedImages()
 
-  expect(await pathExists(tempFilename)).toBeFalsy()
+    expect(await pathExists(tempFilename)).toBeFalsy()
+  })
+
+  it('does not delete non-temp files', async () => {
+    const filename = getDerivedImageFilename('test')
+    await ensureFile(filename)
+
+    await clearAllTemporaryDerivedImages()
+
+    expect(await pathExists(filename)).toBeTruthy()
+  })
+
 })

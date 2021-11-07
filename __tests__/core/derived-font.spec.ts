@@ -10,12 +10,23 @@ jest.mock('@dao/data-in-sqlite3/database')
 beforeEach(initializeDatabases)
 afterEach(clearDatabases)
 
-test('clearAllTemporaryDerivedFonts(): Promise<void>', async () => {
-  const filename = getDerivedFontFilename('test')
-  const tempFilename = `${filename}.tmp`
-  await ensureFile(tempFilename)
+describe('clearAllTemporaryDerivedFonts(): Promise<void>', () => {
+  it('deletes temp files', async () => {
+    const filename = getDerivedFontFilename('test')
+    const tempFilename = `${filename}.tmp`
+    await ensureFile(tempFilename)
 
-  await clearAllTemporaryDerivedFonts()
+    await clearAllTemporaryDerivedFonts()
 
-  expect(await pathExists(tempFilename)).toBeFalsy()
+    expect(await pathExists(tempFilename)).toBeFalsy()
+  })
+
+  it('does not delete non-temp files', async () => {
+    const filename = getDerivedFontFilename('test')
+    await ensureFile(filename)
+
+    await clearAllTemporaryDerivedFonts()
+
+    expect(await pathExists(filename)).toBeTruthy()
+  })
 })
