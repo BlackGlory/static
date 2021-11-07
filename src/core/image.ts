@@ -1,6 +1,11 @@
 import sharp from 'sharp'
 import { assert } from '@blackglory/errors'
 import { isntUndefined } from '@blackglory/types'
+import { createWriteStream } from 'fs'
+import { promisify } from 'util'
+import * as stream from 'stream'
+
+const pipeline = promisify(stream.pipeline)
 
 interface ISize {
   width: number
@@ -51,18 +56,21 @@ export function computeTargetSize(
   }
 }
 
-export function processImage(
-  input: string
+export async function processImage(
+  inputFilename: string
+, outputFilename: string
 , { format, quality, width, height }: {
     format: 'jpeg' | 'webp'
     quality: number
     width: number
     height: number
   }
-): NodeJS.ReadableStream {
-  return sharp(input)
+): Promise<void> {
+  const stream = sharp(inputFilename)
     .resize(width, height, { fit: 'fill' })
     .toFormat(format, { quality })
+
+  await pipeline(stream, createWriteStream(outputFilename))
 }
 
 function computeDownscaledSize(

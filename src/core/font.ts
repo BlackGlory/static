@@ -1,8 +1,8 @@
 import { execFile } from 'child_process'
 
 export function processFont(
-  input: string
-, output: string
+  inputFilename: string
+, outputFilename: string
 , { format, subset }: {
     format: 'woff' | 'woff2'
     subset: string
@@ -12,10 +12,10 @@ export function processFont(
     execFile(
       'pyftsubset'
     , [
-        input
+        inputFilename
       , `--text='${subset}'`
       , `--flavor=${format}`
-      , `--output-file=${output}`
+      , `--output-file=${outputFilename}`
       ]
     , (err, stdout, stderr) => {
       if (err) {

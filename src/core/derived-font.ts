@@ -1,7 +1,7 @@
 import * as path from 'path'
 import { STORAGE } from '@env'
 import { DerviedFontDAO } from '@dao/data-in-sqlite3/derived-font'
-import { pathExists, remove } from 'extra-filesystem'
+import { pathExists, remove, move } from 'extra-filesystem'
 import { v4 as createUUID } from 'uuid'
 import { go } from '@blackglory/go'
 import { HashMap } from '@blackglory/structures'
@@ -74,10 +74,12 @@ export async function ensureDerivedFont({
       }
 
       const newUUID = createUUID()
+      const newDerivedFilename = getDerivedFontFilename(newUUID)
+      const tempFilename = `${newDerivedFilename}.tmp`
       try {
         await processFont(
           absoluteFilename
-        , getDerivedFontFilename(newUUID)
+        , tempFilename 
         , derivedFontMetadata
         )
       } catch (e) {
@@ -87,6 +89,7 @@ export async function ensureDerivedFont({
         }
         throw e
       }
+      await move(tempFilename, newDerivedFilename)
       await DerviedFontDAO.setDerivedFont(
         newUUID
       , filename

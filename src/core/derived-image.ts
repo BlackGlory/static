@@ -1,14 +1,11 @@
 import { computeTargetSize, processImage, readImageMetadata } from './image'
 import { DerivedImageDAO } from '@dao/data-in-sqlite3/derived-image'
 import { STORAGE } from '@env'
-import { pathExists, remove } from 'extra-filesystem'
+import { pathExists, remove, move } from 'extra-filesystem'
 import * as path from 'path'
 import { Mutex, each } from 'extra-promise'
 import { v4 as createUUID } from 'uuid'
-import { createWriteStream } from 'fs'
 import stringify from 'fast-json-stable-stringify'
-import { promisify } from 'util'
-import * as stream from 'stream'
 import { HashMap } from '@blackglory/structures'
 import { go } from '@blackglory/go'
 import { getAbsoluteFilename, getMtimestamp } from './utils'
@@ -16,7 +13,6 @@ import { NotFound, UnsupportedImageFormat } from './errors'
 import { assert } from '@blackglory/errors'
 import { isRecord, isString } from '@blackglory/types'
 
-const pipeline = promisify(stream.pipeline)
 const targetToLock = new HashMap<
   { filename: string; metadata: IDerivedImageMetadata }
 , { mutex: Mutex; users: number }
@@ -103,8 +99,10 @@ export async function ensureDerivedImage({
       }
 
       const newUUID = createUUID()
-      const writeStream = createWriteStream(getDerivedImageFilename(newUUID))
-      await pipeline(processImage(absoluteFilename, derivedImageMetadata), writeStream)
+      const newDerivedFilename = getDerivedImageFilename(newUUID)
+      const tempFilename = `${newDerivedFilename}.tmp`
+      await processImage(absoluteFilename, tempFilename, derivedImageMetadata)
+      await move(tempFilename, newDerivedFilename)
       await DerivedImageDAO.setDerivedImage(
         newUUID
       , filename
