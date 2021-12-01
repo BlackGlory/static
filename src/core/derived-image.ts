@@ -40,15 +40,7 @@ export async function ensureDerivedImage({
 }): Promise<string> {
   const absoluteFilename = getStaticFilename(filename)
 
-  const mtime = await go(async () => {
-    try {
-      return await getMtimestamp(absoluteFilename)
-    } catch (e) {
-      assert(isRecord(e))
-      if (e.code === 'ENOENT') throw new NotFound()
-      throw e
-    }
-  })
+  const mtime = await getMtimestamp(absoluteFilename)
   const imageMetadata = await go(async () => {
     try {
       return await readImageMetadata(absoluteFilename)

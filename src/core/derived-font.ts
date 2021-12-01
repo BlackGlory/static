@@ -3,13 +3,12 @@ import { STORAGE } from '@env'
 import { DerviedFontDAO } from '@dao/data-in-sqlite3/derived-font'
 import { pathExists, remove, move } from 'extra-filesystem'
 import { v4 as createUUID } from 'uuid'
-import { go } from '@blackglory/go'
 import { HashMap } from '@blackglory/structures'
 import { Mutex, each } from 'extra-promise'
 import stringify from 'fast-json-stable-stringify'
 import { processFont } from './font'
 import { getStaticFilename, getMtimestamp } from './utils'
-import { NotFound, UnsupportedFontFormat } from './errors'
+import { UnsupportedFontFormat } from './errors'
 import { assert } from '@blackglory/errors'
 import { isRecord, isString } from '@blackglory/types'
 import { readdir } from 'fs/promises'
@@ -34,15 +33,7 @@ export async function ensureDerivedFont({
 }) {
   const absoluteFilename = getStaticFilename(filename)
 
-  const mtime = await go(async () => {
-    try {
-      return await getMtimestamp(absoluteFilename)
-    } catch (e) {
-      assert(isRecord(e))
-      if (e.code === 'ENOENT') throw new NotFound()
-      throw e
-    }
-  })
+  const mtime = await getMtimestamp(absoluteFilename)
 
   const derivedFontMetadata: IDerivedFontMetadata = {
     format
