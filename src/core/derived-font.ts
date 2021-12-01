@@ -67,12 +67,7 @@ export async function ensureDerivedFont({
       , mtime
       , derivedFontMetadata
       )
-
-      if (uuid) {
-        if (await pathExists(getDerivedFontFilename(uuid))) {
-          return uuid
-        }
-      }
+      if (uuid && await pathExists(getDerivedFontFilename(uuid))) return uuid
 
       const newUUID = createUUID()
       const newDerivedFilename = getDerivedFontFilename(newUUID)
@@ -98,16 +93,20 @@ export async function ensureDerivedFont({
       , derivedFontMetadata
       )
 
-      const outdatedUUIDs = await DerviedFontDAO.removeOutdatedDerivedFonts(
-        filename
-      , mtime
-      )
-      await each(outdatedUUIDs, uuid => remove(getDerivedFontFilename(uuid)))
+      await removeOutdatedDerivedFonts()
 
       return newUUID
     })
   } finally {
     if (--lock.users === 0) targetToLock.delete(target)
+  }
+
+  async function removeOutdatedDerivedFonts() {
+    const outdatedUUIDs = await DerviedFontDAO.removeOutdatedDerivedFonts(
+      filename
+    , mtime
+    )
+    await each(outdatedUUIDs, uuid => remove(getDerivedFontFilename(uuid)))
   }
 }
 

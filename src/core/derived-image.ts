@@ -92,12 +92,7 @@ export async function ensureDerivedImage({
       , mtime
       , derivedImageMetadata
       )
-
-      if (uuid) {
-        if (await pathExists(getDerivedImageFilename(uuid))) {
-          return uuid
-        }
-      }
+      if (uuid && await pathExists(getDerivedImageFilename(uuid))) return uuid
 
       const newUUID = createUUID()
       const newDerivedFilename = getDerivedImageFilename(newUUID)
@@ -111,16 +106,20 @@ export async function ensureDerivedImage({
       , derivedImageMetadata
       )
 
-      const outdatedUUIDs = await DerivedImageDAO.removeOutdatedDerivedImages(
-        filename
-      , mtime
-      )
-      await each(outdatedUUIDs, uuid => remove(getDerivedImageFilename(uuid)))
+      await removeOutdatedDerivedImages()
 
       return newUUID
     })
   } finally {
     if (--lock.users === 0) targetToLock.delete(target)
+  }
+
+  async function removeOutdatedDerivedImages() {
+    const outdatedUUIDs = await DerivedImageDAO.removeOutdatedDerivedImages(
+      filename
+    , mtime
+    )
+    await each(outdatedUUIDs, uuid => remove(getDerivedImageFilename(uuid)))
   }
 }
 
