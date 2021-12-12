@@ -103,7 +103,9 @@ export async function ensureDerivedImage({
       return newUUID
     })
   } finally {
-    if (--lock.users === 0) targetToLock.delete(target)
+    if (--lock.users === 0) {
+      targetToLock.delete(target)
+    }
   }
 
   async function removeOutdatedDerivedImages() {

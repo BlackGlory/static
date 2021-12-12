@@ -128,7 +128,9 @@ async function routes(server, { Core }) {
           }
 
           const type = await getResultPromise(getFileType(Core.getDerivedImageFilename(uuid)))
-          if (type) reply.header('Content-Type', type.mime)
+          if (type) {
+            reply.header('Content-Type', type.mime)
+          }
 
           reply.header('Cache-Control', FOUND_CACHE_CONTROL())
           reply.header('Content-Disposition', contentDisposition(filename, {
@@ -152,7 +154,9 @@ async function routes(server, { Core }) {
           }
 
           const type = await getResultPromise(getFileType(Core.getDerivedFontFilename(uuid)))
-          if (type) reply.header('Content-Type', type.mime)
+          if (type) {
+            reply.header('Content-Type', type.mime)
+          }
 
           reply.header('Cache-Control', FOUND_CACHE_CONTROL())
           reply.header('Content-Disposition', contentDisposition(filename, {

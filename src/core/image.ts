@@ -78,8 +78,10 @@ function computeDownscaledSize(
 , maxWidth: number
 , maxHeight: number
 ): ISize {
-  if (originalSize.height <= maxHeight
-  &&  originalSize.width <= maxWidth) {
+  if (
+    originalSize.height <= maxHeight &&
+    originalSize.width <= maxWidth
+  ) {
     return originalSize
   }
 
