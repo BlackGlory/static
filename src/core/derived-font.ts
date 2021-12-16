@@ -10,7 +10,7 @@ import { processFont } from './font'
 import { getStaticFilename, getMtimestamp } from './utils'
 import { UnsupportedFontFormat } from './errors'
 import { assert } from '@blackglory/errors'
-import { isRecord, isString } from '@blackglory/types'
+import { isObject, isString } from '@blackglory/types'
 import { readdir } from 'fs/promises'
 
 const targetToLock = new HashMap<
@@ -70,7 +70,7 @@ export async function ensureDerivedFont({
         , derivedFontMetadata
         )
       } catch (e) {
-        assert(isRecord(e) && isString(e.message))
+        assert(isObject(e) && isString(e.message))
         if (e.message.includes('Not a TrueType or OpenType font (not enough data)')) {
           throw new UnsupportedFontFormat()
         }

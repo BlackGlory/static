@@ -11,7 +11,7 @@ import { go } from '@blackglory/go'
 import { getStaticFilename, getMtimestamp } from './utils'
 import { NotFound, UnsupportedImageFormat } from './errors'
 import { assert } from '@blackglory/errors'
-import { isRecord, isString } from '@blackglory/types'
+import { isObject, isString } from '@blackglory/types'
 import { readdir } from 'fs/promises'
 
 const targetToLock = new HashMap<
@@ -45,7 +45,7 @@ export async function ensureDerivedImage({
     try {
       return await readImageMetadata(absoluteFilename)
     } catch (e) {
-      assert(isRecord(e) && isString(e.message))
+      assert(isObject(e) && isString(e.message))
       if (e.message.includes('Input file is missing')) throw new NotFound()
       if (e.message.includes('Input file contains unsupported image format')) {
         throw new UnsupportedImageFormat()
