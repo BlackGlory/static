@@ -1,4 +1,4 @@
-FROM node:14-alpine AS builder
+FROM node:16-alpine AS builder
 WORKDIR /usr/src/app
 COPY package.json yarn.lock requirements.txt ./
 
@@ -20,7 +20,7 @@ COPY . ./
 
 RUN yarn build
 
-FROM node:14-alpine
+FROM node:16-alpine
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/lib /usr/src/app/lib
 COPY package.json yarn.lock requirements.txt ./
