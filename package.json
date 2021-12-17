@@ -6,6 +6,9 @@
   "repository": "git@github.com:BlackGlory/static.git",
   "author": "BlackGlory <woshenmedoubuzhidao@blackglory.me>",
   "license": "MIT",
+  "engines": {
+    "node": ">=16"
+  },
   "scripts": {
     "lint": "eslint --ext .js,.jsx,.ts,.tsx --quiet src __tests__",
     "test": "jest --runInBand --config jest.config.js",
@@ -35,16 +38,13 @@
       "commit-msg": "commitlint --env HUSKY_GIT_PARAMS"
     }
   },
-  "engines": {
-    "node": ">=14"
-  },
   "devDependencies": {
     "@blackglory/http-status": "^1.0.1",
-    "@blackglory/jest-matchers": "^0.1.21",
+    "@blackglory/jest-matchers": "^0.2.0",
     "@commitlint/cli": "^15.0.0",
     "@commitlint/config-conventional": "^15.0.0",
     "@types/app-root-path": "^1.2.4",
-    "@types/better-sqlite3": "^7.4.1",
+    "@types/better-sqlite3": "^7.4.2",
     "@types/content-disposition": "^0.5.4",
     "@types/fontkit": "^1.8.0",
     "@types/jest": "^27.0.3",
@@ -57,7 +57,7 @@
     "@typescript-eslint/parser": "^5.7.0",
     "cross-env": "^7.0.3",
     "eslint": "^8.4.1",
-    "extra-fetch": "^1.8.3",
+    "extra-fetch": "^1.8.4",
     "extra-request": "^3.0.3",
     "extra-response": "^0.3.8",
     "fontkit": "^1.8.1",
@@ -70,7 +70,7 @@
     "pm2": "^5.1.2",
     "rimraf": "^3.0.2",
     "standard-version": "^9.3.2",
-    "ts-jest": "^27.1.1",
+    "ts-jest": "^27.1.2",
     "ts-node": "^10.4.0",
     "tsconfig-paths": "^3.12.0",
     "tscpaths": "^0.0.9",
@@ -81,13 +81,13 @@
     "@blackglory/errors": "^1.1.2",
     "@blackglory/go": "^0.1.1",
     "@blackglory/structures": "^0.3.1",
-    "@blackglory/types": "^0.6.1",
+    "@blackglory/types": "^0.6.3",
     "app-root-path": "^3.0.0",
     "better-sqlite3": "^7.4.5",
     "content-disposition": "^0.5.4",
     "dotenv": "^10.0.0",
-    "extra-filesystem": "^0.3.14",
-    "extra-promise": "^0.19.7",
+    "extra-filesystem": "^0.4.0",
+    "extra-promise": "^0.20.0",
     "extra-tags": "^0.2.3",
     "fast-json-stable-stringify": "^2.1.0",
     "fastify": "^3.25.0",
@@ -97,7 +97,7 @@
     "file-type": "^16.5.3",
     "justypes": "^0.1.6",
     "lodash.omit": "^4.5.0",
-    "migrations-file": "^0.1.10",
+    "migrations-file": "^0.2.0",
     "prom-client": "^14.0.1",
     "return-style": "^0.12.5",
     "sharp": "^0.29.3",
