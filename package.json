@@ -61,7 +61,7 @@
     "extra-request": "^4.0.1",
     "extra-response": "^0.3.8",
     "fontkit": "^1.8.1",
-    "husky": "^4.3.8",
+    "husky": "^7.0.4",
     "jest": "^27.4.5",
     "jest-extended": "^1.2.0",
     "nodemon": "^2.0.15",
