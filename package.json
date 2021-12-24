@@ -97,7 +97,7 @@
     "file-type": "^16.5.3",
     "justypes": "^0.1.6",
     "lodash.omit": "^4.5.0",
-    "migrations-file": "^0.2.0",
+    "migrations-file": "^0.2.1",
     "prom-client": "^14.0.1",
     "return-style": "^0.12.5",
     "sharp": "^0.29.3",

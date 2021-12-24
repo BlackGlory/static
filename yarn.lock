@@ -3706,6 +3706,25 @@ extra-promise@^0.20.0:
     reflect-metadata "^0.1.13"
     return-style "^0.12.5"
 
+extra-promise@^0.21.0:
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/extra-promise/-/extra-promise-0.21.0.tgz#855d0a34d344c7b0bd82f9866ee526367c1770b1"
+  integrity sha512-yPJat8oubkp+sK3ONrsIJ651eN1eGsKJY9+valfiY5ihugjpB+L3gWG7/iGiQZgkIZT4i2N71YMA9itLTWgfvw==
+  dependencies:
+    "@blackglory/errors" "^1.1.2"
+    "@blackglory/go" "^0.1.1"
+    "@blackglory/pass" "^0.1.0"
+    "@blackglory/structures" "^0.3.1"
+    "@blackglory/types" "^0.6.1"
+    core-js "^3.20.0"
+    eventemitter3 "^4.0.7"
+    extra-generator "^0.2.15"
+    iterable-operator "^0.14.4"
+    justypes "^0.1.6"
+    lodash.once "^4.1.1"
+    reflect-metadata "^0.1.13"
+    return-style "^0.12.5"
+
 extra-rand@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/extra-rand/-/extra-rand-0.1.0.tgz#dd663f2da116c15b5476646fa4025668cd2015b3"
@@ -6125,12 +6144,12 @@ micromatch@^4.0.4:
     braces "^3.0.1"
     picomatch "^2.2.3"
 
-migrations-file@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/migrations-file/-/migrations-file-0.2.0.tgz#41db37f9874f86c7cb306e9d0e0868404a66aec1"
-  integrity sha512-iLP7LPIQJnJCMAXJa9U6kKUcAIcmDgMEt/JFcNkbgIcl6kBAkXAty/kvO+gli54wivQLENig1lXGh8TyA7lYqQ==
+migrations-file@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/migrations-file/-/migrations-file-0.2.1.tgz#f389db0358f6d9e4f3914323f28ccd93fa379a27"
+  integrity sha512-b8C0fubxK8nwyR03wTLbfirpWdjVnPM1mZa5WiO6xM6/hWGB1f7Ef1q+JGGJq4D5kcQO3LZzo0OUQatF93JIHw==
   dependencies:
-    extra-promise "^0.20.0"
+    extra-promise "^0.21.0"
 
 mime-db@1.45.0:
   version "1.45.0"
