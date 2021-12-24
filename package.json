@@ -58,7 +58,7 @@
     "cross-env": "^7.0.3",
     "eslint": "^8.4.1",
     "extra-fetch": "^1.8.4",
-    "extra-request": "^3.0.3",
+    "extra-request": "^4.0.1",
     "extra-response": "^0.3.8",
     "fontkit": "^1.8.1",
     "husky": "^4.3.8",
