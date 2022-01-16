@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.3](https://github.com/BlackGlory/static/compare/v0.2.2...v0.2.3) (2022-01-16)
+
+
+### Features
+
+* add accept-version support ([4b5e450](https://github.com/BlackGlory/static/commit/4b5e450468b6cfde8b243c6d16aa4a3307b61e41))
+* add default cache-control header ([4daff3b](https://github.com/BlackGlory/static/commit/4daff3bbbad977963fb23ce394314fa7d1ab2f23))
+* clear all temp files when the server starts ([513071f](https://github.com/BlackGlory/static/commit/513071f45d4e2fae8d0d80bbc726d9df0ad0cd9c))
+* improve processing, always write temp files first ([9904d95](https://github.com/BlackGlory/static/commit/9904d9527568920fe8ad558998af13060098d822))
+
+
+### Bug Fixes
+
+* ensure derived-fonts folder ([b959326](https://github.com/BlackGlory/static/commit/b9593262bf3d2c430f44254c5c1f1bff84653af0))
+* **docker:** healthcheck ([1141a31](https://github.com/BlackGlory/static/commit/1141a31e0fa98cea4785ed555ea399a0226c3ba3))
+* **docker:** healthcheck ([9d95173](https://github.com/BlackGlory/static/commit/9d95173f4376a82d0c5420a5380530904213d058))
+
 ### [0.2.2](https://github.com/BlackGlory/static/compare/v0.2.1...v0.2.2) (2021-10-14)
 
 ### [0.2.1](https://github.com/BlackGlory/static/compare/v0.2.0...v0.2.1) (2021-10-12)
