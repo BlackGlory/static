@@ -20,6 +20,9 @@ export function buildServer() {
     endpoint: '/metrics'
   , register: new Registry()
   })
+  server.addHook('onRequest', async (req, reply) => {
+    reply.headers({ 'cache-control': 'private, no-cache' })
+  })
 
   server.register(cors, { origin: true })
   server.register(files, { prefix: '/files', Core })

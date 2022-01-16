@@ -298,7 +298,7 @@ describe('files', () => {
         ))
 
         expect(res.status).toBe(404)
-        expect(res.headers.has('Cache-Control')).toBe(false)
+        expect(res.headers.get('Cache-Control')).toBe('private, no-cache')
       })
     })
   })
