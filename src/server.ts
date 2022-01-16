@@ -7,6 +7,16 @@ import { routes as robots } from '@services/robots'
 import { routes as health } from '@services/health'
 import { HTTP2, NODE_ENV, NodeEnv } from '@env'
 import { Core } from '@core'
+import path from 'path'
+import { path as appRoot } from 'app-root-path'
+import { readJSONFileSync } from 'extra-filesystem'
+import semver from 'semver'
+import { isntUndefined, isString } from '@blackglory/types'
+import { assert } from '@blackglory/errors'
+
+const pkg = readJSONFileSync<{ version: string }>(
+  path.join(appRoot, 'package.json')
+)
 
 type LoggerLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal'
 
@@ -16,14 +26,25 @@ export function buildServer() {
     /* @ts-ignore */
   , http2: HTTP2()
   })
+
+  server.addHook('onRequest', async (req, reply) => {
+    reply.headers({ 'Cache-Control': 'private, no-cache' })
+  })
+  server.addHook('onRequest', async (req, reply) => {
+    const acceptVersion = req.headers['accept-version']
+    if (isntUndefined(acceptVersion)) {
+      assert(isString(acceptVersion), 'Accept-Version must be string')
+      assert(/^\d+\.\d+\.\d+$/.test(acceptVersion), 'Accept-Version must be version')
+      if (!semver.satisfies(pkg.version, `^${acceptVersion}`)) {
+        return reply.status(400).send()
+      }
+    }
+  })
+
   server.register(metricsPlugin, {
     endpoint: '/metrics'
   , register: new Registry()
   })
-  server.addHook('onRequest', async (req, reply) => {
-    reply.headers({ 'cache-control': 'private, no-cache' })
-  })
-
   server.register(cors, { origin: true })
   server.register(files, { prefix: '/files', Core })
   server.register(robots)
