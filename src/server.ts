@@ -25,11 +25,6 @@ export function buildServer() {
     logger: getLoggerOptions()
     /* @ts-ignore */
   , http2: HTTP2()
-  , ajv: {
-      customOptions: {
-        coerceTypes: true // for parsing querystrings
-      }
-    }
   })
 
   server.addHook('onRequest', async (req, reply) => {
