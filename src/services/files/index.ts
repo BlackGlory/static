@@ -53,8 +53,6 @@ async function routes(server, { Core }) {
   , {
       schema: {
         querystring: {
-          // 由于 https://ajv.js.org/faq.html#additional-properties-inside-compound-keywords-anyof-oneof-etc,
-          // 无法在schema中使用additionalProperties.
           anyOf: [
             {
               type: 'object'
@@ -97,7 +95,6 @@ async function routes(server, { Core }) {
           , {
               type: 'object'
             , properties: {}
-            , additionalProperties: false
             }
           ]
         }
