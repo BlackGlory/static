@@ -51,7 +51,6 @@
     "@types/lodash.omit": "^4.5.6",
     "@types/ms": "^0.7.31",
     "@types/node": "16",
-    "@types/semver": "^7.3.9",
     "@types/sharp": "^0.29.5",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.10.2",
@@ -89,6 +88,7 @@
     "dotenv": "^16.0.0",
     "extra-filesystem": "^0.4.1",
     "extra-promise": "^0.21.2",
+    "extra-semver": "^0.1.0",
     "extra-tags": "^0.2.4",
     "fast-json-stable-stringify": "^2.1.0",
     "fastify": "^3.27.1",
@@ -101,7 +101,6 @@
     "migrations-file": "^0.2.1",
     "prom-client": "^14.0.1",
     "return-style": "^0.12.6",
-    "semver": "^7.3.5",
     "sharp": "v0.29",
     "uuid": "^8.3.2",
     "value-getter": "^0.2.2"

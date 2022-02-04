@@ -10,9 +10,9 @@ import { Core } from '@core'
 import path from 'path'
 import { path as appRoot } from 'app-root-path'
 import { readJSONFileSync } from 'extra-filesystem'
-import semver from 'semver'
 import { isntUndefined, isString } from '@blackglory/types'
 import { assert } from '@blackglory/errors'
+import { isAcceptable } from 'extra-semver'
 
 const pkg = readJSONFileSync<{ version: string }>(
   path.join(appRoot, 'package.json')
@@ -34,8 +34,7 @@ export function buildServer() {
     const acceptVersion = req.headers['accept-version']
     if (isntUndefined(acceptVersion)) {
       assert(isString(acceptVersion), 'Accept-Version must be string')
-      assert(/^\d+\.\d+\.\d+$/.test(acceptVersion), 'Accept-Version must be version')
-      if (!semver.satisfies(pkg.version, `^${acceptVersion}`)) {
+      if (!isAcceptable(pkg.version, acceptVersion)) {
         return reply.status(400).send()
       }
     }
