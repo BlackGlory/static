@@ -45,7 +45,7 @@ export async function ensureDerivedImage({
     try {
       return await readImageMetadata(absoluteFilename)
     } catch (e) {
-      assert(isObject(e) && isString(e.message))
+      assert(isObject(e) && isString(e.message), 'e.message must be string')
       if (e.message.includes('Input file is missing')) throw new NotFound()
       if (e.message.includes('Input file contains unsupported image format')) {
         throw new UnsupportedImageFormat()

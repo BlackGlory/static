@@ -21,7 +21,7 @@ export async function getMtimestamp(filename: string): Promise<number> {
     const result = await fs.stat(filename)
     return Math.floor(result.mtime.getTime() / 1000)
   } catch (e) {
-    assert(isObject(e))
+    assert(isObject(e), 'e must be object')
     if (e.code === 'ENOENT') throw new NotFound()
     throw e
   }

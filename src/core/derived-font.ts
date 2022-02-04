@@ -70,7 +70,7 @@ export async function ensureDerivedFont({
         , derivedFontMetadata
         )
       } catch (e) {
-        assert(isObject(e) && isString(e.message))
+        assert(isObject(e) && isString(e.message), 'e.message must be string')
         if (e.message.includes('Not a TrueType or OpenType font (not enough data)')) {
           throw new UnsupportedFontFormat()
         }

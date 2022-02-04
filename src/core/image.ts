@@ -17,9 +17,9 @@ export async function readImageMetadata(filename: string): Promise<{
   format: string
 }> {
   const metadata = await sharp(filename).metadata()
-  assert(isntUndefined(metadata.format))
-  assert(isntUndefined(metadata.height))
-  assert(isntUndefined(metadata.width))
+  assert(isntUndefined(metadata.format), 'metadata.format must be defined')
+  assert(isntUndefined(metadata.height), 'metadata.height must be defined')
+  assert(isntUndefined(metadata.width), 'metadata.width must be defined')
 
   return {
     format: metadata.format

@@ -5,9 +5,9 @@ import { ensureDirSync } from 'extra-filesystem'
 import { NODE_ENV, NodeEnv, DATABASE } from '@env'
 import { assert } from '@blackglory/errors'
 import { enableForeignKeys, migrateDatabase } from './utils'
-assert(NODE_ENV() !== NodeEnv.Test)
+assert(NODE_ENV() !== NodeEnv.Test, 'NODE_ENV should not be test')
 
-let db: IDatabase
+let db: IDatabase | undefined
 
 export function openDatabase(): void {
   const dataPath = DATABASE()
@@ -19,12 +19,12 @@ export function openDatabase(): void {
 }
 
 export async function prepareDatabase(): Promise<void> {
-  assert(db)
+  assert(db, 'db must be defined')
   await migrateDatabase(db)
 }
 
 export function getDatabase(): IDatabase {
-  assert(db)
+  assert(db, 'db must be defined')
   return db
 }
 
