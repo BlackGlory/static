@@ -144,24 +144,17 @@ async function routes(server, { Core }) {
         if (query.contentType) {
           reply.header('Content-Type', query.contentType)
         } else {
-          const type = await getResultPromise(
-            getFileType(path.join(STORAGE(), 'files', filename))
-          )
-          if (type) {
-            if (DISABLE_ACCESS_TO_ORIGINAL_IMAGES() && isImageExtension(type.ext)) {
+          const mimeType = mime.lookup(path.join(STORAGE(), 'files', filename))
+          if (mimeType) {
+            if (DISABLE_ACCESS_TO_ORIGINAL_IMAGES() && isImageMimeType(mimeType)) {
               return reply.status(403).send()
             }
 
-            if (DISABLE_ACCESS_TO_ORIGINAL_FONTS() && isFontExtension(type.ext)) {
+            if (DISABLE_ACCESS_TO_ORIGINAL_FONTS() && isFontMimeType(mimeType)) {
               return reply.status(403).send()
             }
 
-            reply.header('Content-Type', type.mime)
-          } else {
-            const mimeType = mime.lookup(filename)
-            if (mimeType) {
-              reply.header('Content-Type', mimeType)
-            }
+            reply.header('Content-Type', mimeType)
           }
         }
 
@@ -239,12 +232,12 @@ async function routes(server, { Core }) {
   )
 }
 
-function isImageExtension(extension: string): boolean {
-  return ['jpg', 'png',  'webp', 'apng', 'gif', 'avif', 'tif'].includes(extension)
+function isImageMimeType(mimeType: string): boolean {
+  return mimeType.startsWith('image/')
 }
 
-function isFontExtension(extension: string): boolean {
-  return ['woff', 'woff2', 'eot', 'ttf', 'otf'].includes(extension)
+function isFontMimeType(mimeType: string): boolean {
+  return mimeType.startsWith('font/')
 }
 
 function isIImageProcessQuery(query: IProcessingQuery): query is IImageProcessingQuery {
@@ -255,4 +248,13 @@ function isIImageProcessQuery(query: IProcessingQuery): query is IImageProcessin
 function isFontProcessQuery(query: IProcessingQuery): query is IFontProcessingQuery {
   return query.format === 'woff'
       || query.format === 'woff2'
+}
+
+async function getMimeType(filename: string): Promise<string | undefined> {
+  // 和一般认识相反, 基于文件名判断MIME类型在实践中比判断数据更准确, 消耗的资源也较少.
+  const mimeType = mime.lookup(filename)
+  if (mimeType) return mimeType
+
+  const type = await getResultPromise(getFileType(filename))
+  return type?.mime
 }

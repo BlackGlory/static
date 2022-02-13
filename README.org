@@ -62,8 +62,8 @@ This environment variable is the response header =Cache-Control= when the file i
 Default: ~public, max-age=31536000, immutable~
 
 ** Content-Type
-The mime types of files are determined by data,
-if fails, try to get them from file extensions.
+The mime types of files are determined by file extensions,
+if fails, try to get mime types from file data.
 
 Requests can specify a contentType in querystring,
 which allows skip the above steps:
