@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.5](https://github.com/BlackGlory/static/compare/v0.2.4...v0.2.5) (2022-02-13)
+
+
+### Features
+
+* improve mime type sniffing ([b718a0f](https://github.com/BlackGlory/static/commit/b718a0f8ae673711eb685e521d86c28e8e60fd03))
+
 ### [0.2.4](https://github.com/BlackGlory/static/compare/v0.2.3...v0.2.4) (2022-02-13)
 
 
