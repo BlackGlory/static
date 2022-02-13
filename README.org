@@ -61,6 +61,18 @@ Default: ~private, no-cache, no-store, max-age=0, must-revalidate~
 This environment variable is the response header =Cache-Control= when the file is found.
 Default: ~public, max-age=31536000, immutable~
 
+** Content-Type
+The mime types of files are determined by data,
+if fails, try to get them from file extensions.
+
+Requests can specify a contentType in querystring,
+which allows skip the above steps:
+#+BEGIN_SRC typescript
+{
+  contentType?: string
+}
+#+END_SRC
+
 ** Image processing
 Static support image processing, so that users can create responsive images.
 
@@ -73,6 +85,7 @@ The image processing feature works through querystring:
   maxWidth?: integer
   maxHeight?: integer
   multiple?: float
+  contentType?: string
 }
 #+END_SRC
 
@@ -89,6 +102,7 @@ The font processing feature works throught querystring:
   signature: string
   format: 'woff' | 'woff2'
   subset: string
+  contentType?: string
 }
 #+END_SRC
 

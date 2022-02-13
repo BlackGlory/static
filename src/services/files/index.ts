@@ -14,7 +14,16 @@ import { fromFile as getFileType } from 'file-type'
 import { getResultPromise } from 'return-style'
 import mime from 'mrmime'
 
-interface IImageProcessingQuery {
+interface ICommonQuery {
+  contentType?: string
+}
+
+interface IProcessingQuery {
+  signature: string
+  format: string
+}
+
+interface IImageProcessingQuery extends ICommonQuery, IProcessingQuery {
   signature: string
   format: 'jpeg' | 'webp'
   quality: number
@@ -23,13 +32,13 @@ interface IImageProcessingQuery {
   multiple?: number
 }
 
-interface IFontProcessingQuery {
+interface IFontProcessingQuery extends ICommonQuery, IProcessingQuery {
   signature: string
   format: 'woff' | 'woff2'
   subset: string
 }
 
-type IQuery = IImageProcessingQuery | IFontProcessingQuery
+type IQuery = ICommonQuery | IImageProcessingQuery | IFontProcessingQuery
 
 export const routes: FastifyPluginAsync<{ Core: ICore }> =
 async function routes(server, { Core }) {
@@ -48,7 +57,7 @@ async function routes(server, { Core }) {
     Params: {
       '*': string
     }
-    Querystring: IImageProcessingQuery | IFontProcessingQuery 
+    Querystring: IQuery
   }>(
     '/*'
   , {
@@ -63,6 +72,9 @@ async function routes(server, { Core }) {
                   enum: ['woff', 'woff2']
                 }
               , subset: { type: 'string' }
+              , contentType: {
+                  type: 'string'
+                }
               }
             , required: ['signature', 'format', 'subset']
             }
@@ -90,12 +102,19 @@ async function routes(server, { Core }) {
                   type: 'number'
                 , exclusiveMinimum: 0
                 }
+              , contentType: {
+                  type: 'string'
+                }
               }
             , required: ['signature', 'format', 'quality']
             }
           , {
               type: 'object'
-            , properties: {}
+            , properties: {
+                contentType: {
+                  type: 'string'
+                }
+              }
             , additionalProperties: false
             }
           ]
@@ -105,7 +124,7 @@ async function routes(server, { Core }) {
   , async (req, reply) => {
       const filename = req.params['*']
 
-      if (req.query.signature) {
+      if ('signature' in req.query) {
         if (!Core.validateSignature(req.query.signature, omit(req.query, ['signature']))) {
           return reply.status(403).send()
         }
@@ -118,27 +137,31 @@ async function routes(server, { Core }) {
           reply.status(400).send()
         }
       } else {
-        await sendFile(filename)
+        await sendFile(req.query, filename)
       }
 
-      async function sendFile(filename: string) {
-        const type = await getResultPromise(
-          getFileType(path.join(STORAGE(), 'files', filename))
-        )
-        if (type) {
-          if (DISABLE_ACCESS_TO_ORIGINAL_IMAGES() && isImageExtension(type.ext)) {
-            return reply.status(403).send()
-          }
-
-          if (DISABLE_ACCESS_TO_ORIGINAL_FONTS() && isFontExtension(type.ext)) {
-            return reply.status(403).send()
-          }
-
-          reply.header('Content-Type', type.mime)
+      async function sendFile(query: ICommonQuery, filename: string) {
+        if (query.contentType) {
+          reply.header('Content-Type', query.contentType)
         } else {
-          const mimeType = mime.lookup(filename)
-          if (mimeType) {
-            reply.header('Content-Type', mimeType)
+          const type = await getResultPromise(
+            getFileType(path.join(STORAGE(), 'files', filename))
+          )
+          if (type) {
+            if (DISABLE_ACCESS_TO_ORIGINAL_IMAGES() && isImageExtension(type.ext)) {
+              return reply.status(403).send()
+            }
+
+            if (DISABLE_ACCESS_TO_ORIGINAL_FONTS() && isFontExtension(type.ext)) {
+              return reply.status(403).send()
+            }
+
+            reply.header('Content-Type', type.mime)
+          } else {
+            const mimeType = mime.lookup(filename)
+            if (mimeType) {
+              reply.header('Content-Type', mimeType)
+            }
           }
         }
 
@@ -165,9 +188,13 @@ async function routes(server, { Core }) {
           throw e
         }
 
-        const type = await getResultPromise(getFileType(Core.getDerivedFontFilename(uuid)))
-        if (type) {
-          reply.header('Content-Type', type.mime)
+        if (query.contentType) {
+          reply.header('Content-Type', query.contentType)
+        } else {
+          const type = await getResultPromise(getFileType(Core.getDerivedFontFilename(uuid)))
+          if (type) {
+            reply.header('Content-Type', type.mime)
+          }
         }
 
         reply.header('Cache-Control', FOUND_CACHE_CONTROL())
@@ -193,9 +220,13 @@ async function routes(server, { Core }) {
           throw e
         }
 
-        const type = await getResultPromise(getFileType(Core.getDerivedImageFilename(uuid)))
-        if (type) {
-          reply.header('Content-Type', type.mime)
+        if (query.contentType) {
+          reply.header('Content-Type', query.contentType)
+        } else {
+          const type = await getResultPromise(getFileType(Core.getDerivedImageFilename(uuid)))
+          if (type) {
+            reply.header('Content-Type', type.mime)
+          }
         }
 
         reply.header('Cache-Control', FOUND_CACHE_CONTROL())
@@ -216,12 +247,12 @@ function isFontExtension(extension: string): boolean {
   return ['woff', 'woff2', 'eot', 'ttf', 'otf'].includes(extension)
 }
 
-function isIImageProcessQuery(query: IQuery): query is IImageProcessingQuery {
+function isIImageProcessQuery(query: IProcessingQuery): query is IImageProcessingQuery {
   return query.format === 'jpeg'
       || query.format === 'webp'
 }
 
-function isFontProcessQuery(query: IQuery): query is IFontProcessingQuery {
+function isFontProcessQuery(query: IProcessingQuery): query is IFontProcessingQuery {
   return query.format === 'woff'
       || query.format === 'woff2'
 }

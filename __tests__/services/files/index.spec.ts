@@ -32,6 +32,7 @@ describe('files', () => {
             expect(res.status).toBe(200)
             expect(res.headers.has('ETag')).toBe(true)
             expect(res.headers.get('Cache-Control')).toBe(FOUND_CACHE_CONTROL())
+            expect(res.headers.get('Content-Type')).toBe('application/octet-stream')
           })
         })
 
@@ -45,6 +46,24 @@ describe('files', () => {
             expect(res.status).toBe(200)
             expect(res.headers.has('ETag')).toBe(true)
             expect(res.headers.get('Cache-Control')).toBe(FOUND_CACHE_CONTROL())
+            expect(res.headers.get('Content-Type')).toBe('application/octet-stream')
+          })
+        })
+
+        describe('specifiy a type', () => {
+          it('200, Content-Type: {specify}', async () => {
+            const res = await fetch(get(
+              url(getAddress())
+            , pathname('/files/shallow')
+            , searchParams({
+                contentType: 'image/png'
+              })
+            ))
+
+            expect(res.status).toBe(200)
+            expect(res.headers.has('ETag')).toBe(true)
+            expect(res.headers.get('Cache-Control')).toBe(FOUND_CACHE_CONTROL())
+            expect(res.headers.get('Content-Type')).toBe('image/png')
           })
         })
 
@@ -58,6 +77,7 @@ describe('files', () => {
             expect(res.status).toBe(200)
             expect(res.headers.has('ETag')).toBe(true)
             expect(res.headers.get('Cache-Control')).toBe(FOUND_CACHE_CONTROL())
+            expect(res.headers.get('Content-Type')).toBe('image/png')
           })
 
           describe('svg', () => {
@@ -98,6 +118,7 @@ describe('files', () => {
             expect(res.status).toBe(200)
             expect(res.headers.has('ETag')).toBe(true)
             expect(res.headers.get('Cache-Control')).toBe(FOUND_CACHE_CONTROL())
+            expect(res.headers.get('Content-Type')).toBe('font/ttf')
           })
 
           describe('DISABLE_ACCESS_TO_ORIGINAL_FONTS=true', () => {
@@ -152,6 +173,30 @@ describe('files', () => {
             expect(fontkit.create(buffer).hasGlyphForCodePoint(codePoint('a'))).toBe(true)
             expect(fontkit.create(buffer).hasGlyphForCodePoint(codePoint('b'))).toBe(false)
           })
+
+          describe('with contentType', () => {
+            it('200, processed font, custom content type', async () => {
+              const res = await fetch(get(
+                url(getAddress())
+              , pathname('/files/fonts/FiraCode-Regular.ttf')
+              , searchParams(withSignature({
+                  format: 'woff'
+                , subset: "'a"
+                , contentType: 'application/x-font-woff'
+                }))
+              ))
+              const arrayBuffer = await res.arrayBuffer()
+              const buffer = Buffer.from(arrayBuffer)
+
+              expect(res.status).toBe(200)
+              expect(res.headers.has('ETag')).toBe(true)
+              expect(res.headers.get('Cache-Control')).toBe(FOUND_CACHE_CONTROL())
+              expect(res.headers.get('Content-Type')).toBe('application/x-font-woff')
+              expect(fontkit.create(buffer).hasGlyphForCodePoint(codePoint("'"))).toBe(true)
+              expect(fontkit.create(buffer).hasGlyphForCodePoint(codePoint('a'))).toBe(true)
+              expect(fontkit.create(buffer).hasGlyphForCodePoint(codePoint('b'))).toBe(false)
+            })
+          })
         })
       })
 
@@ -192,6 +237,31 @@ describe('files', () => {
             expect(metadata.format).toBe('webp')
             expect(metadata.width).toBe(415)
             expect(metadata.height).toBe(208)
+          })
+
+          describe('with contentType', () => {
+            it('200, processed image, custom content type', async () => {
+              const res = await fetch(get(
+                url(getAddress())
+              , pathname('/files/images/830x415.png')
+              , searchParams(withSignature({
+                  format: 'webp'
+                , quality: '80'
+                , maxWidth: '415'
+                , contentType: 'application/x-webp'
+                }))
+              ))
+              const arrayBuffer = await res.arrayBuffer()
+              const metadata = await sharp(Buffer.from(arrayBuffer)).metadata()
+
+              expect(res.status).toBe(200)
+              expect(res.headers.has('ETag')).toBe(true)
+              expect(res.headers.get('Cache-Control')).toBe(FOUND_CACHE_CONTROL())
+              expect(res.headers.get('Content-Type')).toBe('application/x-webp')
+              expect(metadata.format).toBe('webp')
+              expect(metadata.width).toBe(415)
+              expect(metadata.height).toBe(208)
+            })
           })
         })
       })
