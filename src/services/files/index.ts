@@ -12,6 +12,7 @@ import * as path from 'path'
 import omit from 'lodash.omit'
 import { fromFile as getFileType } from 'file-type'
 import { getResultPromise } from 'return-style'
+import mime from 'mrmime'
 
 interface IImageProcessingQuery {
   signature: string
@@ -134,6 +135,11 @@ async function routes(server, { Core }) {
           }
 
           reply.header('Content-Type', type.mime)
+        } else {
+          const mimeType = mime.lookup(filename)
+          if (mimeType) {
+            reply.header('Content-Type', mimeType)
+          }
         }
 
         reply.header('Cache-Control', FOUND_CACHE_CONTROL())

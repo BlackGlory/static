@@ -60,6 +60,20 @@ describe('files', () => {
             expect(res.headers.get('Cache-Control')).toBe(FOUND_CACHE_CONTROL())
           })
 
+          describe('svg', () => {
+            it('200, Content-Type: image/svg+xml', async () => {
+              const res = await fetch(get(
+                url(getAddress())
+              , pathname('/files/images/vector.svg')
+              ))
+
+              expect(res.status).toBe(200)
+              expect(res.headers.has('ETag')).toBe(true)
+              expect(res.headers.get('Cache-Control')).toBe(FOUND_CACHE_CONTROL())
+              expect(res.headers.get('Content-Type')).toBe('image/svg+xml')
+            })
+          })
+
           describe('DISABLE_ACCESS_TO_ORIGINAL_IMAGES=true', () => {
             it('403', async () => {
               process.env.STATIC_DISABLE_ACCESS_TO_ORIGINAL_IMAGES='true'
