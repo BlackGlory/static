@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.4](https://github.com/BlackGlory/static/compare/v0.2.3...v0.2.4) (2022-02-13)
+
+
+### Features
+
+* add contentType support ([12070c5](https://github.com/BlackGlory/static/commit/12070c5af88796dde0d48c5f3d3deeeaf067385e))
+* get mime types from filenames ([750d36a](https://github.com/BlackGlory/static/commit/750d36ac88ff395390421778ee601df78e567b80))
+* improve query checker ([6865f54](https://github.com/BlackGlory/static/commit/6865f54a81c9f801af0b8eaab380d0fa47679758))
+
 ### [0.2.3](https://github.com/BlackGlory/static/compare/v0.2.2...v0.2.3) (2022-01-16)
 
 
