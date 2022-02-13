@@ -135,7 +135,7 @@ async function routes(server, { Core }) {
             type: 'inline'
           }))
           reply.sendFile(path.join('derived-images', uuid))
-        } else {
+        } else if (isFontProcessQuery(req.query)) {
           let uuid: string
           try {
             uuid = await Core.ensureDerivedFont({ ...req.query, filename })
@@ -161,6 +161,8 @@ async function routes(server, { Core }) {
             type: 'inline'
           }))
           reply.sendFile(path.join('derived-fonts', uuid))
+        } else {
+          reply.status(400).send()
         }
       } else {
         const type = await getResultPromise(
