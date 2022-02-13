@@ -110,61 +110,17 @@ async function routes(server, { Core }) {
         }
 
         if (isIImageProcessQuery(req.query)) {
-          let uuid: string
-          try {
-            uuid = await Core.ensureDerivedImage({ ...req.query, filename })
-          } catch (e) {
-            if (e instanceof Core.NotFound) {
-              reply.header('Cache-Control', NOT_FOUND_CACHE_CONTROL())
-              return reply.status(404).send()
-            }
-            if (e instanceof Core.UnsupportedImageFormat) {
-              // 返回403是说明没有权限对一个非图像文件/不支持的图像文件执行此操作
-              return reply.status(403).send()
-            }
-            throw e
-          }
-
-          const type = await getResultPromise(getFileType(Core.getDerivedImageFilename(uuid)))
-          if (type) {
-            reply.header('Content-Type', type.mime)
-          }
-
-          reply.header('Cache-Control', FOUND_CACHE_CONTROL())
-          reply.header('Content-Disposition', contentDisposition(filename, {
-            type: 'inline'
-          }))
-          reply.sendFile(path.join('derived-images', uuid))
+          await sendProcessedImage(req.query, filename)
         } else if (isFontProcessQuery(req.query)) {
-          let uuid: string
-          try {
-            uuid = await Core.ensureDerivedFont({ ...req.query, filename })
-          } catch (e) {
-            if (e instanceof Core.NotFound) {
-              reply.header('Cache-Control', NOT_FOUND_CACHE_CONTROL())
-              return reply.status(404).send()
-            }
-            if (e instanceof Core.UnsupportedFontFormat) {
-              // 返回403是说明没有权限对一个非字体文件/不支持的字体文件执行此操作
-              return reply.status(403).send()
-            }
-            throw e
-          }
-
-          const type = await getResultPromise(getFileType(Core.getDerivedFontFilename(uuid)))
-          if (type) {
-            reply.header('Content-Type', type.mime)
-          }
-
-          reply.header('Cache-Control', FOUND_CACHE_CONTROL())
-          reply.header('Content-Disposition', contentDisposition(filename, {
-            type: 'inline'
-          }))
-          reply.sendFile(path.join('derived-fonts', uuid))
+          await sendProcessedFont(req.query, filename)
         } else {
           reply.status(400).send()
         }
       } else {
+        await sendFile(filename)
+      }
+
+      async function sendFile(filename: string) {
         const type = await getResultPromise(
           getFileType(path.join(STORAGE(), 'files', filename))
         )
@@ -185,6 +141,62 @@ async function routes(server, { Core }) {
           type: 'inline'
         }))
         reply.sendFile(path.join('files', filename))
+      }
+
+      async function sendProcessedFont(query: IFontProcessingQuery, filename: string) {
+        let uuid: string
+        try {
+          uuid = await Core.ensureDerivedFont({ ...query, filename })
+        } catch (e) {
+          if (e instanceof Core.NotFound) {
+            reply.header('Cache-Control', NOT_FOUND_CACHE_CONTROL())
+            return reply.status(404).send()
+          }
+          if (e instanceof Core.UnsupportedFontFormat) {
+            // 返回403是说明没有权限对一个非字体文件/不支持的字体文件执行此操作
+            return reply.status(403).send()
+          }
+          throw e
+        }
+
+        const type = await getResultPromise(getFileType(Core.getDerivedFontFilename(uuid)))
+        if (type) {
+          reply.header('Content-Type', type.mime)
+        }
+
+        reply.header('Cache-Control', FOUND_CACHE_CONTROL())
+        reply.header('Content-Disposition', contentDisposition(filename, {
+          type: 'inline'
+        }))
+        reply.sendFile(path.join('derived-fonts', uuid))
+      }
+
+      async function sendProcessedImage(query: IImageProcessingQuery, filename: string) {
+        let uuid: string
+        try {
+          uuid = await Core.ensureDerivedImage({ ...query, filename })
+        } catch (e) {
+          if (e instanceof Core.NotFound) {
+            reply.header('Cache-Control', NOT_FOUND_CACHE_CONTROL())
+            return reply.status(404).send()
+          }
+          if (e instanceof Core.UnsupportedImageFormat) {
+            // 返回403是说明没有权限对一个非图像文件/不支持的图像文件执行此操作
+            return reply.status(403).send()
+          }
+          throw e
+        }
+
+        const type = await getResultPromise(getFileType(Core.getDerivedImageFilename(uuid)))
+        if (type) {
+          reply.header('Content-Type', type.mime)
+        }
+
+        reply.header('Cache-Control', FOUND_CACHE_CONTROL())
+        reply.header('Content-Disposition', contentDisposition(filename, {
+          type: 'inline'
+        }))
+        reply.sendFile(path.join('derived-images', uuid))
       }
     }
   )
