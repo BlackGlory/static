@@ -50,7 +50,7 @@
     "@types/lodash.omit": "^4.5.6",
     "@types/ms": "^0.7.31",
     "@types/node": "16",
-    "@types/sharp": "^0.29.5",
+    "@types/sharp": "^0.30.2",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.19.0",
     "@typescript-eslint/parser": "^5.19.0",
@@ -100,7 +100,7 @@
     "mrmime": "^1.0.0",
     "prom-client": "^14.0.1",
     "return-style": "^1.0.0",
-    "sharp": "v0.29",
+    "sharp": "0.30.3",
     "uuid": "^8.3.2",
     "value-getter": "^0.2.3"
   }
