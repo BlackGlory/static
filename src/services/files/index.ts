@@ -144,7 +144,7 @@ async function routes(server, { Core }) {
         if (query.contentType) {
           reply.header('Content-Type', query.contentType)
         } else {
-          const mimeType = mime.lookup(path.join(STORAGE(), 'files', filename))
+          const mimeType = await getMimeType(path.join(STORAGE(), 'files', filename))
           if (mimeType) {
             if (DISABLE_ACCESS_TO_ORIGINAL_IMAGES() && isImageMimeType(mimeType)) {
               return reply.status(403).send()
@@ -184,9 +184,9 @@ async function routes(server, { Core }) {
         if (query.contentType) {
           reply.header('Content-Type', query.contentType)
         } else {
-          const type = await getResultPromise(getFileType(Core.getDerivedFontFilename(uuid)))
-          if (type) {
-            reply.header('Content-Type', type.mime)
+          const mimeType = await getMimeType(Core.getDerivedFontFilename(uuid))
+          if (mimeType) {
+            reply.header('Content-Type', mimeType)
           }
         }
 
@@ -216,9 +216,9 @@ async function routes(server, { Core }) {
         if (query.contentType) {
           reply.header('Content-Type', query.contentType)
         } else {
-          const type = await getResultPromise(getFileType(Core.getDerivedImageFilename(uuid)))
-          if (type) {
-            reply.header('Content-Type', type.mime)
+          const mimeType = await getMimeType(Core.getDerivedImageFilename(uuid))
+          if (mimeType) {
+            reply.header('Content-Type', mimeType)
           }
         }
 
