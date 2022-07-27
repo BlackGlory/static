@@ -22,13 +22,6 @@ export const NODE_ENV: Getter<NodeEnv | undefined> =
     .memoize(getCache)
     .get()
 
-export const CI: Getter<boolean> =
-  env('CI')
-    .convert(toBool)
-    .default(false)
-    .memoize(getCache)
-    .get()
-
 export const HOST: Getter<string> =
   env('STATIC_HOST')
     .default('localhost')

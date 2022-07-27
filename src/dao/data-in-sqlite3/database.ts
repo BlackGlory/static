@@ -2,10 +2,9 @@ import Database from 'better-sqlite3'
 import type { Database as IDatabase } from 'better-sqlite3'
 import * as path from 'path'
 import { ensureDirSync } from 'extra-filesystem'
-import { NODE_ENV, NodeEnv, DATABASE } from '@env'
+import { DATABASE } from '@env'
 import { assert } from '@blackglory/errors'
 import { enableForeignKeys, migrateDatabase } from './utils'
-assert(NODE_ENV() !== NodeEnv.Test, 'NODE_ENV should not be test')
 
 let db: IDatabase | undefined
 

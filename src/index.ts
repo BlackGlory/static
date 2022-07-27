@@ -1,7 +1,7 @@
 import { go } from '@blackglory/go'
 import * as DataInSqlite3 from '@dao/data-in-sqlite3/database'
 import { buildServer } from './server'
-import { PORT, HOST, CI, STORAGE } from '@env'
+import { PORT, HOST, STORAGE, NODE_ENV, NodeEnv } from '@env'
 import { ensureDirSync } from 'extra-filesystem'
 import {
   getDerivedFontDirectory
@@ -34,7 +34,7 @@ go(async () => {
 
   const server = await buildServer()
   await server.listen(PORT(), HOST())
-  if (CI()) process.exit()
+  if (NODE_ENV() === NodeEnv.Test) process.exit()
 
   process.send?.('ready')
 })

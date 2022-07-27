@@ -18,6 +18,7 @@ RUN apk add --update --no-cache --virtual .build-deps \
 COPY . ./
 
 RUN yarn build \
+ && yarn bundle \
  && mkdir /database \
  && ln -s /database database \
  && mkdir /storage \

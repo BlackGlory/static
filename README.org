@@ -13,6 +13,7 @@ git clone https://github.com/BlackGlory/static
 cd static
 yarn install
 yarn build
+yarn bundle
 yarn --silent start
 #+END_SRC
 
