@@ -10,6 +10,7 @@
     "node": ">=16"
   },
   "scripts": {
+    "deduplicate": "yarn-deduplicate",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx --quiet src __tests__",
     "test": "jest --runInBand --config jest.config.js",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
@@ -72,7 +73,8 @@
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.0.0",
     "tscpaths": "^0.0.9",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "yarn-deduplicate": "^5.0.0"
   },
   "dependencies": {
     "@blackglory/better-sqlite3-migrations": "^0.1.9",
