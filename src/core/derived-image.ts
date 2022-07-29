@@ -3,10 +3,8 @@ import { DerivedImageDAO } from '@dao/data-in-sqlite3/derived-image'
 import { STORAGE } from '@env'
 import { pathExists, remove, move } from 'extra-filesystem'
 import * as path from 'path'
-import { Mutex, each } from 'extra-promise'
+import { reusePendingPromise, each } from 'extra-promise'
 import { v4 as createUUID } from 'uuid'
-import stringify from 'fast-json-stable-stringify'
-import { HashMap } from '@blackglory/structures'
 import { go } from '@blackglory/go'
 import { getStaticFilename, getMtimestamp } from './utils'
 import { NotFound, UnsupportedImageFormat } from './errors'
@@ -14,108 +12,97 @@ import { assert } from '@blackglory/errors'
 import { isObject, isString } from '@blackglory/types'
 import { readdir } from 'fs/promises'
 
-const targetToLock = new HashMap<
-  { filename: string; metadata: IDerivedImageMetadata }
-, { mutex: Mutex; users: number }
->(stringify)
-
 /**
  * @throws {NotFound} 
  * @throws {UnsupportedImageFormat}
  */
-export async function ensureDerivedImage({
-  filename
-, format
-, quality
-, maxHeight
-, maxWidth
-, multiple
-}: {
-  filename: string
-  format: 'jpeg' | 'webp'
-  quality: number
-  maxWidth?: number
-  maxHeight?: number
-  multiple?: number
-}): Promise<string> {
-  const absoluteFilename = getStaticFilename(filename)
-
-  const mtime = await getMtimestamp(absoluteFilename)
-  const imageMetadata = await go(async () => {
-    try {
-      return await readImageMetadata(absoluteFilename)
-    } catch (e) {
-      assert(isObject(e) && isString(e.message), 'e.message must be string')
-      if (e.message.includes('Input file is missing')) throw new NotFound()
-      if (e.message.includes('Input file contains unsupported image format')) {
-        throw new UnsupportedImageFormat()
-      }
-      throw e
-    }
-  })
-
-  const size = computeTargetSize(imageMetadata.size, {
-    maxHeight
+export const ensureDerivedImage = reusePendingPromise(
+  async function ensureDerivedImage({
+    filename
+  , format
+  , quality
+  , maxHeight
   , maxWidth
   , multiple
-  })
-  const derivedImageMetadata: IDerivedImageMetadata = {
-    format
-  , quality
-  , height: size.height
-  , width: size.width
-  }
+  }: {
+    filename: string
+    format: 'jpeg' | 'webp'
+    quality: number
+    maxWidth?: number
+    maxHeight?: number
+    multiple?: number
+  }): Promise<string> {
+    const absoluteFilename = getStaticFilename(filename)
+    const mtime = await getMtimestamp(absoluteFilename)
 
-  // 使用互斥锁是为了防止短时间内出现多个目标相同的生成操作,
-  // 以免数据库记录的覆盖(setDerivedImage)导致dervied-images目录出现不记载于数据库中的孤儿文件.
-  const target = { filename, metadata: derivedImageMetadata }
-  if (!targetToLock.has(target)) {
-    targetToLock.set(target, {
-      mutex: new Mutex()
-    , users: 0
+    const imageMetadata = await go(async () => {
+      try {
+        return await readImageMetadata(absoluteFilename)
+      } catch (e) {
+        assert(isObject(e) && isString(e.message), 'e.message must be string')
+        if (e.message.includes('Input file is missing')) throw new NotFound()
+        if (e.message.includes('Input file contains unsupported image format')) {
+          throw new UnsupportedImageFormat()
+        }
+        throw e
+      }
     })
-  }
-  const lock = targetToLock.get(target)!
-  lock.users++
-  try {
-    return await lock.mutex.acquire(async () => {
-      const uuid = await DerivedImageDAO.findDerivedImage(
-        filename
-      , mtime
-      , derivedImageMetadata
-      )
-      if (uuid && await pathExists(getDerivedImageFilename(uuid))) return uuid
 
-      const newUUID = createUUID()
-      const newDerivedFilename = getDerivedImageFilename(newUUID)
-      const tempFilename = `${newDerivedFilename}.tmp`
-      await processImage(absoluteFilename, tempFilename, derivedImageMetadata)
-      await move(tempFilename, newDerivedFilename)
-      await DerivedImageDAO.setDerivedImage(
-        newUUID
-      , filename
-      , mtime
-      , derivedImageMetadata
-      )
-
-      await removeOutdatedDerivedImages()
-
-      return newUUID
+    const size = computeTargetSize(imageMetadata.size, {
+      maxHeight
+    , maxWidth
+    , multiple
     })
-  } finally {
-    if (--lock.users === 0) {
-      targetToLock.delete(target)
+    const derivedImageMetadata: IDerivedImageMetadata = {
+      format
+    , quality
+    , height: size.height
+    , width: size.width
     }
-  }
 
-  async function removeOutdatedDerivedImages() {
-    const outdatedUUIDs = await DerivedImageDAO.removeOutdatedDerivedImages(
+    return await _ensureDerivedImage(filename, mtime, derivedImageMetadata)
+  }
+)
+
+const _ensureDerivedImage = reusePendingPromise(
+  async function _ensureDerivedImage(
+    filename: string
+  , mtime: number
+  , derivedImageMetadata: IDerivedImageMetadata
+  ): Promise<string> {
+    const uuid = await DerivedImageDAO.findDerivedImage(
       filename
     , mtime
+    , derivedImageMetadata
     )
-    await each(outdatedUUIDs, uuid => remove(getDerivedImageFilename(uuid)))
+    if (uuid && await pathExists(getDerivedImageFilename(uuid))) return uuid
+
+    const absoluteFilename = getStaticFilename(filename)
+    const newUUID = createUUID()
+    const newDerivedFilename = getDerivedImageFilename(newUUID)
+    const tempFilename = `${newDerivedFilename}.tmp`
+    await processImage(absoluteFilename, tempFilename, derivedImageMetadata)
+    await move(tempFilename, newDerivedFilename)
+    await DerivedImageDAO.setDerivedImage(
+      newUUID
+    , filename
+    , mtime
+    , derivedImageMetadata
+    )
+
+    await removeOutdatedDerivedImages()
+
+    return newUUID
+
+    async function removeOutdatedDerivedImages() {
+      const outdatedUUIDs = await DerivedImageDAO.removeOutdatedDerivedImages(
+        filename
+      , mtime
+      )
+      await each(outdatedUUIDs, uuid => remove(getDerivedImageFilename(uuid)))
+    }
   }
-}
+)
 
 export function getDerivedImageFilename(uuid: string): string {
   return path.join(getDerivedImageDirectory(), uuid)
