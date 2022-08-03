@@ -4,7 +4,7 @@ import { path as appRoot } from 'app-root-path'
 import { readMigrations } from 'migrations-file'
 import { migrate } from '@blackglory/better-sqlite3-migrations'
 
-export async function migrateDatabase(db: IDatabase) {
+export async function migrateDatabase(db: IDatabase): Promise<void> {
   const migrationsPath = path.join(appRoot, 'migrations/data-in-sqlite3')
   const migrations = await readMigrations(migrationsPath)
   migrate(db, migrations)
