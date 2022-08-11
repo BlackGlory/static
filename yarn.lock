@@ -308,15 +308,7 @@
   resolved "https://registry.yarnpkg.com/@blackglory/errors/-/errors-1.1.2.tgz#0577f01ca13850049efa0dd729e1a26e77e1dc3a"
   integrity sha512-THXSkTUB5eXSn7Yj01TgizNqw2rRnkNj0t6drNtmGQNJRoh4qLdSD0WUiM6ClGgKTdaBJbAarRqG/6Gn/NjLig==
 
-"@blackglory/errors@^2.1.0", "@blackglory/errors@^2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@blackglory/errors/-/errors-2.2.1.tgz#313af3a71a7c67bb043b48c7541794e44a5cf6a2"
-  integrity sha512-Wn4yVKq84cTLfDtwgOjex740eocotFMOvLFV56Ujt9fGRVvRW4dsdtRd+RcpNGxS2je1QSsNsNfc8uMDc4xDTg==
-  dependencies:
-    "@blackglory/pass" "^1.0.0"
-    iterable-operator "^1.0.0"
-
-"@blackglory/errors@^2.2.2":
+"@blackglory/errors@^2.1.0", "@blackglory/errors@^2.2.1", "@blackglory/errors@^2.2.2":
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/@blackglory/errors/-/errors-2.2.2.tgz#44dd18531b97c8b1e9892bb6022b92a2c0a112ae"
   integrity sha512-12BgxmxFfQso2aNaeGC1Sf0O73J6nRvqLRIp8BWUD7AMfhTra35f2IF2HNQHHV4suvx1zfVJfE7bvH9r56G5JA==
@@ -329,15 +321,7 @@
   resolved "https://registry.yarnpkg.com/@blackglory/go/-/go-0.1.1.tgz#c0c766a1381a72a1d1557f54e11208b4b287fb28"
   integrity sha512-ikJEGmHmj+HLQRKQVEHL6bPRsJfTiuQBP3vZS7uH8VkWDHHCiat8VOi0xH2+2adTVNDCsXZ2zrqiMPa3Y8xbuw==
 
-"@blackglory/go@^1.0.0", "@blackglory/go@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@blackglory/go/-/go-1.1.1.tgz#86b4a1197a621f64c79d3f63ef4ea8d4d8d9ca2a"
-  integrity sha512-hHzNj9QlAhy/pXWTi1BpdcTuSlDlk/RvuO7vM2sAIek5Bqa2I8E4I1FeSG25EmIC5ob9V3l8Xptno6ZUzEi04A==
-  dependencies:
-    extra-timers "^0.2.5"
-    justypes "^2.0.0"
-
-"@blackglory/go@^1.1.2":
+"@blackglory/go@^1.0.0", "@blackglory/go@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@blackglory/go/-/go-1.1.2.tgz#bb76676dc5938d2ef28daea82f198e7fee4bcc92"
   integrity sha512-kkd9yrftU3ODT84hVOg9U91cyH53/Mw1cbG4EEJ7d7Nb3k4DRu15BeBgyYUi/AttII6c8o88fnTTou+8wrMYzQ==
@@ -384,12 +368,7 @@
   resolved "https://registry.yarnpkg.com/@blackglory/pass/-/pass-0.1.0.tgz#c78c91c89d800bf4f2e3a16bbebd4116f5267d2f"
   integrity sha512-zhCUS+Jcb87yHAgZjmFCG9qwX94UAVepy6eBKsvigC4RYJhpxhNCOmmls/gU6fR4iCtWHj0q1ucX4lY8RCdVtA==
 
-"@blackglory/pass@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@blackglory/pass/-/pass-1.0.0.tgz#3b464433c0744c2dfa40ecbeaf6ab5fde1d13f83"
-  integrity sha512-+R6qGmCrls+swn00S/BKbC8NNoIeG3eGOi4P6i8YOQGaBKNpu4GqufmclYqlGMKYNjl3rbye1k/OMy8eppSfjw==
-
-"@blackglory/pass@^1.0.1":
+"@blackglory/pass@^1.0.0", "@blackglory/pass@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@blackglory/pass/-/pass-1.0.1.tgz#bbb7b6ac48ff23a06415bd0fe9fb1d713b194860"
   integrity sha512-uR857ZFp7QSzwYd8rV3N4sxtTNXXjcdSnIxGv/Krf/pwPCXRQVAwb5z2lpsS68XUS0utWTGZKseYs0AvcmFoRw==
@@ -407,18 +386,6 @@
     extra-lazy "^1.0.1"
     iterable-operator "^1.0.1"
     justypes "^2.0.0"
-
-"@blackglory/structures@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@blackglory/structures/-/structures-0.6.0.tgz#703bfee5a0a2c2debbbd5477e16e29f9cdf3c699"
-  integrity sha512-1Ckrma8j921+zKwrKZdpNYbbZpdnJOr11tNx/9JZLzV/LMWZhWBTcWUsikloCEFiRBEYi78QDolH5B4RLjwfLw==
-  dependencies:
-    "@blackglory/errors" "^2.2.1"
-    "@blackglory/types" "^1.1.0"
-    extra-timers "^0.2.5"
-    iterable-operator "^1.1.0"
-    justypes "^2.0.0"
-    rxjs "^7.5.5"
 
 "@blackglory/structures@^0.6.2":
   version "0.6.2"
@@ -3086,16 +3053,7 @@ eslint@^8.21.0:
     text-table "^0.2.0"
     v8-compile-cache "^2.0.3"
 
-espree@^9.3.2:
-  version "9.3.2"
-  resolved "https://registry.yarnpkg.com/espree/-/espree-9.3.2.tgz#f58f77bd334731182801ced3380a8cc859091596"
-  integrity sha512-D211tC7ZwouTIuY5x9XnS0E9sWNChB7IYKX/Xp5eQj3nFXhqmiUDB9q27y76oFl8jTg3pXcQx/bpxMfs3CIZbA==
-  dependencies:
-    acorn "^8.7.1"
-    acorn-jsx "^5.3.2"
-    eslint-visitor-keys "^3.3.0"
-
-espree@^9.3.3:
+espree@^9.3.2, espree@^9.3.3:
   version "9.3.3"
   resolved "https://registry.yarnpkg.com/espree/-/espree-9.3.3.tgz#2dd37c4162bb05f433ad3c1a52ddf8a49dc08e9d"
   integrity sha512-ORs1Rt/uQTqUKjDdGCyrtYxbazf5umATSf/K4qxjmZHORR6HJk+2s/2Pqe+Kk49HHINC/xNIrGfgh8sZcll0ng==
@@ -3292,17 +3250,7 @@ extra-fetch@^1.8.5:
     return-style "^0.12.5"
     value-getter "^0.2.2"
 
-extra-filesystem@^0.4.2:
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/extra-filesystem/-/extra-filesystem-0.4.4.tgz#72e88541878c01cbbe3ab8e40fe0810864bcb116"
-  integrity sha512-qzdIZQhyyBH2UIuAdu5ojBFykLwJnoxKqNORcYSGTDRt7kEOyWlIeOt7pRhC5M5J5/z8ZfIRvd5xGZ7/muzQQA==
-  dependencies:
-    "@blackglory/pass" "^1.0.0"
-    extra-promise "^2.2.0"
-    fs-extra "^10.1.0"
-    tmp-promise "^3.0.3"
-
-extra-filesystem@^0.4.5:
+extra-filesystem@^0.4.2, extra-filesystem@^0.4.5:
   version "0.4.5"
   resolved "https://registry.yarnpkg.com/extra-filesystem/-/extra-filesystem-0.4.5.tgz#179c74b72cf3a964d926007cf1ed094550b7d10f"
   integrity sha512-5XYNFqgDBVNI+e95hO1CPki8qD94gJHATEuE5AVYulRRauXAQcj37w3MoiHkTAkxZdDRHBQMJcGvL1NnfAWSCQ==
@@ -3311,15 +3259,6 @@ extra-filesystem@^0.4.5:
     extra-promise "^2.2.0"
     fs-extra "^10.1.0"
     tmp-promise "^3.0.3"
-
-extra-generator@^0.2.16:
-  version "0.2.16"
-  resolved "https://registry.yarnpkg.com/extra-generator/-/extra-generator-0.2.16.tgz#8b1478cc4ad7e181254407980d27e97e3c012b71"
-  integrity sha512-BDMFh/E9vdu8rUMug2Yi6oq7IqjIeCOboeJMuyPr2m/d61ehel6lSOPy6hEIG5X+4o7AHkkG8qrryyqg7G/o4Q==
-  dependencies:
-    "@blackglory/errors" "^2.2.1"
-    "@blackglory/go" "^1.0.0"
-    extra-lazy "^1.0.0"
 
 extra-generator@^0.2.17:
   version "0.2.17"
@@ -3330,12 +3269,7 @@ extra-generator@^0.2.17:
     "@blackglory/go" "^1.0.0"
     extra-lazy "^1.1.1"
 
-extra-lazy@^1.0.0, extra-lazy@^1.0.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/extra-lazy/-/extra-lazy-1.1.1.tgz#47983311aa339caf985c3b169565024585a44d5f"
-  integrity sha512-lkSqIqohXIo0MUByHLCk7EmFbMVrpoIltcBGV5TwZUJASsDgmvPUEruGR0Idp5TZaFwtS8B+ymBIrZpWJtZMhw==
-
-extra-lazy@^1.1.1, extra-lazy@^1.3.1:
+extra-lazy@^1.0.1, extra-lazy@^1.1.1, extra-lazy@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/extra-lazy/-/extra-lazy-1.3.1.tgz#f8d74084e8806a6c1906ef292b4d6834e0b35517"
   integrity sha512-C55Cr/dQWQHdwuMTF+ySNMYqydVclmKdgFHoC/8gTu5Zoe1Nrx6jgArwfZ+7jKU78VjDfhrkGAJ38ucf0lozeQ==
@@ -3348,24 +3282,7 @@ extra-logger@^0.5.5:
     "@blackglory/types" "^0.4.6"
     justypes "^0.1.4"
 
-extra-promise@^2.2.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/extra-promise/-/extra-promise-2.3.0.tgz#d531bfa3dd488550737b2f0892769df23f50f070"
-  integrity sha512-NjElMNLTlCALrye48lhpFbbeaIphY3bU6V44d3mS7VheZj/FPn8xBV7C66wUibd3zm4PCGhUxIoy/KgYSC+nOw==
-  dependencies:
-    "@blackglory/errors" "^2.2.1"
-    "@blackglory/go" "^1.1.1"
-    "@blackglory/pass" "^1.0.0"
-    "@blackglory/structures" "^0.6.0"
-    "@blackglory/types" "^1.1.0"
-    extra-generator "^0.2.16"
-    fast-json-stable-stringify "^2.1.0"
-    iterable-operator "^1.1.0"
-    justypes "^2.0.0"
-    lodash "^4.17.21"
-    return-style "^1.0.0"
-
-extra-promise@^2.4.0, extra-promise@^2.4.1:
+extra-promise@^2.2.0, extra-promise@^2.4.0, extra-promise@^2.4.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/extra-promise/-/extra-promise-2.4.1.tgz#76102bfa12c906b8bc963683371115e48097e48c"
   integrity sha512-ZP7KxLeqBXOELttWTpxrn50JRId8GlTytgXKo9EhX68oxmGCUd06vyEM/Gxhg8olxc/WWphaZo6m4WQ8DgNMoQ==
@@ -4530,16 +4447,7 @@ iterable-operator@^0.14.5:
     "@blackglory/go" "^0.1.0"
     "@blackglory/types" "^0.6.5"
 
-iterable-operator@^1.0.0, iterable-operator@^1.0.1, iterable-operator@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/iterable-operator/-/iterable-operator-1.1.0.tgz#4c53756c174c56fe1787993658c710941f22a387"
-  integrity sha512-HA0GAC2axdxpe3agoEvxP5Io0xYhUSuL6NeS5o5MXOujJQa/tnUwvZEFqTIPsuARDoHkqUHg6aNQMWWwpwNouQ==
-  dependencies:
-    "@blackglory/errors" "^2.2.1"
-    "@blackglory/go" "^1.0.0"
-    "@blackglory/types" "^1.1.0"
-
-iterable-operator@^1.2.0:
+iterable-operator@^1.0.1, iterable-operator@^1.1.0, iterable-operator@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/iterable-operator/-/iterable-operator-1.2.0.tgz#5d4d099b54769a36fa548c7fd33a6121dce3511a"
   integrity sha512-rwdj2N+AZ00aXFKPuo0QEuRODBSseGN4ZOhs3IljCTK24JzzSbkZPA4k/9tSiu6RaehJtDZNRgncuiyEg+F4+w==
@@ -5084,12 +4992,7 @@ justypes@^0.1.4, justypes@^0.1.6:
   resolved "https://registry.yarnpkg.com/justypes/-/justypes-0.1.6.tgz#4878d68cc75a9b8c6f38e62d696457e40c093e90"
   integrity sha512-J3C64F3cPR9cfheVhO6c+Qt6TE5ey3vThrQvcvj7uwJpBq2g99TCOk86YhrhTaqQnIaVb5ww2VhMUmJgAF5YRg==
 
-justypes@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/justypes/-/justypes-2.0.0.tgz#e1a09c8c99e08a54ac3a48bb97cb259d5082f907"
-  integrity sha512-WzP+uveN67uQE9RsctKxqJrfBPv3aGyKnUasxaPCdXQM1voWtMObWHzpns4PjNoDFw0EvzLVoTShKn+ihpeRTA==
-
-justypes@^2.0.1:
+justypes@^2.0.0, justypes@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/justypes/-/justypes-2.0.1.tgz#f1468bc13dcf106e488cc8ab64a48c6db0e66ddc"
   integrity sha512-hijVbniXf9DCtKaBIdJLqLn7uHjQ7KEFILiM9nfWwDdvej++eGMBqSCSAGXJvKjga00jfCmM5iyrhzBZybrTvQ==
