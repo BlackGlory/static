@@ -1,11 +1,12 @@
 import { getDatabase } from '../database'
+import { withLazyStatic, lazyStatic } from 'extra-lazy'
 
-export function findDerivedImage(
+export const findDerivedImage = withLazyStatic(function (
   filename: string
 , mtime: number
 , metadata: IDerivedImageMetadata
 ): string | null {
-  const row: { uuid: string } | null = getDatabase().prepare(`
+  const row: { uuid: string } | null = lazyStatic(() => getDatabase().prepare(`
     SELECT uuid
       FROM derived_image
      WHERE filename = $filename
@@ -14,7 +15,7 @@ export function findDerivedImage(
        AND quality = $quality
        AND width = $width
        AND height = $height
-  `).get({ filename, mtime, ...metadata })
+  `), [getDatabase()]).get({ filename, mtime, ...metadata })
 
   return row?.uuid ?? null
-}
+})

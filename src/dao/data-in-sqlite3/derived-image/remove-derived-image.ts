@@ -1,8 +1,9 @@
 import { getDatabase } from '../database'
+import { withLazyStatic, lazyStatic } from 'extra-lazy'
 
-export function removeDerivedImage(uuid: string): void {
-  getDatabase().prepare(`
+export const removeDerivedImage = withLazyStatic(function (uuid: string): void {
+  lazyStatic(() => getDatabase().prepare(`
     DELETE FROM derived_image
      WHERE uuid = $uuid
-  `).run({ uuid })
-}
+  `), [getDatabase()]).run({ uuid })
+})

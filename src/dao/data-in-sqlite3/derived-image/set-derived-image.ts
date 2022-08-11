@@ -1,15 +1,16 @@
 import { getDatabase } from '../database'
+import { withLazyStatic, lazyStatic } from 'extra-lazy'
 
-export function setDerivedImage(
+export const setDerivedImage = withLazyStatic(function (
   uuid: string
 , filename: string
 , mtime: number
 , metadata: IDerivedImageMetadata
 ): void {
-  getDatabase().prepare(`
+  lazyStatic(() => getDatabase().prepare(`
     INSERT INTO derived_image (uuid, filename, mtime, format, quality, width, height)
     VALUES ($uuid, $filename, $mtime, $format, $quality, $width, $height)
         ON CONFLICT(filename, mtime, format, quality, width, height)
         DO UPDATE SET uuid = $uuid
-  `).run({ uuid, filename, mtime, ...metadata })
-}
+  `), [getDatabase()]).run({ uuid, filename, mtime, ...metadata })
+})

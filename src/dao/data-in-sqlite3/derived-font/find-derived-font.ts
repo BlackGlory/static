@@ -1,19 +1,20 @@
 import { getDatabase } from '../database'
 import { normalizeSubset } from './normalize-subset'
+import { withLazyStatic, lazyStatic } from 'extra-lazy'
 
-export function findDerivedFont(
+export const findDerivedFont = withLazyStatic(function (
   filename: string
 , mtime: number
 , metadata: IDerivedFontMetadata
 ): string | null {
-  const row: { uuid: string } | null = getDatabase().prepare(`
+  const row: { uuid: string } | null = lazyStatic(() => getDatabase().prepare(`
     SELECT uuid
       FROM derived_font
      WHERE filename = $filename
        AND mtime = $mtime
        AND format = $format
        AND subset = $subset
-  `).get({
+  `), [getDatabase()]).get({
     filename
   , mtime
   , format: metadata.format
@@ -21,4 +22,4 @@ export function findDerivedFont(
   })
 
   return row?.uuid ?? null
-}
+})

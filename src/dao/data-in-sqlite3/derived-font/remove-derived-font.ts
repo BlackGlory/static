@@ -1,8 +1,9 @@
 import { getDatabase } from '../database'
+import { withLazyStatic, lazyStatic } from 'extra-lazy'
 
-export function removeDerivedFont(uuid: string): void {
-  getDatabase().prepare(`
+export const removeDerivedFont = withLazyStatic(function (uuid: string): void {
+  lazyStatic(() => getDatabase().prepare(`
     DELETE FROM derived_font
      WHERE uuid = $uuid
-  `).run({ uuid })
-}
+  `), [getDatabase()]).run({ uuid })
+})
