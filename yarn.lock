@@ -3230,6 +3230,14 @@ extglob@^2.0.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
+extra-defer@^0.2.2:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/extra-defer/-/extra-defer-0.2.4.tgz#3e57231592e8afc2813edb8dacc8962244ad7b4f"
+  integrity sha512-irocJqlufduAXO/SYY77dyZH51sBNhsqoHcfcnlQl+6ej7pVAGeWx547bcF+jInmFGfo5+M42Me7/GxRxX6vWg==
+  dependencies:
+    "@blackglory/pass" "^1.0.1"
+    extra-promise "^2.4.0"
+
 extra-fetch@^1.8.5:
   version "1.8.5"
   resolved "https://registry.yarnpkg.com/extra-fetch/-/extra-fetch-1.8.5.tgz#bb75b3eb4dd98e0cbe5db19333d0987a64b9dcdd"
@@ -7839,3 +7847,12 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
+
+you-died@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/you-died/-/you-died-0.4.2.tgz#ebc71151436f6897d1433181304dc474b587e29c"
+  integrity sha512-5w45Og3PXfgMjwU6GZSq1yf+YhEBlxIUd7wuDaSlON1dU4BoBE3NsRcvlt0usBlnkH9z+nF/lIXVkAX8le7SWg==
+  dependencies:
+    "@blackglory/errors" "^2.2.1"
+    extra-defer "^0.2.2"
+    justypes "^2.0.0"

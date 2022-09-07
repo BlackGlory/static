@@ -12,13 +12,7 @@ import {
 , clearAllTemporaryDerivedImages
 } from '@core/derived-image'
 import { getStaticDirectory } from '@core/utils'
-
-process.on('exit', () => {
-  DataInSqlite3.closeDatabase()
-})
-process.on('SIGHUP', () => process.exit(128 + 1))
-process.on('SIGINT', () => process.exit(128 + 2))
-process.on('SIGTERM', () => process.exit(128 + 15))
+import { youDied } from 'you-died'
 
 go(async () => {
   ensureDirSync(STORAGE())
@@ -30,6 +24,7 @@ go(async () => {
   await clearAllTemporaryDerivedImages()
 
   DataInSqlite3.openDatabase()
+  youDied(() => DataInSqlite3.closeDatabase())
   await DataInSqlite3.prepareDatabase()
 
   const server = await buildServer()

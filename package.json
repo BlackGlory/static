@@ -108,6 +108,7 @@
     "return-style": "^1.0.0",
     "sharp": "0.30.7",
     "uuid": "^8.3.2",
-    "value-getter": "^0.2.4"
+    "value-getter": "^0.2.4",
+    "you-died": "^0.4.2"
   }
 }
