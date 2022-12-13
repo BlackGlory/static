@@ -9,7 +9,7 @@ import {
 } from '@env'
 import contentDisposition from 'content-disposition'
 import * as path from 'path'
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 import { fromFile as getFileType } from 'file-type'
 import { getResultPromise } from 'return-style'
 import mime from 'mrmime'
