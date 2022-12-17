@@ -2,7 +2,6 @@ import * as DAO from '@dao/data-in-sqlite3/derived-image/remove-outdated-derived
 import { initializeDatabases, clearDatabases } from '@test/utils'
 import { hasRawDerviedImage, setRawDerivedImage } from './utils'
 import { v4 as createUUID } from 'uuid'
-import 'jest-extended'
 
 jest.mock('@dao/data-in-sqlite3/database')
 
@@ -35,7 +34,7 @@ describe('removeOutdatedDerivedImage(filename: string, newMtime: number): string
     const rawDerivedImage2Exists = hasRawDerviedImage(derivedImage2.uuid)
 
     expect(result).toEqual([derivedImage1.uuid])
-    expect(rawDerivedImage1Exists).toBeFalse()
-    expect(rawDerivedImage2Exists).toBeTrue()
+    expect(rawDerivedImage1Exists).toBe(false)
+    expect(rawDerivedImage2Exists).toBe(true)
   })
 })

@@ -2,7 +2,6 @@ import * as DAO from '@dao/data-in-sqlite3/derived-image/remove-derived-image'
 import { initializeDatabases, clearDatabases } from '@test/utils'
 import { hasRawDerviedImage, setRawDerivedImage } from './utils'
 import { v4 as createUUID } from 'uuid'
-import 'jest-extended'
 
 jest.mock('@dao/data-in-sqlite3/database')
 
@@ -26,7 +25,7 @@ describe('removeDerivedImage(uuid: string): void', () => {
       const rawDerivedImageExists = hasRawDerviedImage(derivedImage.uuid)
 
       expect(result).toBeUndefined()
-      expect(rawDerivedImageExists).toBeFalse()
+      expect(rawDerivedImageExists).toBe(false)
     })
   })
 
@@ -38,7 +37,7 @@ describe('removeDerivedImage(uuid: string): void', () => {
       const rawDerivedImageExists = hasRawDerviedImage(uuid)
 
       expect(result).toBeUndefined()
-      expect(rawDerivedImageExists).toBeFalse()
+      expect(rawDerivedImageExists).toBe(false)
     })
   })
 })

@@ -2,7 +2,6 @@ import * as DAO from '@dao/data-in-sqlite3/derived-font/remove-outdated-derived-
 import { initializeDatabases, clearDatabases } from '@test/utils'
 import { hasRawDerviedFont, setRawDerivedFont } from './utils'
 import { v4 as createUUID } from 'uuid'
-import 'jest-extended'
 
 jest.mock('@dao/data-in-sqlite3/database')
 
@@ -31,7 +30,7 @@ describe('removeOutdatedDerivedFont(filename: string, newMtime: number): string[
     const rawDerivedFont2Exists = hasRawDerviedFont(derivedFont2.uuid)
 
     expect(result).toEqual([derivedFont1.uuid])
-    expect(rawDerivedFont1Exists).toBeFalse()
-    expect(rawDerivedFont2Exists).toBeTrue()
+    expect(rawDerivedFont1Exists).toBe(false)
+    expect(rawDerivedFont2Exists).toBe(true)
   })
 })

@@ -2,7 +2,6 @@ import * as DAO from '@dao/data-in-sqlite3/derived-font/find-derived-font'
 import { initializeDatabases, clearDatabases } from '@test/utils'
 import { setRawDerivedFont } from './utils'
 import { v4 as createUUID } from 'uuid'
-import 'jest-extended'
 
 jest.mock('@dao/data-in-sqlite3/database')
 

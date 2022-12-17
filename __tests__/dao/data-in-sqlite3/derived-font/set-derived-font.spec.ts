@@ -2,7 +2,6 @@ import * as DAO from '@dao/data-in-sqlite3/derived-font/set-derived-font'
 import { initializeDatabases, clearDatabases } from '@test/utils'
 import { getRawDerivedFont, hasRawDerviedFont, setRawDerivedFont } from './utils'
 import { v4 as createUUID } from 'uuid'
-import 'jest-extended'
 
 jest.mock('@dao/data-in-sqlite3/database')
 
@@ -31,7 +30,7 @@ describe(`
       const rawDerviedFont = getRawDerivedFont(uuid)
 
       expect(result).toBeUndefined()
-      expect(oldDerivedFontExists).toBeFalse()
+      expect(oldDerivedFontExists).toBe(false)
       expect(rawDerviedFont).toEqual({
         uuid
       , filename: 'filename'

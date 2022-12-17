@@ -2,7 +2,6 @@ import * as DAO from '@dao/data-in-sqlite3/derived-image/set-derived-image'
 import { initializeDatabases, clearDatabases } from '@test/utils'
 import { getRawDerivedImage, hasRawDerviedImage, setRawDerivedImage } from './utils'
 import { v4 as createUUID } from 'uuid'
-import 'jest-extended'
 
 jest.mock('@dao/data-in-sqlite3/database')
 
@@ -35,7 +34,7 @@ describe(`
       const rawDerviedImage = getRawDerivedImage(uuid)
 
       expect(result).toBeUndefined()
-      expect(oldDerivedImageExists).toBeFalse()
+      expect(oldDerivedImageExists).toBe(false)
       expect(rawDerviedImage).toEqual({
         uuid
       , filename: 'filename'
