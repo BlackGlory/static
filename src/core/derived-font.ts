@@ -12,7 +12,7 @@ import { isObject, isString } from '@blackglory/prelude'
 import { readdir } from 'fs/promises'
 
 /**
- * @throws {NotFound} 
+ * @throws {NotFound}
  * @throws {UnsupportedFontFormat}
  */
 export const ensureDerivedFont = reusePendingPromises(
