@@ -1,7 +1,7 @@
-import { setDerivedImage } from './set-derived-image'
-import { findDerivedImage } from './find-derived-image'
-import { removeDerivedImage } from './remove-derived-image'
-import { removeOutdatedDerivedImages } from './remove-outdated-derived-images'
+import { setDerivedImage } from './set-derived-image.js'
+import { findDerivedImage } from './find-derived-image.js'
+import { removeDerivedImage } from './remove-derived-image.js'
+import { removeOutdatedDerivedImages } from './remove-outdated-derived-images.js'
 
 export const DerivedImageDAO: IDerivedImageDAO = {
   setDerivedImage: asyncify(setDerivedImage)

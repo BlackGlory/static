@@ -1,11 +1,9 @@
-import { initializeDatabases, clearDatabases } from '@test/utils'
+import { initializeDatabases, clearDatabases } from '@test/utils.js'
 import {
   clearAllTemporaryDerivedImages
 , getDerivedImageFilename
-} from '@core/derived-image'
+} from '@core/derived-image.js'
 import { ensureFile, pathExists } from 'extra-filesystem'
-
-jest.mock('@dao/data-in-sqlite3/database')
 
 beforeEach(initializeDatabases)
 afterEach(clearDatabases)

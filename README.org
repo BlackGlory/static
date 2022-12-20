@@ -120,11 +120,3 @@ const urlSearchParams = new URLSearchParams(params)
 urlSearchParams.sort()
 const signature = hmacSHA256(secret, urlSearchParams.toString())
 #+END_SRC
-
-** HTTP/2
-Static supports HTTP/2 for multiplexed reverse proxy connections,
-which can be enabled by setting the environment variable =STATIC_HTTP2=true=.
-
-This HTTP/2 support does not provide an automatic upgrade from HTTP/1.1,
-nor does it provide HTTPS.
-Therefore, the =--http2-prior-knowledge= option needs to be enabled when testing in local curl.

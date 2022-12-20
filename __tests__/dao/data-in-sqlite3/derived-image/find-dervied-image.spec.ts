@@ -1,9 +1,7 @@
-import * as DAO from '@dao/data-in-sqlite3/derived-image/find-derived-image'
-import { initializeDatabases, clearDatabases } from '@test/utils'
-import { setRawDerivedImage } from './utils'
+import * as DAO from '@dao/data-in-sqlite3/derived-image/find-derived-image.js'
+import { initializeDatabases, clearDatabases } from '@test/utils.js'
+import { setRawDerivedImage } from './utils.js'
 import { v4 as createUUID } from 'uuid'
-
-jest.mock('@dao/data-in-sqlite3/database')
 
 beforeEach(initializeDatabases)
 afterEach(clearDatabases)

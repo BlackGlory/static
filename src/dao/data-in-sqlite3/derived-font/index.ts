@@ -1,8 +1,8 @@
-import { setDerivedFont } from './set-derived-font'
-import { findDerivedFont } from './find-derived-font'
-import { removeDerivedFont } from './remove-derived-font'
-import { removeOutdatedDerivedFonts } from './remove-outdated-derived-fonts'
-import { normalizeSubset } from './normalize-subset'
+import { setDerivedFont } from './set-derived-font.js'
+import { findDerivedFont } from './find-derived-font.js'
+import { removeDerivedFont } from './remove-derived-font.js'
+import { removeOutdatedDerivedFonts } from './remove-outdated-derived-fonts.js'
+import { normalizeSubset } from './normalize-subset.js'
 
 export const DerviedFontDAO: IDerivedFontDAO = {
   normalizeSubset

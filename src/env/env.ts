@@ -1,8 +1,8 @@
 import { ValueGetter } from 'value-getter'
 import { Getter } from 'justypes'
-import { getCache } from '@env/cache'
+import { getCache } from '@env/cache.js'
 import * as path from 'path'
-import { path as appRoot } from 'app-root-path'
+import { getAppRoot } from '@src/utils.js'
 
 export enum NodeEnv {
   Test
@@ -35,22 +35,15 @@ export const PORT: Getter<number> =
     .memoize(getCache)
     .get()
 
-export const HTTP2: Getter<boolean> =
-  env('STATIC_HTTP2')
-    .convert(toBool)
-    .default(false)
-    .memoize(getCache)
-    .get()
-
 export const DATABASE: Getter<string> =
   env('STATIC_DATABASE')
-    .default(path.join(appRoot, 'database'))
+    .default(path.join(getAppRoot(), 'database'))
     .memoize(getCache)
     .get()
 
 export const STORAGE: Getter<string> =
   env('STATIC_STORAGE')
-    .default(path.join(appRoot, 'storage'))
+    .default(path.join(getAppRoot(), 'storage'))
     .memoize(getCache)
     .get()
 

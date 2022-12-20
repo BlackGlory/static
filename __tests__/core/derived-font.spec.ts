@@ -1,11 +1,9 @@
-import { initializeDatabases, clearDatabases } from '@test/utils'
+import { initializeDatabases, clearDatabases } from '@test/utils.js'
 import {
   clearAllTemporaryDerivedFonts
 , getDerivedFontFilename
-} from '@core/derived-font'
+} from '@core/derived-font.js'
 import { ensureFile, pathExists } from 'extra-filesystem'
-
-jest.mock('@dao/data-in-sqlite3/database')
 
 beforeEach(initializeDatabases)
 afterEach(clearDatabases)

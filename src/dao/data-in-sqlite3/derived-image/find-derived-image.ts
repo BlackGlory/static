@@ -1,4 +1,4 @@
-import { getDatabase } from '../database'
+import { getDatabase } from '../database.js'
 import { withLazyStatic, lazyStatic } from 'extra-lazy'
 
 export const findDerivedImage = withLazyStatic(function (

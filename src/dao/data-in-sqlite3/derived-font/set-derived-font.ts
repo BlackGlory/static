@@ -1,5 +1,5 @@
-import { getDatabase } from '../database'
-import { normalizeSubset } from './normalize-subset'
+import { getDatabase } from '../database.js'
+import { normalizeSubset } from './normalize-subset.js'
 import { withLazyStatic, lazyStatic } from 'extra-lazy'
 
 export const setDerivedFont = withLazyStatic(function (

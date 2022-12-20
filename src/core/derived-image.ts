@@ -1,22 +1,22 @@
-import { computeTargetSize, processImage, readImageMetadata } from './image'
-import { DerivedImageDAO } from '@dao/data-in-sqlite3/derived-image'
-import { STORAGE } from '@env'
+import { computeTargetSize, processImage, readImageMetadata } from './image.js'
+import { DerivedImageDAO } from '@dao/data-in-sqlite3/derived-image/index.js'
+import { STORAGE } from '@env/index.js'
 import { pathExists, remove, move } from 'extra-filesystem'
 import * as path from 'path'
-import { reusePendingPromise, each } from 'extra-promise'
+import { reusePendingPromises, each } from 'extra-promise'
 import { v4 as createUUID } from 'uuid'
-import { go } from '@blackglory/go'
-import { getStaticFilename, getMtimestamp } from './utils'
-import { NotFound, UnsupportedImageFormat } from './errors'
+import { go } from '@blackglory/prelude'
+import { getStaticFilename, getMtimestamp } from './utils.js'
+import { NotFound, UnsupportedImageFormat } from './errors.js'
 import { assert } from '@blackglory/errors'
-import { isObject, isString } from '@blackglory/types'
+import { isObject, isString } from '@blackglory/prelude'
 import { readdir } from 'fs/promises'
 
 /**
  * @throws {NotFound} 
  * @throws {UnsupportedImageFormat}
  */
-export const ensureDerivedImage = reusePendingPromise(
+export const ensureDerivedImage = reusePendingPromises(
   async function ensureDerivedImage({
     filename
   , format
@@ -64,7 +64,7 @@ export const ensureDerivedImage = reusePendingPromise(
   }
 )
 
-const _ensureDerivedImage = reusePendingPromise(
+const _ensureDerivedImage = reusePendingPromises(
   async function _ensureDerivedImage(
     filename: string
   , mtime: number

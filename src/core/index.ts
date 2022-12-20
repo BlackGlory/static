@@ -1,7 +1,7 @@
-import { validateSignature } from './signature'
-import { ensureDerivedImage, getDerivedImageFilename } from './derived-image'
-import { ensureDerivedFont, getDerivedFontFilename } from './derived-font'
-import { NotFound, UnsupportedImageFormat, UnsupportedFontFormat } from './errors'
+import { validateSignature } from './signature.js'
+import { ensureDerivedImage, getDerivedImageFilename } from './derived-image.js'
+import { ensureDerivedFont, getDerivedFontFilename } from './derived-font.js'
+import { NotFound, UnsupportedImageFormat, UnsupportedFontFormat } from './errors.js'
 
 export const Core: ICore = {
   validateSignature

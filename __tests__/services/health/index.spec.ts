@@ -1,9 +1,7 @@
-import { startService, stopService, getAddress } from '@test/utils'
+import { startService, stopService, getAddress } from '@test/utils.js'
 import { fetch } from 'extra-fetch'
 import { get } from 'extra-request'
-import { url, pathname } from 'extra-request/lib/es2018/transformers'
-
-jest.mock('@dao/data-in-sqlite3/database')
+import { url, pathname } from 'extra-request/transformers'
 
 beforeEach(startService)
 afterEach(stopService)

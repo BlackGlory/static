@@ -8,7 +8,7 @@ export const routes: FastifyPluginAsync = async function routes(server) {
       Disallow: /
     `
 
-    reply
+    return reply
       .header('Content-Type', 'text/plain')
       .send(text)
   })

@@ -1,19 +1,17 @@
-import { startService, stopService, getAddress } from '@test/utils'
+import { startService, stopService, getAddress } from '@test/utils.js'
 import { fetch } from 'extra-fetch'
 import { get } from 'extra-request'
-import { url, pathname, searchParams } from 'extra-request/lib/es2018/transformers'
+import { url, pathname, searchParams } from 'extra-request/transformers'
 import * as path from 'path'
-import { path as appRoot } from 'app-root-path'
-import { NOT_FOUND_CACHE_CONTROL, FOUND_CACHE_CONTROL } from '@env'
-import { computeSignature } from '@core/signature'
+import { getAppRoot } from '@src/utils.js'
+import { NOT_FOUND_CACHE_CONTROL, FOUND_CACHE_CONTROL } from '@env/index.js'
+import { computeSignature } from '@core/signature.js'
 import sharp from 'sharp'
-import fontkit from 'fontkit'
-
-jest.mock('@dao/data-in-sqlite3/database')
+import * as fontkit from 'fontkit'
 
 beforeEach(async () => {
   process.env.STATIC_SECRET = 'secret'
-  process.env.STATIC_STORAGE = path.join(appRoot, '__tests__/fixtures')
+  process.env.STATIC_STORAGE = path.join(getAppRoot(), '__tests__/fixtures')
   await startService()
 })
 afterEach(stopService)

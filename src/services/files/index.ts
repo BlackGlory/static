@@ -1,18 +1,18 @@
 import { FastifyPluginAsync } from 'fastify'
-import fastifyStatic from 'fastify-static'
+import fastifyStatic from '@fastify/static'
 import {
   STORAGE
 , DISABLE_ACCESS_TO_ORIGINAL_IMAGES
 , DISABLE_ACCESS_TO_ORIGINAL_FONTS
 , FOUND_CACHE_CONTROL
 , NOT_FOUND_CACHE_CONTROL
-} from '@env'
+} from '@env/index.js'
 import contentDisposition from 'content-disposition'
 import * as path from 'path'
-import omit from 'lodash/omit'
-import { fromFile as getFileType } from 'file-type'
+import omit from 'lodash/omit.js'
+import { fileTypeFromFile as getFileType } from 'file-type'
 import { getResultPromise } from 'return-style'
-import mime from 'mrmime'
+import * as mime from 'mrmime'
 
 interface ICommonQuery {
   contentType?: string
@@ -44,8 +44,9 @@ export const routes: FastifyPluginAsync<{ Core: ICore }> =
 async function routes(server, { Core }) {
   // 用server.setErrorHandler替代setNotFoundHandler的尝试失败了, 无法通过测试.
   server.setNotFoundHandler((req, reply) => {
-    reply.header('Cache-Control', NOT_FOUND_CACHE_CONTROL())
-    reply.status(404).send()
+    reply
+      .header('Cache-Control', NOT_FOUND_CACHE_CONTROL())
+      .status(404).send()
   })
 
   server.register(fastifyStatic, {
@@ -126,18 +127,22 @@ async function routes(server, { Core }) {
 
       if ('signature' in req.query) {
         if (!Core.validateSignature(req.query.signature, omit(req.query, ['signature']))) {
-          return reply.status(403).send()
+          return reply
+            .status(403)
+            .send()
         }
 
         if (isIImageProcessQuery(req.query)) {
-          await sendProcessedImage(req.query, filename)
+          return await sendProcessedImage(req.query, filename)
         } else if (isFontProcessQuery(req.query)) {
-          await sendProcessedFont(req.query, filename)
+          return await sendProcessedFont(req.query, filename)
         } else {
-          reply.status(400).send()
+          return reply
+            .status(400)
+            .send()
         }
       } else {
-        await sendFile(req.query, filename)
+        return await sendFile(req.query, filename)
       }
 
       async function sendFile(query: ICommonQuery, filename: string) {
@@ -147,22 +152,25 @@ async function routes(server, { Core }) {
           const mimeType = await getMimeType(path.join(STORAGE(), 'files', filename))
           if (mimeType) {
             if (DISABLE_ACCESS_TO_ORIGINAL_IMAGES() && isImageMimeType(mimeType)) {
-              return reply.status(403).send()
+              return reply
+                .status(403)
+                .send()
             }
 
             if (DISABLE_ACCESS_TO_ORIGINAL_FONTS() && isFontMimeType(mimeType)) {
-              return reply.status(403).send()
+              return reply
+                .status(403)
+                .send()
             }
 
             reply.header('Content-Type', mimeType)
           }
         }
 
-        reply.header('Cache-Control', FOUND_CACHE_CONTROL())
-        reply.header('Content-Disposition', contentDisposition(filename, {
-          type: 'inline'
-        }))
-        reply.sendFile(path.join('files', filename))
+        return reply
+          .header('Cache-Control', FOUND_CACHE_CONTROL())
+          .header('Content-Disposition', contentDisposition(filename, { type: 'inline' }))
+          .sendFile(path.join('files', filename))
       }
 
       async function sendProcessedFont(query: IFontProcessingQuery, filename: string) {
@@ -171,12 +179,16 @@ async function routes(server, { Core }) {
           uuid = await Core.ensureDerivedFont({ ...query, filename })
         } catch (e) {
           if (e instanceof Core.NotFound) {
-            reply.header('Cache-Control', NOT_FOUND_CACHE_CONTROL())
-            return reply.status(404).send()
+            return reply
+              .header('Cache-Control', NOT_FOUND_CACHE_CONTROL())
+              .status(404)
+              .send()
           }
           if (e instanceof Core.UnsupportedFontFormat) {
             // 返回403是说明没有权限对一个非字体文件/不支持的字体文件执行此操作
-            return reply.status(403).send()
+            return reply
+              .status(403)
+              .send()
           }
           throw e
         }
@@ -190,11 +202,10 @@ async function routes(server, { Core }) {
           }
         }
 
-        reply.header('Cache-Control', FOUND_CACHE_CONTROL())
-        reply.header('Content-Disposition', contentDisposition(filename, {
-          type: 'inline'
-        }))
-        reply.sendFile(path.join('derived-fonts', uuid))
+        return reply
+          .header('Cache-Control', FOUND_CACHE_CONTROL())
+          .header('Content-Disposition', contentDisposition(filename, { type: 'inline' }))
+          .sendFile(path.join('derived-fonts', uuid))
       }
 
       async function sendProcessedImage(query: IImageProcessingQuery, filename: string) {
@@ -203,12 +214,16 @@ async function routes(server, { Core }) {
           uuid = await Core.ensureDerivedImage({ ...query, filename })
         } catch (e) {
           if (e instanceof Core.NotFound) {
-            reply.header('Cache-Control', NOT_FOUND_CACHE_CONTROL())
-            return reply.status(404).send()
+            return reply
+              .header('Cache-Control', NOT_FOUND_CACHE_CONTROL())
+              .status(404)
+              .send()
           }
           if (e instanceof Core.UnsupportedImageFormat) {
             // 返回403是说明没有权限对一个非图像文件/不支持的图像文件执行此操作
-            return reply.status(403).send()
+            return reply
+              .status(403)
+              .send()
           }
           throw e
         }
@@ -222,11 +237,10 @@ async function routes(server, { Core }) {
           }
         }
 
-        reply.header('Cache-Control', FOUND_CACHE_CONTROL())
-        reply.header('Content-Disposition', contentDisposition(filename, {
-          type: 'inline'
-        }))
-        reply.sendFile(path.join('derived-images', uuid))
+        return reply
+          .header('Cache-Control', FOUND_CACHE_CONTROL())
+          .header('Content-Disposition', contentDisposition(filename, { type: 'inline' }))
+          .sendFile(path.join('derived-images', uuid))
       }
     }
   )

@@ -1,5 +1,5 @@
 import * as crypto from 'crypto'
-import { SECRET } from '@env'
+import { SECRET } from '@env/index.js'
 
 export function validateSignature(
   signature: string

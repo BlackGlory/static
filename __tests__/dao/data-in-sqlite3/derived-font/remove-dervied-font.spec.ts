@@ -1,9 +1,7 @@
-import * as DAO from '@dao/data-in-sqlite3/derived-font/remove-derived-font'
-import { initializeDatabases, clearDatabases } from '@test/utils'
-import { hasRawDerviedFont, setRawDerivedFont } from './utils'
+import * as DAO from '@dao/data-in-sqlite3/derived-font/remove-derived-font.js'
+import { initializeDatabases, clearDatabases } from '@test/utils.js'
+import { hasRawDerviedFont, setRawDerivedFont } from './utils.js'
 import { v4 as createUUID } from 'uuid'
-
-jest.mock('@dao/data-in-sqlite3/database')
 
 beforeEach(initializeDatabases)
 afterEach(clearDatabases)

@@ -1,6 +1,6 @@
 import sharp from 'sharp'
 import { assert } from '@blackglory/errors'
-import { isntUndefined } from '@blackglory/types'
+import { isntUndefined } from '@blackglory/prelude'
 import { createWriteStream } from 'fs'
 import { promisify } from 'util'
 import * as stream from 'stream'

@@ -1,21 +1,21 @@
 import * as path from 'path'
-import { STORAGE } from '@env'
-import { DerviedFontDAO } from '@dao/data-in-sqlite3/derived-font'
+import { STORAGE } from '@env/index.js'
+import { DerviedFontDAO } from '@dao/data-in-sqlite3/derived-font/index.js'
 import { pathExists, remove, move } from 'extra-filesystem'
 import { v4 as createUUID } from 'uuid'
-import { reusePendingPromise, each } from 'extra-promise'
-import { processFont } from './font'
-import { getStaticFilename, getMtimestamp } from './utils'
-import { UnsupportedFontFormat } from './errors'
+import { reusePendingPromises, each } from 'extra-promise'
+import { processFont } from './font.js'
+import { getStaticFilename, getMtimestamp } from './utils.js'
+import { UnsupportedFontFormat } from './errors.js'
 import { assert } from '@blackglory/errors'
-import { isObject, isString } from '@blackglory/types'
+import { isObject, isString } from '@blackglory/prelude'
 import { readdir } from 'fs/promises'
 
 /**
  * @throws {NotFound} 
  * @throws {UnsupportedFontFormat}
  */
-export const ensureDerivedFont = reusePendingPromise(
+export const ensureDerivedFont = reusePendingPromises(
   async function ensureDerivedFont({
     filename
   , format
@@ -38,7 +38,7 @@ export const ensureDerivedFont = reusePendingPromise(
   }
 )
 
-const _ensureDerivedFont = reusePendingPromise(
+const _ensureDerivedFont = reusePendingPromises(
   async function _ensureDerivedFont(
     filename: string
   , mtime: number

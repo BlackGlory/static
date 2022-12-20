@@ -1,9 +1,9 @@
 import * as fs from 'fs/promises'
 import * as path from 'path'
-import { STORAGE } from '@env'
+import { STORAGE } from '@env/index.js'
 import { assert } from '@blackglory/errors'
-import { isObject } from '@blackglory/types'
-import { NotFound } from './errors'
+import { isObject } from '@blackglory/prelude'
+import { NotFound } from './errors.js'
 
 export function getStaticFilename(filename: string): string {
   return path.join(getStaticDirectory(), filename)

@@ -1,9 +1,10 @@
-import * as DataInSqlite3 from '@dao/data-in-sqlite3/database'
-import { buildServer } from '@src/server'
-import { resetCache } from '@env/cache'
+import * as DataInSqlite3 from '@dao/data-in-sqlite3/database.js'
+import { buildServer } from '@src/server.js'
+import { resetCache } from '@env/cache.js'
 import { emptyDir } from 'extra-filesystem'
 import { writeFile } from 'fs/promises'
 import * as path from 'path'
+import { fileURLToPath } from 'url'
 
 let server: ReturnType<typeof buildServer>
 let address: string
@@ -15,11 +16,10 @@ export function getAddress() {
 export async function startService() {
   await initializeDatabases()
   server = buildServer()
-  address = await server.listen(0)
+  address = await server.listen()
 }
 
 export async function stopService() {
-  server.metrics.clearRegister()
   await server.close()
   clearDatabases()
   clearDerivedFiles()
@@ -36,6 +36,7 @@ export async function clearDatabases() {
 }
 
 export async function clearDerivedFiles() {
+  const __dirname = path.dirname(fileURLToPath(import.meta.url))
   const derivedFonts = path.join(__dirname, 'fixtures/derived-fonts')
   const derivedImages = path.join(__dirname, 'fixtures/derived-images')
   await emptyDir(derivedFonts)

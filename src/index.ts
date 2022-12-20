@@ -1,17 +1,17 @@
-import { go } from '@blackglory/go'
-import * as DataInSqlite3 from '@dao/data-in-sqlite3/database'
-import { buildServer } from './server'
-import { PORT, HOST, STORAGE, NODE_ENV, NodeEnv } from '@env'
+import { go } from '@blackglory/prelude'
+import * as DataInSqlite3 from '@dao/data-in-sqlite3/database.js'
+import { buildServer } from './server.js'
+import { PORT, HOST, STORAGE, NODE_ENV, NodeEnv } from '@env/index.js'
 import { ensureDirSync } from 'extra-filesystem'
 import {
   getDerivedFontDirectory
 , clearAllTemporaryDerivedFonts
-} from '@core/derived-font'
+} from '@core/derived-font.js'
 import {
   getDerivedImageDirectory
 , clearAllTemporaryDerivedImages
-} from '@core/derived-image'
-import { getStaticDirectory } from '@core/utils'
+} from '@core/derived-image.js'
+import { getStaticDirectory } from '@core/utils.js'
 import { youDied } from 'you-died'
 
 go(async () => {
@@ -28,7 +28,7 @@ go(async () => {
   await DataInSqlite3.prepareDatabase()
 
   const server = await buildServer()
-  await server.listen(PORT(), HOST())
+  await server.listen({ port: PORT(), host: HOST() })
   if (NODE_ENV() === NodeEnv.Test) process.exit()
 
   process.send?.('ready')

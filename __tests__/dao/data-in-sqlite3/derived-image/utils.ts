@@ -1,4 +1,4 @@
-import { getDatabase } from '@dao/data-in-sqlite3/database'
+import { getDatabase } from '@dao/data-in-sqlite3/database.js'
 
 interface IRawDerivedImage {
   uuid: string
