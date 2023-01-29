@@ -14,7 +14,7 @@
     "deduplicate": "yarn-deduplicate",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx --quiet src __tests__",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --runInBand --no-cache --config jest.config.js",
-    "test:debug": "cross-env NODE_OPTIONS=--experimental-vm-modules node --inspect-brk jest --runInBand",
+    "test:debug": "cross-env NODE_OPTIONS=--experimental-vm-modules node --inspect-brk jest --runInBand --config jest.config.js",
     "test:coverage": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --coverage --config jest.config.js",
     "dev": "nodemon",
     "clean": "rimraf lib dist",
