@@ -9,7 +9,7 @@ import {
 } from '@env/index.js'
 import contentDisposition from 'content-disposition'
 import * as path from 'path'
-import omit from 'lodash/omit.js'
+import { omit } from 'lodash-es'
 import { fileTypeFromFile as getFileType } from 'file-type'
 import { getResultPromise } from 'return-style'
 import * as mime from 'mrmime'
