@@ -30,7 +30,7 @@ describe('files', () => {
             expect(res.status).toBe(200)
             expect(res.headers.has('ETag')).toBe(true)
             expect(res.headers.get('Cache-Control')).toBe(FOUND_CACHE_CONTROL())
-            expect(res.headers.get('Content-Type')).toBe('application/octet-stream')
+            expect(res.headers.has('Content-Type')).toBe(false)
           })
         })
 
@@ -44,7 +44,7 @@ describe('files', () => {
             expect(res.status).toBe(200)
             expect(res.headers.has('ETag')).toBe(true)
             expect(res.headers.get('Cache-Control')).toBe(FOUND_CACHE_CONTROL())
-            expect(res.headers.get('Content-Type')).toBe('application/octet-stream')
+            expect(res.headers.has('Content-Type')).toBe(false)
           })
         })
 
