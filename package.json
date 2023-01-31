@@ -33,7 +33,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "run-s clean lint build test bundle smoke",
+      "pre-commit": "run-s prepare clean lint build test bundle smoke",
       "commit-msg": "commitlint --env HUSKY_GIT_PARAMS"
     }
   },
