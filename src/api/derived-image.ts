@@ -71,7 +71,7 @@ const _ensureDerivedImage = reusePendingPromises(
   , mtime: number
   , derivedImageMetadata: IDerivedImageMetadata
   ): Promise<string> {
-    const uuid = await DerivedImageDAO.findDerivedImage(
+    const uuid = DerivedImageDAO.findDerivedImage(
       filename
     , mtime
     , derivedImageMetadata
@@ -84,7 +84,7 @@ const _ensureDerivedImage = reusePendingPromises(
     const tempFilename = `${newDerivedFilename}.tmp`
     await processImage(absoluteFilename, tempFilename, derivedImageMetadata)
     await move(tempFilename, newDerivedFilename)
-    await DerivedImageDAO.setDerivedImage(
+    DerivedImageDAO.setDerivedImage(
       newUUID
     , filename
     , mtime
@@ -95,8 +95,8 @@ const _ensureDerivedImage = reusePendingPromises(
 
     return newUUID
 
-    async function removeOutdatedDerivedImages() {
-      const outdatedUUIDs = await DerivedImageDAO.removeOutdatedDerivedImages(
+    async function removeOutdatedDerivedImages(): Promise<void> {
+      const outdatedUUIDs = DerivedImageDAO.removeOutdatedDerivedImages(
         filename
       , mtime
       )

@@ -59,6 +59,7 @@
     "extra-request": "^8.1.6",
     "extra-response": "^0.5.1",
     "fontkit": "^2.0.2",
+    "hotypes": "^0.5.1",
     "husky": "^4.3.8",
     "jest": "^29.4.1",
     "jest-resolve": "^29.4.1",

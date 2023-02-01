@@ -14,6 +14,7 @@ import {
 import { getStaticDirectory } from '@api/utils.js'
 import { youDied } from 'you-died'
 
+// eslint-disable-next-line
 go(async () => {
   ensureDirSync(STORAGE())
   ensureDirSync(getStaticDirectory())

@@ -17,16 +17,12 @@ export function setRawDerivedFont(raw: IRawDerivedFont): IRawDerivedFont {
   return raw
 }
 
-export function getRawDerivedFont(uuid: string): IRawDerivedFont {
+export function getRawDerivedFont(uuid: string): IRawDerivedFont | undefined {
   const row = getDatabase().prepare(`
-    SELECT uuid
-         , filename
-         , mtime
-         , format
-         , subset
+    SELECT *
       FROM derived_font
      WHERE uuid = $uuid
-  `).get({ uuid })
+  `).get({ uuid }) as IRawDerivedFont | undefined
 
   return row
 }

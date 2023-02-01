@@ -19,18 +19,12 @@ export function setRawDerivedImage(raw: IRawDerivedImage): IRawDerivedImage {
   return raw
 }
 
-export function getRawDerivedImage(uuid: string): IRawDerivedImage {
+export function getRawDerivedImage(uuid: string): IRawDerivedImage | undefined {
   const row = getDatabase().prepare(`
-    SELECT uuid
-         , filename
-         , mtime
-         , format
-         , quality
-         , width
-         , height
+    SELECT *
       FROM derived_image
      WHERE uuid = $uuid
-  `).get({ uuid })
+  `).get({ uuid }) as IRawDerivedImage | undefined
 
   return row
 }

@@ -44,12 +44,14 @@ type IQuery = ICommonQuery | IImageProcessingQuery | IFontProcessingQuery
 export const routes: FastifyPluginAsync<{ api: IAPI }> = async (server, { api }) => {
   // 用server.setErrorHandler替代setNotFoundHandler的尝试失败了, 无法通过测试.
   server.setNotFoundHandler((req, reply) => {
+    // eslint-disable-next-line
     reply
       .header('Cache-Control', NOT_FOUND_CACHE_CONTROL())
-      .status(404).send()
+      .status(404)
+      .send()
   })
 
-  server.register(fastifyStatic, {
+  await server.register(fastifyStatic, {
     root: STORAGE()
   , serve: false
   })
@@ -147,6 +149,7 @@ export const routes: FastifyPluginAsync<{ api: IAPI }> = async (server, { api })
 
       async function sendFile(query: ICommonQuery, filename: string) {
         if (query.contentType) {
+          // eslint-disable-next-line
           reply.header('Content-Type', query.contentType)
         } else {
           const mimeType = await getMimeType(path.join(STORAGE(), 'files', filename))
@@ -163,6 +166,7 @@ export const routes: FastifyPluginAsync<{ api: IAPI }> = async (server, { api })
                 .send()
             }
 
+            // eslint-disable-next-line
             reply.header('Content-Type', mimeType)
           }
         }
@@ -194,10 +198,12 @@ export const routes: FastifyPluginAsync<{ api: IAPI }> = async (server, { api })
         }
 
         if (query.contentType) {
+          // eslint-disable-next-line
           reply.header('Content-Type', query.contentType)
         } else {
           const mimeType = await getMimeType(api.getDerivedFontFilename(uuid))
           if (mimeType) {
+            // eslint-disable-next-line
             reply.header('Content-Type', mimeType)
           }
         }
@@ -229,10 +235,12 @@ export const routes: FastifyPluginAsync<{ api: IAPI }> = async (server, { api })
         }
 
         if (query.contentType) {
+          // eslint-disable-next-line
           reply.header('Content-Type', query.contentType)
         } else {
           const mimeType = await getMimeType(api.getDerivedImageFilename(uuid))
           if (mimeType) {
+            // eslint-disable-next-line
             reply.header('Content-Type', mimeType)
           }
         }

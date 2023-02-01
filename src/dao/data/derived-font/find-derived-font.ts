@@ -8,7 +8,7 @@ export const findDerivedFont = withLazyStatic(function (
 , mtime: number
 , metadata: IDerivedFontMetadata
 ): string | null {
-  const row: { uuid: string } | null = lazyStatic(() => getDatabase().prepare(`
+  const row = lazyStatic(() => getDatabase().prepare(`
     SELECT uuid
       FROM derived_font
      WHERE filename = $filename
@@ -20,7 +20,7 @@ export const findDerivedFont = withLazyStatic(function (
   , mtime
   , format: metadata.format
   , subset: normalizeSubset(metadata.subset)
-  })
+  }) as { uuid: string } | undefined
 
   return row?.uuid ?? null
 })

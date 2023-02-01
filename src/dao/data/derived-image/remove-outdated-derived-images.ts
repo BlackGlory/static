@@ -9,12 +9,13 @@ export const removeOutdatedDerivedImages = withLazyStatic(function (
     filename: string
   , newMtime: number
   ) => {
-    const rows: Array<{ uuid: string }> = lazyStatic(() => getDatabase().prepare(`
+    const rows = lazyStatic(() => getDatabase().prepare(`
       SELECT uuid
         FROM derived_image
        WHERE filename = $filename
          AND mtime != $newMtime
-    `), [getDatabase()]).all({ filename, newMtime })
+    `), [getDatabase()])
+      .all({ filename, newMtime }) as Array<{ uuid: string }>
 
     lazyStatic(() => getDatabase().prepare(`
       DELETE FROM derived_image

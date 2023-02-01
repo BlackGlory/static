@@ -7,7 +7,7 @@ export const findDerivedImage = withLazyStatic(function (
 , mtime: number
 , metadata: IDerivedImageMetadata
 ): string | null {
-  const row: { uuid: string } | null = lazyStatic(() => getDatabase().prepare(`
+  const row = lazyStatic(() => getDatabase().prepare(`
     SELECT uuid
       FROM derived_image
      WHERE filename = $filename
@@ -16,7 +16,8 @@ export const findDerivedImage = withLazyStatic(function (
        AND quality = $quality
        AND width = $width
        AND height = $height
-  `), [getDatabase()]).get({ filename, mtime, ...metadata })
+  `), [getDatabase()])
+    .get({ filename, mtime, ...metadata }) as { uuid: string } | undefined
 
   return row?.uuid ?? null
 })

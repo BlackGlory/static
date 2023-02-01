@@ -23,6 +23,9 @@ function hmacSHA256(secret: string, text: string): string {
 }
 
 function stringifyRecord(record: Record<string, unknown>): Record<string, string> {
-  const entries = Object.entries(record).map(([key, value]) => [key, `${value}`])
+  const entries = Object
+    .entries(record)
+    .map(([key, value]) => [key, `${value}`] as const)
+
   return Object.fromEntries(entries)
 }

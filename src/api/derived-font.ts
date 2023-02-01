@@ -45,7 +45,7 @@ const _ensureDerivedFont = reusePendingPromises(
   , mtime: number
   , derivedFontMetadata: IDerivedFontMetadata
   ): Promise<string> {
-    const uuid = await DerviedFontDAO.findDerivedFont(
+    const uuid = DerviedFontDAO.findDerivedFont(
       filename
     , mtime
     , derivedFontMetadata
@@ -70,7 +70,7 @@ const _ensureDerivedFont = reusePendingPromises(
       throw e
     }
     await move(tempFilename, newDerivedFilename)
-    await DerviedFontDAO.setDerivedFont(
+    DerviedFontDAO.setDerivedFont(
       newUUID
     , filename
     , mtime
@@ -81,8 +81,8 @@ const _ensureDerivedFont = reusePendingPromises(
 
     return newUUID
 
-    async function removeOutdatedDerivedFonts() {
-      const outdatedUUIDs = await DerviedFontDAO.removeOutdatedDerivedFonts(
+    async function removeOutdatedDerivedFonts(): Promise<void> {
+      const outdatedUUIDs = DerviedFontDAO.removeOutdatedDerivedFonts(
         filename
       , mtime
       )
