@@ -1,17 +1,17 @@
 import { go } from '@blackglory/prelude'
-import * as DataInSqlite3 from '@dao/data-in-sqlite3/database.js'
+import * as Data from '@dao/data/database.js'
 import { buildServer } from './server.js'
 import { PORT, HOST, STORAGE, NODE_ENV, NodeEnv } from '@env/index.js'
 import { ensureDirSync } from 'extra-filesystem'
 import {
   getDerivedFontDirectory
 , clearAllTemporaryDerivedFonts
-} from '@core/derived-font.js'
+} from '@api/derived-font.js'
 import {
   getDerivedImageDirectory
 , clearAllTemporaryDerivedImages
-} from '@core/derived-image.js'
-import { getStaticDirectory } from '@core/utils.js'
+} from '@api/derived-image.js'
+import { getStaticDirectory } from '@api/utils.js'
 import { youDied } from 'you-died'
 
 go(async () => {
@@ -23,9 +23,9 @@ go(async () => {
   await clearAllTemporaryDerivedFonts()
   await clearAllTemporaryDerivedImages()
 
-  DataInSqlite3.openDatabase()
-  youDied(() => DataInSqlite3.closeDatabase())
-  await DataInSqlite3.prepareDatabase()
+  Data.openDatabase()
+  youDied(() => Data.closeDatabase())
+  await Data.prepareDatabase()
 
   const server = await buildServer()
   await server.listen({ port: PORT(), host: HOST() })

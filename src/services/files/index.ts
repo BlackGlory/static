@@ -13,6 +13,7 @@ import { omit } from 'lodash-es'
 import { fileTypeFromFile as getFileType } from 'file-type'
 import { getResultPromise } from 'return-style'
 import * as mime from 'mrmime'
+import { IAPI } from '@api/contract.js'
 
 interface ICommonQuery {
   contentType?: string
@@ -40,8 +41,7 @@ interface IFontProcessingQuery extends ICommonQuery, IProcessingQuery {
 
 type IQuery = ICommonQuery | IImageProcessingQuery | IFontProcessingQuery
 
-export const routes: FastifyPluginAsync<{ Core: ICore }> =
-async function routes(server, { Core }) {
+export const routes: FastifyPluginAsync<{ api: IAPI }> = async (server, { api }) => {
   // 用server.setErrorHandler替代setNotFoundHandler的尝试失败了, 无法通过测试.
   server.setNotFoundHandler((req, reply) => {
     reply
@@ -126,7 +126,7 @@ async function routes(server, { Core }) {
       const filename = req.params['*']
 
       if ('signature' in req.query) {
-        if (!Core.validateSignature(req.query.signature, omit(req.query, ['signature']))) {
+        if (!api.validateSignature(req.query.signature, omit(req.query, ['signature']))) {
           return reply
             .status(403)
             .send()
@@ -176,15 +176,15 @@ async function routes(server, { Core }) {
       async function sendProcessedFont(query: IFontProcessingQuery, filename: string) {
         let uuid: string
         try {
-          uuid = await Core.ensureDerivedFont({ ...query, filename })
+          uuid = await api.ensureDerivedFont({ ...query, filename })
         } catch (e) {
-          if (e instanceof Core.NotFound) {
+          if (e instanceof api.NotFound) {
             return reply
               .header('Cache-Control', NOT_FOUND_CACHE_CONTROL())
               .status(404)
               .send()
           }
-          if (e instanceof Core.UnsupportedFontFormat) {
+          if (e instanceof api.UnsupportedFontFormat) {
             // 返回403是说明没有权限对一个非字体文件/不支持的字体文件执行此操作
             return reply
               .status(403)
@@ -196,7 +196,7 @@ async function routes(server, { Core }) {
         if (query.contentType) {
           reply.header('Content-Type', query.contentType)
         } else {
-          const mimeType = await getMimeType(Core.getDerivedFontFilename(uuid))
+          const mimeType = await getMimeType(api.getDerivedFontFilename(uuid))
           if (mimeType) {
             reply.header('Content-Type', mimeType)
           }
@@ -211,15 +211,15 @@ async function routes(server, { Core }) {
       async function sendProcessedImage(query: IImageProcessingQuery, filename: string) {
         let uuid: string
         try {
-          uuid = await Core.ensureDerivedImage({ ...query, filename })
+          uuid = await api.ensureDerivedImage({ ...query, filename })
         } catch (e) {
-          if (e instanceof Core.NotFound) {
+          if (e instanceof api.NotFound) {
             return reply
               .header('Cache-Control', NOT_FOUND_CACHE_CONTROL())
               .status(404)
               .send()
           }
-          if (e instanceof Core.UnsupportedImageFormat) {
+          if (e instanceof api.UnsupportedImageFormat) {
             // 返回403是说明没有权限对一个非图像文件/不支持的图像文件执行此操作
             return reply
               .status(403)
@@ -231,7 +231,7 @@ async function routes(server, { Core }) {
         if (query.contentType) {
           reply.header('Content-Type', query.contentType)
         } else {
-          const mimeType = await getMimeType(Core.getDerivedImageFilename(uuid))
+          const mimeType = await getMimeType(api.getDerivedImageFilename(uuid))
           if (mimeType) {
             reply.header('Content-Type', mimeType)
           }

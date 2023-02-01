@@ -9,8 +9,8 @@
   , "baseUrl": "."
   , "paths": {
       "@src/*": ["src/*"]
-    , "@core": ["src/core/index"]
-    , "@core/*": ["src/core/*"]
+    , "@api": ["src/api/index"]
+    , "@api/*": ["src/api/*"]
     , "@dao": ["src/dao/index"]
     , "@dao/*": ["src/dao/*"]
     , "@env": ["src/env/index"]

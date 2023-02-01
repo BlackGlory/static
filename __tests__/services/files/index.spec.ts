@@ -5,7 +5,7 @@ import { url, pathname, searchParams } from 'extra-request/transformers'
 import * as path from 'path'
 import { getAppRoot } from '@src/utils.js'
 import { NOT_FOUND_CACHE_CONTROL, FOUND_CACHE_CONTROL } from '@env/index.js'
-import { computeSignature } from '@core/signature.js'
+import { computeSignature } from '@api/signature.js'
 import sharp from 'sharp'
 import * as fontkit from 'fontkit'
 

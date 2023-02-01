@@ -1,4 +1,4 @@
-import * as DataInSqlite3 from '@dao/data-in-sqlite3/database.js'
+import * as Data from '@dao/data/database.js'
 import { buildServer } from '@src/server.js'
 import { resetCache } from '@env/cache.js'
 import { emptyDir } from 'extra-filesystem'
@@ -27,12 +27,12 @@ export async function stopService() {
 }
 
 export async function initializeDatabases() {
-  DataInSqlite3.openDatabase()
-  await DataInSqlite3.prepareDatabase()
+  Data.openDatabase()
+  await Data.prepareDatabase()
 }
 
 export async function clearDatabases() {
-  DataInSqlite3.closeDatabase()
+  Data.closeDatabase()
 }
 
 export async function clearDerivedFiles() {
