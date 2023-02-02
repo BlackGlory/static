@@ -58,9 +58,9 @@ typings/
 .env
 
 # Build
-lib
-dist
+/lib
+/dist
 
 # Data
-database
-storage
+/database
+/storage
