@@ -88,6 +88,7 @@
     "better-sqlite3": "^8.0.1",
     "content-disposition": "^0.5.4",
     "dotenv": "^16.0.3",
+    "extra-exec": "^0.1.1",
     "extra-filesystem": "^0.4.10",
     "extra-lazy": "^2.0.0",
     "extra-promise": "^6.0.3",
