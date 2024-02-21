@@ -13,6 +13,7 @@ The default values are `localhost` and `8080`.
 ```sh
 git clone https://github.com/BlackGlory/static
 cd static
+pip install --requirement requirements.txt
 npm install
 npm run build
 npm run bundle
