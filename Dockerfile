@@ -1,4 +1,4 @@
-FROM node:16-alpine AS builder
+FROM node:18-alpine AS builder
 WORKDIR /usr/src/app
 COPY package.json yarn.lock requirements.txt ./
 
@@ -10,18 +10,19 @@ RUN apk add --update --no-cache --virtual .build-deps \
       py3-pip \
       python3-dev \
  && pip3 install --requirement requirements.txt \
- && yarn install \
- && yarn cache clean \
+ && npm ci \
+ && npm cache clean --force \
  && apk del .build-deps \
  && apk add --update --no-cache \
       python3
 
 COPY . ./
 
-RUN yarn build \
- && yarn bundle
+RUN npm run _prepare \
+ && npm run build \
+ && npm run bundle
 
-FROM node:16-alpine
+FROM node:18-alpine
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/dist /usr/src/app/dist
 COPY package.json yarn.lock requirements.txt ./
@@ -34,8 +35,8 @@ RUN apk add --update --no-cache --virtual .build-deps \
       py3-pip \
       python3-dev \
  && pip3 install --requirement requirements.txt \
- && yarn install --production \
- && yarn cache clean \
+ && npm ci --omit=dev \
+ && npm cache clean --force \
  && apk del .build-deps \
  && apk add --update --no-cache \
       python3 \
@@ -53,5 +54,5 @@ ENV STATIC_HOST=0.0.0.0
 ENV STATIC_PORT=8080
 EXPOSE 8080
 HEALTHCHECK CMD curl --fail http://localhost:8080/health || exit 1
-ENTRYPOINT ["yarn"]
+ENTRYPOINT ["npm"]
 CMD ["--silent", "start"]

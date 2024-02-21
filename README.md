@@ -13,10 +13,10 @@ The default values are `localhost` and `8080`.
 ```sh
 git clone https://github.com/BlackGlory/static
 cd static
-yarn install
-yarn build
-yarn bundle
-yarn --silent start
+npm install
+npm run build
+npm run bundle
+npm start
 ```
 
 ### Docker
