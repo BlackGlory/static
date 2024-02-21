@@ -8,4 +8,4 @@ services:
       args:
         - 'HTTP_PROXY'
         - 'HTTPS_PROXY'
-    command: 'run-s test smoke'
+    command: 'npx run-s test smoke'

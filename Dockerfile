@@ -9,7 +9,7 @@ RUN apk add --update --no-cache --virtual .build-deps \
       # fonttools
       py3-pip \
       python3-dev \
- && pip3 install --requirement requirements.txt \
+ && pip3 install --break-system-packages --requirement requirements.txt \
  && npm ci \
  && npm cache clean --force \
  && apk del .build-deps \
@@ -34,7 +34,7 @@ RUN apk add --update --no-cache --virtual .build-deps \
       # fonttools
       py3-pip \
       python3-dev \
- && pip3 install --requirement requirements.txt \
+ && pip3 install --break-system-packages --requirement requirements.txt \
  && npm ci --omit=dev \
  && npm cache clean --force \
  && apk del .build-deps \
