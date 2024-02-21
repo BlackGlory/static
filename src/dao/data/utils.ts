@@ -6,7 +6,7 @@ import { migrate } from '@blackglory/better-sqlite3-migrations'
 import { map } from 'extra-promise'
 
 export async function migrateDatabase(db: IDatabase): Promise<void> {
-  const migrationsPath = path.join(getAppRoot(), 'migrations/data')
+  const migrationsPath = path.join(getAppRoot(), 'migrations')
   const migrations = await map(
     await findMigrationFilenames(migrationsPath)
   , readMigrationFile
