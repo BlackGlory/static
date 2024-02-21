@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/BlackGlory/static/compare/v0.3.3...v0.4.0) (2024-02-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* Node.js v16 => Node.js v18.17.0
+
+### Bug Fixes
+
+* dockerfile ([2612dfc](https://github.com/BlackGlory/static/commit/2612dfc2016310043c49e59edc7ed222ca3c578d))
+* dockerfile ([b44398e](https://github.com/BlackGlory/static/commit/b44398e5a5c69fed894e117a10fba8407f85d8c3))
+
+
+* upgrade dependencies ([f1c97c9](https://github.com/BlackGlory/static/commit/f1c97c9f6df5da7554cb72568d971fcce96fe516))
+
 ### [0.3.3](https://github.com/BlackGlory/static/compare/v0.3.2...v0.3.3) (2023-02-01)
 
 ### [0.3.2](https://github.com/BlackGlory/static/compare/v0.3.1...v0.3.2) (2023-01-31)
