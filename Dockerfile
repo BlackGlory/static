@@ -1,6 +1,6 @@
 FROM node:18-alpine AS builder
 WORKDIR /usr/src/app
-COPY package.json yarn.lock requirements.txt ./
+COPY package.json package-lock.json requirements.txt ./
 
 RUN apk add --update --no-cache --virtual .build-deps \
       # better-sqlite3
@@ -25,7 +25,7 @@ RUN npm run _prepare \
 FROM node:18-alpine
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/dist /usr/src/app/dist
-COPY package.json yarn.lock requirements.txt ./
+COPY package.json package-lock.json requirements.txt ./
 
 RUN apk add --update --no-cache --virtual .build-deps \
       # better-sqlite3
