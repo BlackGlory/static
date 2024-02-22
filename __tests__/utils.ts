@@ -1,4 +1,4 @@
-import * as Data from '@dao/data/database.js'
+import * as Data from '@dao/database.js'
 import { buildServer } from '@src/server.js'
 import { resetCache } from '@env/cache.js'
 import { emptyDir } from 'extra-filesystem'

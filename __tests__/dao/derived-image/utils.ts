@@ -1,4 +1,4 @@
-import { getDatabase } from '@dao/data/database.js'
+import { getDatabase } from '@dao/database.js'
 
 interface IRawDerivedImage {
   uuid: string

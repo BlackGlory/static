@@ -1,5 +1,5 @@
 import { go } from '@blackglory/prelude'
-import * as Data from '@dao/data/database.js'
+import * as Data from '@dao/database.js'
 import { buildServer } from './server.js'
 import { PORT, HOST, STORAGE, NODE_ENV, NodeEnv } from '@env/index.js'
 import { ensureDirSync } from 'extra-filesystem'

@@ -1,4 +1,4 @@
-import { DerivedImageDAO } from '@dao/data/derived-image/index.js'
+import { DerivedImageDAO } from '@dao/derived-image/index.js'
 import { initializeDatabases, clearDatabases } from '@test/utils.js'
 import { hasRawDerviedImage, setRawDerivedImage } from './utils.js'
 import { v4 as createUUID } from 'uuid'

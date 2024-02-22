@@ -1,5 +1,5 @@
 import { computeTargetSize, processImage, readImageMetadata } from './image.js'
-import { DerivedImageDAO } from '@dao/data/derived-image/index.js'
+import { DerivedImageDAO } from '@dao/derived-image/index.js'
 import { STORAGE } from '@env/index.js'
 import { pathExists, remove, move } from 'extra-filesystem'
 import * as path from 'path'

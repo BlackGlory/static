@@ -1,6 +1,6 @@
 import * as path from 'path'
 import { STORAGE } from '@env/index.js'
-import { DerviedFontDAO } from '@dao/data/derived-font/index.js'
+import { DerviedFontDAO } from '@dao/derived-font/index.js'
 import { pathExists, remove, move } from 'extra-filesystem'
 import { v4 as createUUID } from 'uuid'
 import { reusePendingPromises, each } from 'extra-promise'

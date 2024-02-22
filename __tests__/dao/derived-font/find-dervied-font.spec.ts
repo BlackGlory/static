@@ -1,4 +1,4 @@
-import { DerviedFontDAO } from '@dao/data/derived-font/index.js'
+import { DerviedFontDAO } from '@dao/derived-font/index.js'
 import { initializeDatabases, clearDatabases } from '@test/utils.js'
 import { setRawDerivedFont } from './utils.js'
 import { v4 as createUUID } from 'uuid'
