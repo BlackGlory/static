@@ -2,7 +2,7 @@
 A static file server inspired by [Serve].
 
 The service considers static files to be immutable by default,
-you can set environement varaible `STATIC_FOUND_CACHE_CONTROL` to change it.
+you can set environment varaible `STATIC_FOUND_CACHE_CONTROL` to change it.
 
 [Serve]: https://github.com/vercel/serve
 
