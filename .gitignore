@@ -64,3 +64,6 @@ typings/
 # Data
 /database
 /storage
+
+# Python venv
+.venv

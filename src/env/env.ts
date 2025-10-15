@@ -83,11 +83,10 @@ function env(name: string): ValueGetter<string | undefined> {
   return new ValueGetter(name, () => process.env[name])
 }
 
-function toBool(val: string | boolean | undefined): boolean | undefined {
+function toBool(val: string | undefined): boolean | undefined {
   if (val) return val === 'true'
-  return false
 }
 
-function toInteger(val: string | undefined ): number | undefined {
+function toInteger(val: string | undefined): number | undefined {
   if (val) return Number.parseInt(val, 10)
 }
