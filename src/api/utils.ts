@@ -1,8 +1,6 @@
 import * as fs from 'fs/promises'
 import * as path from 'path'
 import { STORAGE } from '@env/index.js'
-import { assert } from '@blackglory/errors'
-import { isObject } from '@blackglory/prelude'
 import { NotFound } from './errors.js'
 
 export function getStaticFilename(filename: string): string {
@@ -21,8 +19,8 @@ export async function getMtimestamp(filename: string): Promise<number> {
     const result = await fs.stat(filename)
     return Math.floor(result.mtime.getTime() / 1000)
   } catch (e) {
-    assert(isObject(e), 'e must be object')
-    if (e.code === 'ENOENT') throw new NotFound()
+    if ((e as NodeJS.ErrnoException).code === 'ENOENT') throw new NotFound()
+
     throw e
   }
 }
