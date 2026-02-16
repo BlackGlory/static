@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.1](https://github.com/BlackGlory/static/compare/v0.4.0...v0.4.1) (2026-02-16)
+
+
+### Features
+
+* **server:** improve robustness ([59050bf](https://github.com/BlackGlory/static/commit/59050bf92c3f70f9fac18894fa166d363a2e4119))
+
 ## [0.4.0](https://github.com/BlackGlory/static/compare/v0.3.3...v0.4.0) (2024-02-21)
 
 
