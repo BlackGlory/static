@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.2](https://github.com/BlackGlory/static/compare/v0.4.1...v0.4.2) (2026-02-19)
+
+
+### Bug Fixes
+
+* **files:** prevent access control bypass via custom Content-Type ([99359a5](https://github.com/BlackGlory/static/commit/99359a5bf6caa6358730e2b6919dcc3a94419a15))
+
 ### [0.4.1](https://github.com/BlackGlory/static/compare/v0.4.0...v0.4.1) (2026-02-16)
 
 
