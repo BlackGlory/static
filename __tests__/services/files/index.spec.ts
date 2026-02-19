@@ -103,6 +103,18 @@ describe('files', () => {
 
               expect(res.status).toBe(403)
             })
+
+            test('edge: custom contentType', async () => {
+              process.env.STATIC_DISABLE_ACCESS_TO_ORIGINAL_IMAGES='true'
+
+              const res = await fetch(get(
+                url(getAddress())
+              , pathname('/files/images/830x415.png')
+              , searchParams({ contentType: 'image/png' })
+              ))
+
+              expect(res.status).toBe(403)
+            })
           })
         })
 
@@ -126,6 +138,18 @@ describe('files', () => {
               const res = await fetch(get(
                 url(getAddress())
               , pathname('/files/fonts/FiraCode-Regular.ttf')
+              ))
+
+              expect(res.status).toBe(403)
+            })
+
+            test('edge: custom contentType', async () => {
+              process.env.STATIC_DISABLE_ACCESS_TO_ORIGINAL_FONTS='true'
+
+              const res = await fetch(get(
+                url(getAddress())
+              , pathname('/files/fonts/FiraCode-Regular.ttf')
+              , searchParams({ contentType: 'font/ttf' })
               ))
 
               expect(res.status).toBe(403)

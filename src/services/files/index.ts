@@ -148,30 +148,23 @@ export const routes: FastifyPluginAsync<{ api: IAPI }> = async (server, { api })
       }
 
       async function sendFile(query: ICommonQuery, filename: string) {
-        if (query.contentType) {
-          // eslint-disable-next-line
-          reply.header('Content-Type', query.contentType)
-        } else {
-          const mimeType = await getMimeType(path.join(STORAGE(), 'files', filename))
-          if (mimeType) {
-            if (DISABLE_ACCESS_TO_ORIGINAL_IMAGES() && isImageMimeType(mimeType)) {
-              return reply
-                .status(403)
-                .send()
-            }
+        const mimeType = await getMimeType(path.join(STORAGE(), 'files', filename))
+        if (mimeType) {
+          if (DISABLE_ACCESS_TO_ORIGINAL_IMAGES() && isImageMimeType(mimeType)) {
+            return reply
+              .status(403)
+              .send()
+          }
 
-            if (DISABLE_ACCESS_TO_ORIGINAL_FONTS() && isFontMimeType(mimeType)) {
-              return reply
-                .status(403)
-                .send()
-            }
-
-            // eslint-disable-next-line
-            reply.header('Content-Type', mimeType)
+          if (DISABLE_ACCESS_TO_ORIGINAL_FONTS() && isFontMimeType(mimeType)) {
+            return reply
+              .status(403)
+              .send()
           }
         }
 
         return reply
+          .header('Content-Type', query.contentType ?? mimeType)
           .header('Cache-Control', FOUND_CACHE_CONTROL())
           .header('Content-Disposition', contentDisposition(filename, { type: 'inline' }))
           .sendFile(path.join('files', filename))
