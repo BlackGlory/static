@@ -17,6 +17,7 @@ import { IDerivedImageMetadata } from './contract.js'
  * @throws {NotFound} 
  * @throws {UnsupportedImageFormat}
  */
+// 因为使用`reusePendingPromises`, 不会出现竞争状态.
 export const ensureDerivedImage = reusePendingPromises(
   async function ensureDerivedImage({
     filename
@@ -65,6 +66,7 @@ export const ensureDerivedImage = reusePendingPromises(
   }
 )
 
+// 因为使用`reusePendingPromises`, 不会出现竞争状态.
 const _ensureDerivedImage = reusePendingPromises(
   async function _ensureDerivedImage(
     filename: string

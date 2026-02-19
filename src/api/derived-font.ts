@@ -16,6 +16,7 @@ import { IDerivedFontMetadata } from './contract.js'
  * @throws {NotFound}
  * @throws {UnsupportedFontFormat}
  */
+// 因为使用`reusePendingPromises`, 不会出现竞争状态.
 export const ensureDerivedFont = reusePendingPromises(
   async function ensureDerivedFont({
     filename
@@ -39,6 +40,7 @@ export const ensureDerivedFont = reusePendingPromises(
   }
 )
 
+// 因为使用`reusePendingPromises`, 不会出现竞争状态.
 const _ensureDerivedFont = reusePendingPromises(
   async function _ensureDerivedFont(
     filename: string
