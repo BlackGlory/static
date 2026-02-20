@@ -383,28 +383,44 @@ describe('files', () => {
       })
     })
 
-    describe('edge: dot', () => {
-      it('404', async () => {
-        const res = await fetch(get(
-          url(getAddress())
-        , pathname('/files/directory/../shallow')
-        ))
+    describe('edge: relative pathname', () => {
+      describe('edge: safe', () => {
+        describe('file exists', () => {
+          it('200', async () => {
+            const res = await fetch(get(
+              url(getAddress())
+            , pathname('/files/directory/../shallow')
+            ))
 
-        expect(res.status).toBe(200)
-        expect(res.headers.has('ETag')).toBe(true)
-        expect(res.headers.get('Cache-Control')).toBe(FOUND_CACHE_CONTROL())
+            expect(res.status).toBe(200)
+            expect(res.headers.has('ETag')).toBe(true)
+            expect(res.headers.get('Cache-Control')).toBe(FOUND_CACHE_CONTROL())
+          })
+        })
+
+        describe('file does not exists', () => {
+          it('404', async () => {
+            const res = await fetch(get(
+              url(getAddress())
+            , pathname('/files/directory/../not-found')
+            ))
+
+            expect(res.status).toBe(404)
+            expect(res.headers.get('Cache-Control')).toBe(NOT_FOUND_CACHE_CONTROL())
+          })
+        })
       })
-    })
 
-    describe('edge: dangerous dot', () => {
-      it('404', async () => {
-        const res = await fetch(get(
-          url(getAddress())
-        , pathname('/files/../../package.json')
-        ))
+      describe('edge: unsafe', () => {
+        it('404', async () => {
+          const res = await fetch(get(
+            url(getAddress())
+          , pathname('/files/../../package.json')
+          ))
 
-        expect(res.status).toBe(404)
-        expect(res.headers.get('Cache-Control')).toBe('private, no-cache')
+          expect(res.status).toBe(404)
+          expect(res.headers.get('Cache-Control')).toBe('private, no-cache')
+        })
       })
     })
   })
